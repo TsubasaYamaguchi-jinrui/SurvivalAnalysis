@@ -71,7 +71,7 @@ hyou1 %>%
 イベント・ヒストリー分析では、上でも説明した「リスク集合」と「ハザード率」の二つが重要な概念である。分析ではハザード率を従属変数として、それぞれの独立変数がハザード率に与える影響を分析していく。  
 
 ## ロジスティック回帰モデル  
-離散時間モデルでは、ロジット変換[^foot3]を利用することでハザード関数$P(t)$を以下のようにあらわす。なお、$x_1$は非時間依存変数を、$x_2(t)$は時間依存変数を表す。また、$t$は勤続年数を表す。$b_1$と$b_2$は**偏回帰係数**と呼ぶ。ロジット変換を施すことで、$P(t)$が0から1の範囲しか取れなくても、右辺はどのような値も取ることが可能になる。    
+離散時間モデルでは、ロジット変換[^foot3]を利用することでハザード関数$P(t)$を以下のようにあらわす。なお、$x_1$は非時間依存変数を、$x_2(t)$は時間依存変数を表す。また、$t$は勤続年数を表す。$b_1$と$b_2$は**偏回帰係数**と呼ぶ。ロジット変換を施すことで、右辺がどのような値も取っても$P(t)$が0から1の範囲に収まる。
 
 $$
 \begin{equation}
@@ -90,7 +90,7 @@ $$
 2. 各個体は各単位ごとに(この場合は1年ごとに)昇進した場合は従属変数に1を、してない場合は0を割り当てられる。  
 3. データセットを作成し、最尤法を用いてロジスティック回帰モデルのパラメータを推定する。  
 
-## Rでの分析  
+## Rでの実装    
 ### データの加工  
 それでは、Rで実際にモデルのパラメータを推定してみる。分析をするためには、データフレームを縦長にする必要がある。具体的には、発表論文数(`art1`~`art10`)と被引用数(`cit1`~`cit10`)をそれぞれ一列にする必要がある。  
 
@@ -153,12 +153,16 @@ datatable(rank4, options = list(scrollX = 100),
 ```{r}
 mod1 <- glm(promo ~ undgrad + phdmed + phdprest + jobpres + art_n + cit_n,
             data = rank4,
-            family = "binomial")
+            family = binomial(link = "logit"))
 ```
 
 結果は以下の通り(表\@ref(tab:tab-mod1))。  
 ```{r tab-mod1}
 model_parameters(mod1) %>% 
+  data.frame() %>% 
+  mutate(`95%CI` = str_c("[",sprintf("%.2f",CI_low),", ",sprintf("%.2f",CI_high),"}")) %>% 
+  select(-df_error, -CI_low, -CI_high, -CI) %>% 
+  select(Parameter, Coefficient, `95%CI`, everything()) %>% 
   kable(align = "c", caption = "mod1の結果") %>% 
   kable_styling(font_size = 11, full_width = FALSE)
 ```
@@ -174,6 +178,10 @@ mod2 <- glm(promo ~ undgrad + phdmed + phdprest + jobpres + art_n + cit_n + year
 結果は以下の通り(表\@ref(tab:tab-mod2))。  
 ```{r tab-mod2}
 model_parameters(mod2) %>% 
+  data.frame() %>% 
+  mutate(`95%CI` = str_c("[",sprintf("%.2f",CI_low),", ",sprintf("%.2f",CI_high),"}")) %>% 
+  select(-df_error, -CI_low, -CI_high, -CI) %>% 
+  select(Parameter, Coefficient, `95%CI`, everything()) %>% 
   kable(align = "c", caption = "mod2の結果") %>% 
   kable_styling(font_size = 11, full_width = FALSE)
 ```
@@ -192,7 +200,7 @@ stargazer(mod1, mod2, type = "text")
 model_parameters(mod1) %>% 
   data.frame() %>% 
   select(Parameter, Coefficient) %>% 
-  mutate(odds = exp(Coefficient))
+  mutate(odds = exp(Coefficient)) 
 ```
 
 モデル2も結果自体は大きく変わらないが、勤続年数とその二乗が有意に影響していることが分かる。また、「累積論文発表数(art_n)」の偏回帰係数が大幅に小さくなっており、オッズ比も1.14倍から1.08倍に減少している。  
@@ -203,15 +211,50 @@ model_parameters(mod2) %>%
   mutate(odds = exp(Coefficient))
 ```
 
-### 尤度比検定  
+## 尤度比検定  
 あるモデルが別のモデルの「入れ子」構造(一方のモデルが他方のモデルの独立変数をすべて含む)であるとき、**尤度比検定**によってどちらの方が適合度が高いか検定を行うことができる。2つのモデルの対数尤度の差の2倍が$\chi^2$分布に近似できることを利用して帰無仮説検定を行うことが多い[^foot4]。  
 
-Rでは以下のように行う。結果を見ると、モデル2の方が有意に適合度が高いことが分かる。    
+Rでは以下のように行う。結果を見ると、モデル2の方が有意に適合度が高いことが分かる。 このような検定は、本稿で以後出てくるモデルやパラメータの検定にも応用可能である。     
 ```{r}
 anova(mod1,mod2, test = "Chisq")
 ```
 
 [^foot4]: 尤度比検定の詳細については、 @Kasuya2012 や @Kubo2012 を参照。パラメトリックブーストラップ法を用いたより正確な検定を行うこともできる[@Kubo2012]。  
 
+## 離散時間ロジスティック回帰モデルの注意点  
+上記のモデルにはいくつか注意点がある。  
 
+1.**一個体が複数の事象を経験する場合は、事象の回数の影響を修正する必要がある。**    
+ロバスト推定による標準誤差を求めたり、一般化推定式やランダム(変量)効果モデルを用いたりする。  
 
+2. **区切る時間単位を適切に設定する必要がある。**  
+今回は、准教授の昇進が各年度の初めに行われるため、1年ごとにデータを区切ることは適切であった。これを1日ごとに区切るとデータが膨大になってしまうし、５年ごとに区切ると多くの情報が失われてしまう。分析対象の事象に応じて、適切に区切る時間単位を適切に設定する必要がある。  
+
+3. **代替手法**  
+式\@ref(eq:hazard)は独立変数のハザード率に対する影響を検討する最も知られた方法だが、以下の「補対数対数モデル」も代替手法として有用である。このモデルでも、右辺がどのような値をとろうと$P(t)$は0から1に収まる。  
+
+$$
+\begin{equation}
+log[-log(1-P(t))] = b_0 + b_1x_1 + b_2x_2(t) + b_3t + b_4t^2 (\#eq:hazard2)  
+\end{equation}
+$$
+
+Rでは、以下のように実装できる。  
+```{r}
+mod3 <- glm(promo ~ undgrad + phdmed + phdprest + jobpres + art_n + cit_n + year + I(year^2),
+            data = rank4,
+            family = binomial(link = "cloglog"))
+```
+
+結果は以下の通り(\@ref(tab:tab-mod3))。ロジスティック回帰モデルと結果は大きく変わらない。特にP地だけに着目する場合はどちらのモデルを選んでも決定的な差はない。  
+```{r tab-mod3}
+model_parameters(mod3) %>% 
+  data.frame() %>% 
+  mutate(`95%CI` = str_c("[",sprintf("%.2f",CI_low),", ",sprintf("%.2f",CI_high),"}")) %>% 
+  select(-df_error, -CI_low, -CI_high, -CI) %>% 
+  select(Parameter, Coefficient, `95%CI`, everything()) %>% 
+  kable(align = "c", caption = "mod3の結果") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+
+## 打ち切りデータの扱い  
