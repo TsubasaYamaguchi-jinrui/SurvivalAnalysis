@@ -1,0 +1,36 @@
+--- 
+title: "Survival Analysis Using R"
+author: "Tsubasa Yamaguchi"
+date: "`r Sys.Date()`"
+output: 
+  bookdown::gitbook:
+    split_by: rmd  
+    split_bib: yes  
+    number_sections: true   
+    toc_depth: 4 
+    css: custom_style.css   
+site: bookdown::bookdown_site  
+output_dir: "docs"  
+documentclass: book  
+header-includes:
+   - \usepackage{amsmath}
+   - \usepackage{nccmath}
+biblio-style: jecon    
+bibliography: survival.bib   
+link-citations: yes
+csl: apa.csl
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE,
+                      warning = FALSE, fig.align = "center",
+                      cache = TRUE)
+```
+
+# 本稿の目的 {-}   
+本稿は**生存時間解析（Survival Analysis）**の概要をまとめたものである。また、Rでこうした分析を実行する方法についても解説している。新たに個人的に勉強した内容があれば、随時追加していく。      
+
+本稿が主に参考にしたのは参考にしたのは @Allison2014 である。
+本稿の作成に使用したファイルとRのコードは筆者の[Github](https://github.com/TsubasaYamaguchi-jinrui/SurvivalAnalysis)ですべて閲覧できる。  
+
+
