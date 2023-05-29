@@ -1,4 +1,4 @@
-book_filename: "Network_Analysis_Using_R"  
+book_filename: "SurvivalAnalysis_Using_R"  
 rmd_files:                    
   - index.Rmd
   - Chapter0.Rmd

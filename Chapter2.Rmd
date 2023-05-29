@@ -172,7 +172,7 @@ mod2 <- glm(promo ~ undgrad + phdmed + phdprest + jobpres + art_n + cit_n + year
 ```
 
 結果は以下の通り(表\@ref(tab:tab-mod2))。  
-```{r}
+```{r tab-mod2}
 model_parameters(mod2) %>% 
   kable(align = "c", caption = "mod2の結果") %>% 
   kable_styling(font_size = 11, full_width = FALSE)
@@ -212,5 +212,6 @@ anova(mod1,mod2, test = "Chisq")
 ```
 
 [^foot4]: 尤度比検定の詳細については、 @Kasuya2012 や @Kubo2012 を参照。パラメトリックブーストラップ法を用いたより正確な検定を行うこともできる[@Kubo2012]。  
+
 
 

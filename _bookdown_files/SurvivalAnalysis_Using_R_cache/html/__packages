@@ -1,5 +1,7 @@
-tidyverse
+survival
+ggsurvfit
 ggplot2
+tidyverse
 tibble
 tidyr
 readr
@@ -7,6 +9,7 @@ purrr
 dplyr
 stringr
 forcats
+haven
 easystats
 bayestestR
 correlation
@@ -23,16 +26,9 @@ patchwork
 DT
 knitr
 kableExtra
-dagitty
-ggdag
-ggforce
-concaveman
+stargazer
 ggsci
 lemon
 extrafont
 systemfonts
 fontregisterer
-haven
-survival
-ggsurvfit
-stargazer
