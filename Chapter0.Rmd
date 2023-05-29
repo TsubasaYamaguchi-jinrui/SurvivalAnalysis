@@ -2,11 +2,13 @@
 本稿では、
 
 ```{r}
-## ネットワーク分析関連
-library(tidyverse)
+## 生存時間分析
+library(survival)
+library(ggsurvfit)
 
 ## データハンドリング
 library(tidyverse)
+library(haven)
 library(easystats)
 library(data.table)
 ## グラフや表関連
@@ -14,10 +16,7 @@ library(patchwork)
 library(DT)
 library(knitr)
 library(kableExtra)
-library(dagitty)
-library(ggdag)
-library(ggforce)
-library(concaveman)
+library(stargazer)
 library(ggsci)
 library(lemon)
 ## フォント関連

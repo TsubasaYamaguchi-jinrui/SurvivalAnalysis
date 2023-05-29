@@ -1,0 +1,216 @@
+# 離散時間モデル {#c2}  
+本章では、**繰り返しのない単一の事象**を離散時間モデルで分析する方法を概観する。  
+
+## 離散時間モデルの例  
+ここでは具体例として、1950年代後半から60年代前半に博士号を取得した生化学者301人(助教として勤務経験あり)が准教授に昇進するのに要する年数を記録したデータを使用する。データは`data`フォルダにある(`rank.dta`)。dta形式のファイルは、`haven`パッケージの`read_dta()`で読み込める。  
+
+```{r}
+library(haven)
+
+rank <- read_dta("data/rank.dta")
+```
+
+データの先頭10行を取り出すと以下のようになっている。変数の説明は以下の通り。  
+ここでは、独立変数を用いて1年ごとの昇進の条件付き確率を回帰モデルを用いて推定することを目的とする。  
+
+**従属変数にかかわる変数**  
+- `dur`: 助教としての勤続年数  
+- `promo`: 助教への昇進の有無  
+
+**独立変数(非時間依存変数)**  
+
+- `undgrad`: 対象者の出身学部の選抜の厳しさの尺度  
+- `phdprest`: 博士号を取得した大学の威信の尺度  
+- `phdmed`: 医学博士の有無  
+
+**独立変数(時間依存変数)**  
+
+- `prest`: 勤務している大学の威信の尺度  
+- `arts`: 勤続年数ごとの累積発表論文数  
+- `cits`: 勤続年数ごとの論文の累積被引用回数  
+
+**そのほか**  
+
+- `jobtime`: 職場を変わった場合、何年目に変わったか  
+
+```{r}
+rank %>% 
+  head(10) %>% 
+  datatable(options = list(scrollX = 100), rownames = FALSE)
+```
+<br/>  
+
+准教授への昇進時期の分布は以下のようになる(表\@ref(tab:tab1))。なお、**リスク集合(risk set)**とは、各時点で事象を経験する可能性のある個体の集まり、**ハザード率(hazard rate)**とは、ある時点でリスク集合に入っている個体がその時点で事象を経験する条件付き確率である(i.e., この表では昇進人数/リスク集合の大きさ)。  
+
+打ち切りは、25人については10年たっても准教授に昇進できていないために生じているが、それ以外については大学を離れたために生じている。  
+
+```{r tab1}
+rank %>% 
+  group_by(dur) %>% 
+  summarise(昇進人数 = sum(promo),
+            打ち切り数 = sum(promo == "0")) %>% 
+  rename(勤続年数 = dur) %>% 
+  ungroup() -> hyou1
+
+hyou1 %>% 
+  mutate(勤続年数 = 勤続年数+1) %>% 
+  mutate(N = 昇進人数 +　打ち切り数) %>% 
+  mutate(sum = cumsum(N)) -> hyou1_b
+
+hyou1 %>% 
+  left_join(hyou1_b %>% select(勤続年数, sum)) %>% 
+  replace_na(list(sum = 0)) %>% 
+  mutate(リスク集合の大きさ = sum(昇進人数 + 打ち切り数) - sum) %>% 
+  select(-sum) %>% 
+  mutate(推定されたハザード率 = 昇進人数/リスク集合の大きさ) %>% 
+  kable(align = "c", caption = "准教授への昇進時期の分布") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+
+## 離散時間ハザード  
+イベント・ヒストリー分析では、上でも説明した「リスク集合」と「ハザード率」の二つが重要な概念である。分析ではハザード率を従属変数として、それぞれの独立変数がハザード率に与える影響を分析していく。  
+
+## ロジスティック回帰モデル  
+離散時間モデルでは、ロジット変換[^foot3]を利用することでハザード関数$P(t)$を以下のようにあらわす。なお、$x_1$は非時間依存変数を、$x_2(t)$は時間依存変数を表す。また、$t$は勤続年数を表す。$b_1$と$b_2$は**偏回帰係数**と呼ぶ。ロジット変換を施すことで、$P(t)$が0から1の範囲しか取れなくても、右辺はどのような値も取ることが可能になる。    
+
+$$
+\begin{equation}
+log\biggl(\frac{P(t)}{1-P(t)}\biggl) = b_0 + b_1x_1 + b_2x_2(t) + b_3t + b_4t^2 (\#eq:hazard)  
+\end{equation}
+$$
+
+[^foot3]: ロジット変換がわからない方は[こちら](https://qiita.com/g-k/items/86f28982284e877ef83f)。　　
+
+## モデルの推定  
+次に、データを基にパラメータ($b_1から b_4$)を推定する。推定は基本的に**最尤法**を用いて行う。これは、実際に観察された値が得られる確率が最大になるようにパラメータを推定する方法である。  
+
+実際の推定手順は以下のようになる。  
+
+1. 各個体がリスク集合に入っている期間をある時間単位で分け(今回は1年)、その1単位ごと(= 人年ごと)に事象の発生を記録していく。  
+2. 各個体は各単位ごとに(この場合は1年ごとに)昇進した場合は従属変数に1を、してない場合は0を割り当てられる。  
+3. データセットを作成し、最尤法を用いてロジスティック回帰モデルのパラメータを推定する。  
+
+## Rでの分析  
+### データの加工  
+それでは、Rで実際にモデルのパラメータを推定してみる。分析をするためには、データフレームを縦長にする必要がある。具体的には、発表論文数(`art1`~`art10`)と被引用数(`cit1`~`cit10`)をそれぞれ一列にする必要がある。  
+
+```{r}
+rank %>% 
+  ## 個体IDの列を作成
+  rowid_to_column(var = "id") %>% 
+  ## 勤続年数ごとの論文数を一列に
+  pivot_longer(cols = art1:art10,
+               names_to = "art",
+               values_to = "art_n") %>% 
+  ## 欠損値を除く
+  filter(!is.na(art_n)) %>%
+  arrange(id) %>% 
+  ## 行番号を作る  
+  rowid_to_column("rowid") %>% 
+  select(-(cit1:cit10), -art) -> rank2
+
+rank %>% 
+  ## 個体IDの列を作成
+  rowid_to_column(var = "id") %>% 
+  ## 勤続年数ごとの引用数を一列に
+  pivot_longer(cols = cit1:cit10,
+               names_to = "cit",
+               values_to = "cit_n") %>% 
+  ## 欠損値を除く  
+  filter(!is.na(cit_n)) %>%
+  arrange(id) %>% 
+  ## 行番号を作る  
+  rowid_to_column("rowid") %>% 
+  select(cit_n, rowid) -> rank3
+
+## 結合
+rank2 %>% 
+  inner_join(rank3, by = "rowid") %>% 
+  arrange(id) %>% 
+  group_by(id) %>% 
+  ## 個体ごとに勤続年数の列を作成
+  mutate(year = row_number()) %>% 
+  ## 変数promoが昇進のあった年のみ1をとるようにする  
+  ungroup() %>% 
+  mutate(promo = ifelse(year < dur,0,promo)) %>% 
+  ## jobtimeの欠損値を0に
+  replace_na(list(jobtime = 0)) %>% 
+  ## 大学威信度の列を作成  
+  mutate(jobpres = ifelse(year < jobtime, prest1, prest2)) %>% 
+  select(-prest1, -prest2)-> rank4
+```
+
+できたデータシートは以下の通り。  
+```{r}
+datatable(rank4, options = list(scrollX = 100),
+          rownames = FALSE)
+```
+
+### 分析  
+それでは、実際に分析する。分析には一般化線形モデルによる分析ができる`glm()`関数を用いる。  
+
+まずは1つ目のモデルとして、勤続年数を入れない線形モデルを考えてみる。  
+```{r}
+mod1 <- glm(promo ~ undgrad + phdmed + phdprest + jobpres + art_n + cit_n,
+            data = rank4,
+            family = "binomial")
+```
+
+結果は以下の通り(表\@ref(tab:tab-mod1))。  
+```{r tab-mod1}
+model_parameters(mod1) %>% 
+  kable(align = "c", caption = "mod1の結果") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+<br/>  
+
+2つ目のモデルとして、勤続年数とその二乗を説明変数に入れたモデルを考える。  
+```{r}
+mod2 <- glm(promo ~ undgrad + phdmed + phdprest + jobpres + art_n + cit_n + year + I(year^2),
+            data = rank4,
+            family = "binomial")
+```
+
+結果は以下の通り(表\@ref(tab:tab-mod2))。  
+```{r}
+model_parameters(mod2) %>% 
+  kable(align = "c", caption = "mod2の結果") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+<br/>  
+
+2つのモデルを比較すると以下の通り。  
+```{r}
+stargazer(mod1, mod2, type = "text") 
+```
+
+### 結果の解釈  
+モデル1(`mod1`)では(表\@ref(tab:tab-mod1))、3つの独立変数が有意に准教授への昇進のハザード率に影響していることが分かる(`undgrad`、`jobpres`、`art_n`)。具体的には、より選抜度合いの高い大学を卒業した生化学者とより多くの論文を発表した生化学者はハザード率が高い。一方で、より威信度の高い大学で現在働いている生化学者ほどハザード率は低い。  
+
+各変数が1増加したときに、准教授に昇進するオッズ比($\frac{P(t)}{1-P(t)}$)がどの程度増加するかを計算すると(これは、$e^{偏回帰係数}$で求まる。式\@ref(eq:hazard)を参照)、以下のようになる。すなわち、「学部選抜度(undgrad)」が1増えるとオッズ比が約1.2倍に、「累積論文発表数(art_n)」が1増えるとオッズ比が約1.14倍になる。一方、「勤務先の大学の威信度(jobpres)」が1増加すると、オッズ比は0.78倍に減少する。  
+```{r}
+model_parameters(mod1) %>% 
+  data.frame() %>% 
+  select(Parameter, Coefficient) %>% 
+  mutate(odds = exp(Coefficient))
+```
+
+モデル2も結果自体は大きく変わらないが、勤続年数とその二乗が有意に影響していることが分かる。また、「累積論文発表数(art_n)」の偏回帰係数が大幅に小さくなっており、オッズ比も1.14倍から1.08倍に減少している。  
+```{r}
+model_parameters(mod2) %>% 
+  data.frame() %>% 
+  select(Parameter, Coefficient) %>% 
+  mutate(odds = exp(Coefficient))
+```
+
+### 尤度比検定  
+あるモデルが別のモデルの「入れ子」構造(一方のモデルが他方のモデルの独立変数をすべて含む)であるとき、**尤度比検定**によってどちらの方が適合度が高いか検定を行うことができる。2つのモデルの対数尤度の差の2倍が$\chi^2$分布に近似できることを利用して帰無仮説検定を行うことが多い[^foot4]。  
+
+Rでは以下のように行う。結果を見ると、モデル2の方が有意に適合度が高いことが分かる。    
+```{r}
+anova(mod1,mod2, test = "Chisq")
+```
+
+[^foot4]: 尤度比検定の詳細については、 @Kasuya2012 や @Kubo2012 を参照。パラメトリックブーストラップ法を用いたより正確な検定を行うこともできる[@Kubo2012]。  
+
+
