@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 はじめに | Event History and Survival Analysis Using R</title>
+  <meta name="description" content="1 はじめに | Event History and Survival Analysis Using R" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 はじめに | Event History and Survival Analysis Using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 はじめに | Event History and Survival Analysis Using R" />
+  
+  
+  
+
+<meta name="author" content="Tsubasa Yamaguchi" />
+
+
+<meta name="date" content="2023-05-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="Chapter0.html"/>
+<link rel="next" href="Chapter2.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.27/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="custom_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>本稿の目的</a></li>
+<li class="chapter" data-level="" data-path="Chapter0.html"><a href="Chapter0.html"><i class="fa fa-check"></i>0. パッケージの読み込み</a></li>
+<li class="chapter" data-level="1" data-path="Chapter1.html"><a href="Chapter1.html"><i class="fa fa-check"></i><b>1</b> はじめに</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="Chapter1.html"><a href="Chapter1.html#s2-1"><i class="fa fa-check"></i><b>1.1</b> イベントヒストリー分析とは何か</a></li>
+<li class="chapter" data-level="1.2" data-path="Chapter1.html"><a href="Chapter1.html#s2-2"><i class="fa fa-check"></i><b>1.2</b> イベント・ヒストリー分析の難しさ</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="Chapter1.html"><a href="Chapter1.html#打ち切り"><i class="fa fa-check"></i><b>1.2.1</b> 打ち切り</a></li>
+<li class="chapter" data-level="1.2.2" data-path="Chapter1.html"><a href="Chapter1.html#時間依存共変量"><i class="fa fa-check"></i><b>1.2.2</b> 時間依存共変量</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="Chapter1.html"><a href="Chapter1.html#s2-3"><i class="fa fa-check"></i><b>1.3</b> イベント・ヒストリー分析の種類</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="Chapter1.html"><a href="Chapter1.html#繰り返しの有無"><i class="fa fa-check"></i><b>1.3.1</b> 繰り返しの有無</a></li>
+<li class="chapter" data-level="1.3.2" data-path="Chapter1.html"><a href="Chapter1.html#単一の事象と複数の事象"><i class="fa fa-check"></i><b>1.3.2</b> 単一の事象と複数の事象</a></li>
+<li class="chapter" data-level="1.3.3" data-path="Chapter1.html"><a href="Chapter1.html#パラメトリック法とノンパラメトリック法"><i class="fa fa-check"></i><b>1.3.3</b> パラメトリック法とノンパラメトリック法</a></li>
+<li class="chapter" data-level="1.3.4" data-path="Chapter1.html"><a href="Chapter1.html#離散時間と連続時間"><i class="fa fa-check"></i><b>1.3.4</b> 離散時間と連続時間</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Chapter2.html"><a href="Chapter2.html"><i class="fa fa-check"></i><b>2</b> 離散時間モデル</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="Chapter2.html"><a href="Chapter2.html#離散時間モデルの例"><i class="fa fa-check"></i><b>2.1</b> 離散時間モデルの例</a></li>
+<li class="chapter" data-level="2.2" data-path="Chapter2.html"><a href="Chapter2.html#離散時間ハザード"><i class="fa fa-check"></i><b>2.2</b> 離散時間ハザード</a></li>
+<li class="chapter" data-level="2.3" data-path="Chapter2.html"><a href="Chapter2.html#ロジスティック回帰モデル"><i class="fa fa-check"></i><b>2.3</b> ロジスティック回帰モデル</a></li>
+<li class="chapter" data-level="2.4" data-path="Chapter2.html"><a href="Chapter2.html#モデルの推定"><i class="fa fa-check"></i><b>2.4</b> モデルの推定</a></li>
+<li class="chapter" data-level="2.5" data-path="Chapter2.html"><a href="Chapter2.html#rでの分析"><i class="fa fa-check"></i><b>2.5</b> Rでの分析</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="Chapter2.html"><a href="Chapter2.html#データの加工"><i class="fa fa-check"></i><b>2.5.1</b> データの加工</a></li>
+<li class="chapter" data-level="2.5.2" data-path="Chapter2.html"><a href="Chapter2.html#分析"><i class="fa fa-check"></i><b>2.5.2</b> 分析</a></li>
+<li class="chapter" data-level="2.5.3" data-path="Chapter2.html"><a href="Chapter2.html#結果の解釈"><i class="fa fa-check"></i><b>2.5.3</b> 結果の解釈</a></li>
+<li class="chapter" data-level="2.5.4" data-path="Chapter2.html"><a href="Chapter2.html#尤度比検定"><i class="fa fa-check"></i><b>2.5.4</b> 尤度比検定</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Event History and Survival Analysis Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="c1" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> はじめに<a href="Chapter1.html#c1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="s2-1" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> イベントヒストリー分析とは何か<a href="Chapter1.html#s2-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>イベント・ヒストリー</strong>とは、研究対象である「個体や集団で、ある事象が生じた時間的な記録」を意味する。霊長類学では、個体が何歳で死亡したかや、オスが何年群れに在籍したかといったデータがこれに該当する。<strong>イベント・ヒストリー分析</strong>(event history analysis)または<strong>生存時間分析</strong>(survival analysis)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>は、イベント・ヒステリーを持つデータを用いて、事象の発生パターンや発生の原因を分析する一連の手法である。例えば霊長類の研究では、個体の寿命に影響する要因を調べたり<span class="citation">(<a href="#ref-Ellis2019" role="doc-biblioref">Ellis et al., 2019</a>; <a href="#ref-Silk2010" role="doc-biblioref">Silk et al., 2010</a>; <a href="#ref-Thompson2018" role="doc-biblioref">Thompson &amp; Cords, 2018</a>; <a href="#ref-Tung2016" role="doc-biblioref">Tung et al., 2016</a>)</span>、オスが群れに在籍する確率が時間と共にどう変化するのかを調べたりする<span class="citation">(<a href="#ref-Swedell2011" role="doc-biblioref">Swedell et al., 2011</a>)</span>ために用いられている。</p>
+</div>
+<div id="s2-2" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> イベント・ヒストリー分析の難しさ<a href="Chapter1.html#s2-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>イベント・ヒストリーを持つデータの分析が難しい要因としては、扱うデータに以下の2つの特殊性があることが多いことが挙げられる。イベント・ヒストリー分析では、これらの困難に対処するため様々な手法が研究されてきた。</p>
+<div id="打ち切り" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> 打ち切り<a href="Chapter1.html#打ち切り" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>イベント・ヒステリーを持つデータの特殊性の一つは、<strong>打ち切り</strong>が存在する点である。</p>
+<p>具体例として、 <span class="citation">Rossi et al. (<a href="#ref-Rossi1980" role="doc-biblioref">1980</a>)</span> のデータを見ていこう。この研究では、432名の服役囚が出所後12ヶ月間に再逮捕されるかどうかを調べ、それに年齢や人種、学歴、配偶状態などの要因が影響しているかを調べようとしている。変数の詳細は、<a href="https://rdrr.io/cran/carData/man/Rossi.html">こちら</a>を参照。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="Chapter1.html#cb2-1" aria-hidden="true" tabindex="-1"></a>Rossi <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/Rossi.csv&quot;</span>)</span>
+<span id="cb2-2"><a href="Chapter1.html#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="Chapter1.html#cb2-3" aria-hidden="true" tabindex="-1"></a>Rossi <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="Chapter1.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="Chapter1.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">options =</span> <span class="fu">list</span>(<span class="at">scrollX =</span> <span class="dv">100</span>), <span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-88e438bfb221c603ede0" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-88e438bfb221c603ede0">{"x":{"filter":"none","vertical":false,"data":[[20,17,25,52,52,52,23,52,52,52,52,52,37,52,25,46,28,52,52,52],[1,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,1,0,0,0],["no","no","no","yes","no","no","no","yes","no","no","yes","no","no","no","no","yes","no","no","no","no"],[27,18,19,23,19,24,25,21,22,20,26,40,17,37,20,22,19,20,25,24],["black","black","other","black","other","black","black","black","black","black","black","black","black","black","black","black","black","black","black","other"],["no","no","yes","yes","yes","yes","yes","yes","no","yes","no","yes","yes","yes","no","yes","no","no","no","yes"],["not married","not married","not married","married","not married","not married","married","not married","not married","not married","not married","not married","not married","not married","not married","not married","not married","not married","not married","not married"],["yes","yes","yes","yes","yes","no","yes","yes","no","no","yes","no","yes","no","yes","yes","no","no","yes","yes"],[3,8,13,1,3,2,0,4,6,0,3,2,5,2,3,2,7,2,12,1],[3,4,3,5,3,4,4,3,3,5,3,5,3,3,4,3,3,3,3,3],["no","no","no","no","no","no","yes","no","no","no","no","no","no","no","no","no","no","no","no","no"],["no","no","no","no","no","no","yes","no","no","yes","no","no","no","no","no","yes","no","no","no","yes"],["no","no","no","no","no","no","yes","no","no","yes","no","no","no","no","no","yes","no","no","no","yes"],["no","no","no","no","no","no","yes","no","no","yes","no","no","no","no","no","yes","no","no","no","no"],["no","no","no","yes","no","yes","yes","no","no","yes","no","yes","no","no","no","yes","no","no","no","no"],["no","no","no","yes","no","yes","yes","no","no","no","no","yes","no","no","no","yes","no","no","no","no"],["no","no","no","yes","no","yes","yes","no","no","no","no","yes","no","no","no","yes","no","no","no","no"],["no","no","no","yes","no","yes","yes","no","no","no","no","yes","no","no","no","yes","no","no","no","no"],["no","no","no","yes","no","yes","yes","no","no","no","yes","yes","no","no","no","yes","no","no","no","yes"],["no","yes","no","yes","yes","yes","yes","no","no","no","yes","yes","no","no","no","yes","no","no","no","yes"],["no","yes","no","yes","yes","no","yes","no","no","no","yes","yes","no","no","no","yes","no","no","no","yes"],["no","yes","no","yes","yes","no","yes","no","no","no","yes","yes","no","no","no","yes","no","no","yes","yes"],["no","yes","no","yes","yes","no","yes","no","no","no","yes","yes","no","no","no","yes","no","no","yes","yes"],["no","yes","no","yes","yes","no","yes","no","no","no","yes","yes","no","no","no","yes","yes","no","yes","yes"],["no","no","no","yes","yes","no","yes","no","no","no","yes","yes","no","no","yes","yes","yes","yes","yes","no"],["no","no","no","yes","yes","no","yes","no","yes","no","yes","yes","no","no","yes","yes","yes","yes","yes","no"],["no","no","yes","yes","yes","no","yes","no","yes","no","yes","yes","no","no","yes","yes","yes","yes","yes","no"],["no",null,"no","yes","yes","no","yes","no","yes","no","yes","yes","no","no","yes","yes","yes","yes","yes","yes"],["no",null,"no","yes","yes","no","yes","no","yes","no","no","yes","no","yes","yes","yes","no","yes","yes","yes"],["no",null,"no","yes","yes","no","yes","yes","yes","no","no","yes","no","yes","yes","yes","no","yes","yes","yes"],[null,null,"no","yes","yes","no","yes","yes","yes","no","no","yes","no","yes","yes","yes","no","yes","yes","yes"],[null,null,"no","no","yes","no","yes","no","yes","no","no","yes","no","yes","yes","yes","no","yes","yes","yes"],[null,null,"no","no","yes","yes","no","no","no","no","no","yes","no","yes","yes","yes","no","yes","no","yes"],[null,null,"no","no","yes","yes",null,"yes","no","no","no","yes","no","yes","no","yes","no","yes","no","yes"],[null,null,"no","no","yes","yes",null,"yes","no","no","no","yes","no","yes","no","yes","no","yes","no","yes"],[null,null,null,"no","yes","yes",null,"no","no","no","no","yes","no","yes",null,"yes","no","yes","no","yes"],[null,null,null,"no","yes","yes",null,"no","no","no","no","yes","no","yes",null,"yes","no","yes","no","yes"],[null,null,null,"no","yes","yes",null,"no","no","no","no","yes","yes","yes",null,"yes","no","yes","no","yes"],[null,null,null,"no","yes","yes",null,"no","no","no","no","yes","yes","yes",null,"yes",null,"yes","no","no"],[null,null,null,"no","yes","no",null,"no","no","no","no","yes","no","yes",null,"yes",null,"yes","no","no"],[null,null,null,"no","yes","no",null,"no","no","no","no","yes","no","yes",null,"yes",null,"yes","no","no"],[null,null,null,"yes","yes","no",null,"no","no","no","no","yes","no","yes",null,"yes",null,"yes","yes","no"],[null,null,null,"yes","yes","no",null,"no","no","no","no","yes","no","yes",null,"yes",null,"yes","yes","no"],[null,null,null,"yes","yes","no",null,"no","no","no","no","yes","no","yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","no","no","no","yes","no","yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","no","no","no","yes","no","yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","no","no","no","yes","no","yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","no","yes",null,"yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","no","yes",null,"yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","no","yes",null,"yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","no","yes",null,"yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","no","yes",null,"yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","no","yes",null,"yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","no","yes",null,"yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","yes","yes",null,"yes",null,"yes",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","yes","yes",null,"yes",null,"no",null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","yes","yes",null,"yes",null,null,null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","yes","yes",null,"yes",null,null,null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","yes","yes",null,"yes",null,null,null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","yes","yes",null,"yes",null,null,null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","yes","yes",null,"yes",null,null,null,"no","yes","no"],[null,null,null,"yes","no","no",null,"no","yes","no","yes","yes",null,"yes",null,null,null,"no","yes","no"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>week<\/th>\n      <th>arrest<\/th>\n      <th>fin<\/th>\n      <th>age<\/th>\n      <th>race<\/th>\n      <th>wexp<\/th>\n      <th>mar<\/th>\n      <th>paro<\/th>\n      <th>prio<\/th>\n      <th>educ<\/th>\n      <th>emp1<\/th>\n      <th>emp2<\/th>\n      <th>emp3<\/th>\n      <th>emp4<\/th>\n      <th>emp5<\/th>\n      <th>emp6<\/th>\n      <th>emp7<\/th>\n      <th>emp8<\/th>\n      <th>emp9<\/th>\n      <th>emp10<\/th>\n      <th>emp11<\/th>\n      <th>emp12<\/th>\n      <th>emp13<\/th>\n      <th>emp14<\/th>\n      <th>emp15<\/th>\n      <th>emp16<\/th>\n      <th>emp17<\/th>\n      <th>emp18<\/th>\n      <th>emp19<\/th>\n      <th>emp20<\/th>\n      <th>emp21<\/th>\n      <th>emp22<\/th>\n      <th>emp23<\/th>\n      <th>emp24<\/th>\n      <th>emp25<\/th>\n      <th>emp26<\/th>\n      <th>emp27<\/th>\n      <th>emp28<\/th>\n      <th>emp29<\/th>\n      <th>emp30<\/th>\n      <th>emp31<\/th>\n      <th>emp32<\/th>\n      <th>emp33<\/th>\n      <th>emp34<\/th>\n      <th>emp35<\/th>\n      <th>emp36<\/th>\n      <th>emp37<\/th>\n      <th>emp38<\/th>\n      <th>emp39<\/th>\n      <th>emp40<\/th>\n      <th>emp41<\/th>\n      <th>emp42<\/th>\n      <th>emp43<\/th>\n      <th>emp44<\/th>\n      <th>emp45<\/th>\n      <th>emp46<\/th>\n      <th>emp47<\/th>\n      <th>emp48<\/th>\n      <th>emp49<\/th>\n      <th>emp50<\/th>\n      <th>emp51<\/th>\n      <th>emp52<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":100,"columnDefs":[{"className":"dt-right","targets":[0,1,3,8,9]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p><br/></p>
+<p>実際にデータからランダムに抽出した20人が再逮捕されたかどうかを見ていこう(図<a href="Chapter1.html#fig:fig-Rossi">1.1</a>)。<code>arrest</code>は再逮捕されたかどうかを0/1で、<code>week</code>は再逮捕された場合出所後何週間目だったかを表している。図からわかるように、12ヶ月(52週)経過後も逮捕されていないデータが数多く存在することが分かる。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="Chapter1.html#cb3-1" aria-hidden="true" tabindex="-1"></a>Rossi <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="Chapter1.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="Chapter1.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="Chapter1.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">arrest =</span> <span class="fu">as.factor</span>(arrest)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="Chapter1.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> week, <span class="at">y =</span> id))<span class="sc">+</span></span>
+<span id="cb3-6"><a href="Chapter1.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">xend =</span> week, <span class="at">yend =</span> id, <span class="at">y =</span> id),</span>
+<span id="cb3-7"><a href="Chapter1.html#cb3-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;grey&quot;</span>)<span class="sc">+</span></span>
+<span id="cb3-8"><a href="Chapter1.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">23</span>, <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb3-9"><a href="Chapter1.html#cb3-9" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">fill =</span> arrest))<span class="sc">+</span></span>
+<span id="cb3-10"><a href="Chapter1.html#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb3-11"><a href="Chapter1.html#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-Rossi"></span>
+<img src="SurvivalAnalysis_Using_R_files/figure-html/fig-Rossi-1.png" alt="服役囚が出所後何週間で逮捕されたか" width="576" />
+<p class="caption">
+図1.1: 服役囚が出所後何週間で逮捕されたか
+</p>
+</div>
+<p><br/></p>
+<p>このようなデータは、通常の分析ではデータを扱うのが難しい。なぜなら、再逮捕されなかった服役囚に適切に従属変数<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>を割り当てることができないからである。彼らは10年たっても再逮捕されなかったかもしれないし、出所後13ヶ月に再逮捕されていたかもしれないが、このデータから知ることは不可能である。彼らに一律に同じ値を割り振っても（例えば期間の最大値である1年を割り振る）、彼らのデータを除外してもデータに大きなバイアスがかかってしまう。</p>
+<p>このように、測定値が不完全にしかわからないデータを<strong>打ち切りデータ</strong>という。打ち切りには、上記のように(1)調査終了時点ではまだイベントが起きていない場合と、(2)何らかの事情(e.g., 予期せぬ死、消息不明など)で調査期間の途中でその個体のデータが追跡できなくなっている場合(= 脱落)の2種類が存在する。</p>
+</div>
+<div id="時間依存共変量" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> 時間依存共変量<a href="Chapter1.html#時間依存共変量" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>もう一つの特殊性は、対象の期間中に独立変数の値が変化する場合があることである（＝<strong>時間依存共変量</strong>）。</p>
+<p>例えば、先ほどの例でも対象の12ヶ月の間に仕事の有無が変化していた(<code>emp1</code>~<code>emp52</code>)。こうした場合、回帰モデルに1ヶ月ごとの仕事の有無（e.g., 1ヶ月目の仕事の有無、2ヶ月目の仕事の有無、…）をすべて独立変数として入れることはできるが、この方法では出所後12ヶ月以内に再逮捕された服役囚に対して独立変数を割り振れないところが出てくる。なぜなら、出所後3ヶ月で再逮捕されたとすると、その服役囚の4ヶ月目以降の仕事のデータはないからである。</p>
+</div>
+</div>
+<div id="s2-3" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> イベント・ヒストリー分析の種類<a href="Chapter1.html#s2-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>イベント・ヒストリー分析の手法は以下のような点を基準に分類される。本稿では、まず単純なモデルの説明から始め、徐々に難しいモデルの説明へ移る。</p>
+<div id="繰り返しの有無" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> 繰り返しの有無<a href="Chapter1.html#繰り返しの有無" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>生物学で扱うことの多い「死」という事象は一個体に一度しか生じないが、転職や結婚といった事象を扱う場合、これらは個人の一生において何度も発生する可能性がある。繰り返しの阿辻賞を扱う際にはより複雑な分析モデルが必要になる。</p>
+</div>
+<div id="単一の事象と複数の事象" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> 単一の事象と複数の事象<a href="Chapter1.html#単一の事象と複数の事象" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>例えば生物の生死を扱うとき、多くの場合では死亡のタイプ（e.g., 死因など）を区別せず単一の死亡として扱う。しかし、死亡のタイプを分けて分析を行うことも可能である。このような複数の事象を扱うためには、単一な事象を扱う分析よりも複雑なモデルが必要である。</p>
+</div>
+<div id="パラメトリック法とノンパラメトリック法" class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> パラメトリック法とノンパラメトリック法<a href="Chapter1.html#パラメトリック法とノンパラメトリック法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>分析には、事象の発生時間の分布（どのような時間間隔で事象が発生するか）に仮定を置かない<strong>ノンパラメトリック</strong>な分析と、特定の分布族（e.g., 指数分布、ワイブル分布など）を仮定する<strong>パラメトリック</strong>な分析がある。また、これら2つを結合した<strong>Coxの比例ハザードモデル</strong>は事象の発生時間に特定の分布を仮定しないが、線形関数に基づく回帰モデルであるというという点で<strong>セミパラメトリック</strong>な手法であるといえる。</p>
+</div>
+<div id="離散時間と連続時間" class="section level3 hasAnchor" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> 離散時間と連続時間<a href="Chapter1.html#離散時間と連続時間" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>事象の発生時間が正確に記録できている場合は「連続時間」モデルといわれる。通常は、時間の測定単位が小さい場合は（時間、分、秒）、連続時間として扱ってよい。一方、時間の測定単位が大きい場合（月、年）は「離散時間」モデルで扱うのが適している。実際の分析では離散時間モデルの方が理解するのが容易である。</p>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Ellis2019" class="csl-entry">
+Ellis, S., Snyder-Mackler, N., Ruiz-Lambides, A., Platt, M. L., &amp; Brent, L. J. N. (2019). Deconstructing sociality: The types of social connections that predict longevity in a group-living primate. <em>Proc. Biol. Sci.</em>, <em>286</em>(1917), 20191991.
+</div>
+<div id="ref-Rossi1980" class="csl-entry">
+Rossi, P. H., Berk, R. A., &amp; Lenihan, K. J. (1980). <em>Money, work and crime: Some experimental results</em>. New York: Academic Press.
+</div>
+<div id="ref-Silk2010" class="csl-entry">
+Silk, J. B., Beehner, J. C., Bergman, T. J., Crockford, C., Engh, A. L., Moscovice, L. R., Wittig, R. M., Seyfarth, R. M., &amp; Cheney, D. L. (2010). Strong and consistent social bonds enhance the longevity of female baboons. <em>Curr. Biol.</em>, <em>20</em>(15), 1359–1361.
+</div>
+<div id="ref-Swedell2011" class="csl-entry">
+Swedell, L., Saunders, J., Schreier, A., Davis, B., Tesfaye, T., &amp; Pines, M. (2011). Female <span>“dispersal”</span> in hamadryas baboons: Transfer among social units in a multilevel society. <em>Am. J. Phys. Anthropol.</em>, <em>145</em>(3), 360–370.
+</div>
+<div id="ref-Thompson2018" class="csl-entry">
+Thompson, N. A., &amp; Cords, M. (2018). Stronger social bonds do not always predict greater longevity in a gregarious primate. <em>Ecol. Evol.</em>, <em>8</em>(3), 1604–1614.
+</div>
+<div id="ref-Tung2016" class="csl-entry">
+Tung, J., Archie, E. A., Altmann, J., &amp; Alberts, S. C. (2016). Cumulative early life adversity predicts longevity in wild baboons. <em>Nat. Commun.</em>, <em>7</em>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>このような分析手法は様々な分野で発展してきたため、分野ごとに呼ばれ方が異なる。例えば生物学では動物の寿命を扱うことが多いため「生存時間分析」、工学の分野では機械の故障を扱うことが多いため「故障時間分析」などと呼ばれる。「イベント・ヒストリー分析」という呼び方は、こうした様々な分野で発展した分析手法の包括的な呼称である。<a href="Chapter1.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>従属変数、独立変数がわからない場合は<a href="https://onl.la/Eh6b15R">こちらを参照</a>。<a href="Chapter1.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Chapter0.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="Chapter2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
