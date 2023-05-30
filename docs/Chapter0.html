@@ -219,28 +219,40 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="パッケージの読み込み" class="section level1 unnumbered hasAnchor">
 <h1>0. パッケージの読み込み<a href="Chapter0.html#パッケージの読み込み" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>本稿では、</p>
+<p>生存時間解析の実行と結果の描画には以下のパッケージを使用している。</p>
+<ul>
+<li><code>survival</code><a href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://cran.r-project.org/web/packages/survival/survival.pdf">パッケージ</a><br />
+</li>
+<li><code>ggsurvfit</code><a href="http://www.danieldsjoberg.com/ggsurvfit/index.html">パッケージ</a><br />
+</li>
+<li><code>brms</code><a href="https://github.com/paul-buerkner/brms">パッケージ</a><br />
+</li>
+<li><code>rstanarm</code><a href="https://mc-stan.org/rstanarm/articles/jm.html">パッケージ</a></li>
+</ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="Chapter0.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 生存時間分析</span></span>
 <span id="cb1-2"><a href="Chapter0.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
 <span id="cb1-3"><a href="Chapter0.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsurvfit)</span>
-<span id="cb1-4"><a href="Chapter0.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="Chapter0.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## データハンドリング</span></span>
-<span id="cb1-6"><a href="Chapter0.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-7"><a href="Chapter0.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb1-8"><a href="Chapter0.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb1-9"><a href="Chapter0.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-10"><a href="Chapter0.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## グラフや表関連</span></span>
-<span id="cb1-11"><a href="Chapter0.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb1-12"><a href="Chapter0.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb1-13"><a href="Chapter0.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-14"><a href="Chapter0.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-15"><a href="Chapter0.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb1-16"><a href="Chapter0.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsci)</span>
-<span id="cb1-17"><a href="Chapter0.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lemon)</span>
-<span id="cb1-18"><a href="Chapter0.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="do">## フォント関連</span></span>
-<span id="cb1-19"><a href="Chapter0.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
-<span id="cb1-20"><a href="Chapter0.html#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(systemfonts)</span>
-<span id="cb1-21"><a href="Chapter0.html#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(fontregisterer)</span></code></pre></div>
+<span id="cb1-4"><a href="Chapter0.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-5"><a href="Chapter0.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb1-6"><a href="Chapter0.html#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="Chapter0.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## データハンドリング</span></span>
+<span id="cb1-8"><a href="Chapter0.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-9"><a href="Chapter0.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb1-10"><a href="Chapter0.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-11"><a href="Chapter0.html#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="Chapter0.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">## グラフや表関連</span></span>
+<span id="cb1-13"><a href="Chapter0.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-14"><a href="Chapter0.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb1-15"><a href="Chapter0.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-16"><a href="Chapter0.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-17"><a href="Chapter0.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb1-18"><a href="Chapter0.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsci)</span>
+<span id="cb1-19"><a href="Chapter0.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lemon)</span>
+<span id="cb1-20"><a href="Chapter0.html#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="Chapter0.html#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## フォント関連</span></span>
+<span id="cb1-22"><a href="Chapter0.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb1-23"><a href="Chapter0.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(systemfonts)</span>
+<span id="cb1-24"><a href="Chapter0.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(fontregisterer)</span></code></pre></div>
 <p>なお、本稿はRの基本操作と<code>tidyverse</code>パッケージによるデータハンドリングができることを前提としている。<code>tidyverse</code>パッケージを用いたデータ処理については、以下の書籍などを参照。</p>
 <ul>
 <li><p>R for Data Science <span class="citation">(<a href="#ref-Wickham2016" role="doc-biblioref">Wickham &amp; Grolemund, 2016</a>)</span><br />

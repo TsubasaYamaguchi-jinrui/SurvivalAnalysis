@@ -32,3 +32,6 @@ lemon
 extrafont
 systemfonts
 fontregisterer
+Rcpp
+brms
+rstanarm

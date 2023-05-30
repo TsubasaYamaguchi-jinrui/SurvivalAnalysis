@@ -1057,9 +1057,9 @@ I(year^2)
 <div id="離散時間ロジスティック回帰モデルの注意点" class="section level2 hasAnchor" number="2.7">
 <h2><span class="header-section-number">2.7</span> 離散時間ロジスティック回帰モデルの注意点<a href="Chapter2.html#離散時間ロジスティック回帰モデルの注意点" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>上記のモデルにはいくつか注意点がある。</p>
-<p>1.<strong>一個体が複数の事象を経験する場合は、事象の回数の影響を修正する必要がある。</strong><br />
-ロバスト推定による標準誤差を求めたり、一般化推定式やランダム(変量)効果モデルを用いたりする。</p>
-<ol start="2" style="list-style-type: decimal">
+<ol style="list-style-type: decimal">
+<li><p><strong>一個体が複数の事象を経験する場合は、事象の回数の影響を修正する必要がある。</strong><br />
+ロバスト推定による標準誤差を求めたり、一般化推定式やランダム(変量)効果モデルを用いたりする。</p></li>
 <li><p><strong>区切る時間単位を適切に設定する必要がある。</strong><br />
 今回は、准教授の昇進が各年度の初めに行われるため、1年ごとにデータを区切ることは適切であった。これを1日ごとに区切るとデータが膨大になってしまうし、５年ごとに区切ると多くの情報が失われてしまう。分析対象の事象に応じて、適切に区切る時間単位を適切に設定する必要がある。</p></li>
 <li><p><strong>代替手法</strong><br />
@@ -1074,7 +1074,7 @@ log[-log(1-P(t))] = b_0 + b_1x_1 + b_2x_2(t) + b_3t + b_4t^2 \tag{2.2}
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="Chapter2.html#cb21-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(promo <span class="sc">~</span> undgrad <span class="sc">+</span> phdmed <span class="sc">+</span> phdprest <span class="sc">+</span> jobpres <span class="sc">+</span> art_n <span class="sc">+</span> cit_n <span class="sc">+</span> year <span class="sc">+</span> <span class="fu">I</span>(year<span class="sc">^</span><span class="dv">2</span>),</span>
 <span id="cb21-2"><a href="Chapter2.html#cb21-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> rank4,</span>
 <span id="cb21-3"><a href="Chapter2.html#cb21-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;cloglog&quot;</span>))</span></code></pre></div>
-<p>結果は以下の通り(<a href="Chapter2.html#tab:tab-mod3">2.4</a>)。ロジスティック回帰モデルと結果は大きく変わらない。特にP地だけに着目する場合はどちらのモデルを選んでも決定的な差はない。</p>
+<p>結果は以下の通り(表<a href="Chapter2.html#tab:tab-mod3">2.4</a>)。ロジスティック回帰モデルと結果は大きく変わらない。特にP地だけに着目する場合はどちらのモデルを選んでも決定的な差はない。</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="Chapter2.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(mod3) <span class="sc">%&gt;%</span> </span>
 <span id="cb22-2"><a href="Chapter2.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb22-3"><a href="Chapter2.html#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">95%CI</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_c</span>(<span class="st">&quot;[&quot;</span>,<span class="fu">sprintf</span>(<span class="st">&quot;%.2f&quot;</span>,CI_low),<span class="st">&quot;, &quot;</span>,<span class="fu">sprintf</span>(<span class="st">&quot;%.2f&quot;</span>,CI_high),<span class="st">&quot;}&quot;</span>)) <span class="sc">%&gt;%</span> </span>
