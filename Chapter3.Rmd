@@ -1,0 +1,220 @@
+# 連続時間を用いたパラメトリックな手法 {#c3}    
+前章(\@ref(c2))の離散時間モデルは汎用性が高いが、イベント・ヒストリー分析では連続時間モデルが使われることが多い。本章では、事象が起きた時点が正確に記録されているデータに対して一般的に使われる**パラメトリック**な手法を解説する。この方法では、推定されるパラメータを除いて、モデルに含まれる値の分布の型がはっきり仮定される。  
+
+## 連続時間ハザード率  
+連続時間モデルでは、時点$t$で事象を経験する可能性のある個体が、時点$t$から$t+s$までの間に事象を経験する確率$P(t,t+s)$を考える。なお、$t=1$のとき、これは離散時間のハザード率と同じになる。  
+
+この確率を$s$で割り、$s$を0に限りなく近づけたときの極限値が連続時間のハザード率になる(式\@ref(eq:ht))。この値は、1より大きな値をとることもあるが負にはならない。    
+
+$$
+h(t) = \lim_{s \to 0} \frac{P(t,t+s)}{s} (\#eq:ht)  
+$$
+
+ハザード関数$h(t)$の形によって連続時間のイベント・ヒストリー分析のタイプが分類できる。  
+
+## パラメトリックな比例ハザードモデル  
+### モデルの分類    
+パラメトリックな分析には、「**比例ハザードモデル**(proportional hazards model)」と「**加速時間ハザードモデル**(accelerated failure time model)」の2種類があるが、本節では前者について解説する。  
+
+比例ハザードモデルは、ハザード関数が時間と独立変数によってどのように規定されるかによって、以下の3つに分類できる。なお、いずれのモデルでもパラメータの推定は最尤法で行う。    
+
+#### 指数回帰モデル  
+最もわかりやすい分析は、$h(t)$を独立変数の線形関数にすることである(式\@ref(eq:ht-exp))。左辺で$log$をとっているのは、線形関数が0より小さくならないようにするためである。$x_1$と$x_2$は非時間依存の独立変数を、$b_0$~$b_2$は推定されるパラメータを表す。なかでも$b_1$と$b_2$は偏回帰係数である。    
+
+$$
+log(h(t)) = b_0 + b_1x_1 + b_2x_2 (\#eq:ht-exp) 
+$$
+
+この式ではハザード関数は時間に依存しない(= 時間に対して一定)。このようなモデルでは通常事象が発生するまでの時間として指数分布[^foot5]を仮定するので、「**指数回帰モデル**」といわれる。指数分布の確率密度関数は1つのパラメータ$\lambda$を用いて以下のように表せる。ハザード率は一定の値$\lambda$で与えられる。  
+
+$$
+f(t) = \lambda e^{-\lambda t} \;\; (t \geq 0)  (\#eq:f-exp) 
+$$
+
+[^foot5]: 指数分布が分からない方は[こちら](https://bellcurve.jp/statistics/course/8009.html)。  
+
+#### ゴンぺルツ回帰モデル  
+一般的に、ハザード率が時間を通して一定であると仮定するのは現実的でない。例えば生物の死を考えると、老化するほど死亡する確率は増大するはずである。そこで、指数回帰モデルの仮定を緩め、ハザード率の対数(log)が時間と共に直線的に増加/現象すると仮定するモデルを考える(式\@ref(eq:ht-gom))。  
+
+$$
+log(h(t)) = b_0 + b_1x_1 + b_2x_2 + ct (\#eq:ht-gom) 
+$$
+
+このようなモデルでは通常事象が発生するまでの時間としてゴンぺルツ分布[^foot6]を仮定するので、「**ゴンぺルツ回帰モデル**」といわれる。ゴンぺルツ分布の確率密度関数は２つのパラメータ$a$と$b$を用いて以下のように表せる。ハザード率は$ae^{bt}$で与えられる。      
+
+$$
+f(t) = a exp(at - \frac{a}{b}e^{bt} + \frac{a}{b}) \;\;(t \geq 0) (\#eq:f-gom) 
+$$
+
+[^foot6]: ゴンぺルツ分布が分からない方は[こちら](https://academ-aid.com/statistics/gompertz)。   
+
+#### ワイブル回帰モデル  
+あるいは、ハザード率の対数が時間の対数と共に直線的に増加/減少するモデルを考えることもできる(式\@ref(eq:ht-wei))。  
+
+$$
+log(h(t)) = b_0 + b_1x_1 + b_2x_2 + clog(t) (\#eq:ht-wei) 
+$$
+
+このようなモデルでは通常事象が発生するまでの時間としてワイブル分布[^foot7]を仮定するので、「**ワイブル回帰モデル**」といわれる。ワイブル分布の確率密度関数は２つのパラメータ$a$と$b$を用いて以下のように表せる。ハザード率は$\frac{a}{b^a} t^{a-1}$で与えられる。なお、式からわかるように指数分布はワイブル分布で$a=1$のときである($\lambda = 1/b$)。      
+
+$$
+f(t) =\frac{a}{b} \biggl(\frac{t}{b}\biggl)^{a-1} exp\biggl(-\biggl(\frac{t}{b}\biggl)^a\biggl) \;\;(t \geq 0)  (\#eq:f-wei) 
+$$  
+
+[^foot7]: ワイブル分布が分からない方は[こちら](https://gijutsu-keisho.com/technical-commentary/management_engineering-002/)。  
+
+### 注意点  
+1. **時間と独立変数の間の交互作用がない**  
+$x_1$と$x_2$の効果($b_1$と$b_2$)は全ての時点で同じである。  
+
+2. **ワイブル回帰モデルもゴンぺ留津回帰モデルも時間に対して単調増加/減少である**
+ハザード率と時間の関係がU字型や逆U字型になることはない。これは、実際の分析では使いにくい場合がある。なお、第\@ref(s)でこの制約のないモデルを検討する。  
+
+3. **誤差項がない**  
+ただし、実際に事象が発生するまでの時間とモデルで推定される時間には誤差が含まれるので、決定論的なモデルではない。  
+
+### Rでの実装  
+#### データの読み込み  
+まず、分析に用いる第\@ref(c1)章で触れた服役囚の再販データを読み込む。このデータでは、432人の元服役囚の内、ランダムに選ばれた半分は経済的支援を受け、残りの半分は対照群として支援を受けなかった。変数の説明は以下の通り。なお、時間依存的な変数は本章では扱わず、次章で扱う。    
+
+**従属変数にかかわる変数**  
+- `week`: 出所後の経過週数    
+- `arrest`: 再犯の有無     
+
+**独立変数(非時間依存変数)**  
+- `age`: 年齢    
+- `race`: 黒人か否か(1/0)      
+- `mar`: 婚姻の有無(1/0)    
+- `prio`: 前科の数     
+- `paro`: 仮釈放か否か(1/0)  
+- `wexp`: 過去の就業経験の有無(1/0)      
+- `fin`: 経済的支援の有無(1/0)  
+
+**独立変数(時間依存変数)**  
+- `work`: 週ごとの就業状態
+
+```{r}
+recid <- read_dta("data/recid.dta")　　
+
+recid %>% 
+  datatable(options = list(scrollX = 100), rownames = FALSE)
+```
+
+#### 分析の実行  
+`eha`パッケージの`phreg`関数を用いる。従属変数としては、期間中に事象を経験したかの変数(`arrest`)と、事象を経験した場合はその時間を、しなかった場合は打ち切りの時間を示す変数(`week`)を入れる必要がある。  
+
+以下のように実行できる。指数分布はワイブル分布で$a=1$のときなので、`dist = "weibull`で`shape = 1`としてあげればよい。    
+
+```{r}
+## 指数回帰モデル
+mod_exp <- phreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "weibull", shape = 1)
+
+## ゴンぺルツ回帰モデル
+mod_gom <- phreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "gompertz")
+
+## ワイブル回帰モデル
+mod_wei <- phreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "weibull")
+```
+
+結果は以下の通りである。`Coef`は偏回帰係数の推定値を、`Exp(Coef)`は$e^{偏回帰係数}$を、`se(Coef)`は偏回帰係数の標準誤差を表している。  
+```{r}
+## 指数回帰モデル  
+mod_exp
+
+## ゴンぺルツ回帰モデル
+mod_gom
+
+## ワイブル回帰モデル  
+mod_wei
+```
+
+3つのモデルから推定されたハザード関数を描画したのが図\@ref(fig:fig-hazardrate)である。定義通り、指数回帰モデルでは時間に依らずハザード率が一定であることが分かる。    
+```{r fig-hazardrate, fig.dim = c(14,6), fig.cap = "モデルから推定されたハザード関数"}
+as.ggplot(~plot(mod_exp, xlab = "week", ylab = "hazard rate", main = "exponential model"))+
+  as.ggplot(~plot(mod_gom, xlab = "week", ylab = "hazard rate", main = "Gompertz model"))+
+  as.ggplot(~plot(mod_wei, xlab = "week", ylab = "hazard rate", main = "Weibull model"))
+```
+
+
+各モデルの偏回帰係数の推定値を比較したものが以下の表である(表\@ref(tab:tab-modelcomparison))。３つのモデルの推定結果はほとんど変わらない。いずれのモデルでも有意な影響を持っていたのは`age`と`prio`であり、`fin`はワイブル回帰モデルのみで有意になった。    
+
+偏回帰係数は、ほかの変数の影響を統制したうえでその独立変数が1増加したときにハザード率の対数(式\@ref(eq:ht-exp) ~ 式\@ref(eq:ht-wei)を思い出してほしい)がどの程度増加するかを表している。例えば指数回帰モデルでは、表\@ref(tab:tab-modelcomparison)の偏回帰係数の推定値(`Coef(exp)`)より、他の変数の影響をコントロールしたときに年齢(`age`)が1歳上がるとハザード率の対数が0.056低下する。より直感的に理解するためには、$e^{偏回帰係数}$を求めればよい(`Exp(Coef_exp)`)。これは、**ハザード比**と呼ばれ、独立変数が1増加したときにハザード率の比がどの程度変化するかを示している。例えば、経済的援助がある場合(`fin = 1`)のハザード率は、ない場合(`fin = 0`)に比べると0.693倍になる。  
+
+```{r tab-modelcomparison}
+tibble(Covariate = mod_exp$covar,
+       "Coef(exp)" = sprintf("%.3f",coef(mod_exp))[1:7],
+       "Exp(Coef_exp)" = sprintf("%.3f",exp(coef(mod_exp)))[1:7],
+       "Coef(gom)" = sprintf("%.3f",coef(mod_gom))[1:7],
+       "Exp(Coef_gom)" = sprintf("%.3f",exp(coef(mod_gom)))[1:7],
+       "Coef(wei)" = sprintf("%.3f",coef(mod_wei))[1:7],
+       "Exp(Coef_wei)" = sprintf("%.3f",exp(coef(mod_wei))[1:7])) %>% 
+  flextable() %>% 
+  add_header_row(colwidth = c(1,2,2,2),
+                 values = c("","指数分布","ゴンぺルツ", "ワイブル")) %>% 
+  flextable::align(align = "center", part = "all") %>% 
+  set_caption("各モデルの推定値の比較")
+```
+<br/>  
+
+指数回帰モデルはワイブル回帰モデルの特殊な場合($a=1$の場合)なので、これらのモデルは尤度比検定で適合度を比較することができる。`anova()`関数は`phreg`クラスには適用できないようだが、自分で対数尤度を求めることで計算することはできる。以下の自作関数[^foot8]を用いて尤度比検定を行うと、ワイブル回帰モデルの方が有意に適合度が高い。すなわち、ハザード率が時間によって変化すると考える方がより妥当だと考えられる。    
+
+[^foot8]: 自作関数は[こちら](http://tarohmaru.web.fc2.com/R/EventHistory/ContinuousTimeModel_recid.html)のサイトを参考にした。  
+
+```{r}
+anova.phreg <- function(...){
+  phreg.models <- list(...)
+  log.liks <- NULL
+  n.parameters <- NULL
+  for(i in 1:length(phreg.models)){
+    log.liks <- c(
+      log.liks,
+      phreg.models[[i]]$loglik[2]
+      )
+    n.parameters <- c(
+      n.parameters,
+      nrow(phreg.models[[i]]$var)
+      )
+  }
+  deviance.models <-  -2 * log.liks
+  Df <- n.parameters[-1] - n.parameters[-length(log.liks)]
+  lrs <- deviance.models[-length(log.liks)] - deviance.models[-1]
+  p.values <- 1 - pchisq(lrs, Df)
+  lr.test <- cbind("deviance" = lrs, Df, p.values)
+  lr.test <- rbind(c(NA, NA, NA), lr.test)
+  output <- cbind("Log likelihood" = log.liks, n.parameters, lr.test)
+  Call <- match.call()  # 以下3行は返値の行列に各モデルの名前をつけるための操作だが、
+  Call$k <- NULL  # 訳も分からず AIC.logLik() を真似ているだけなので、
+  rownames(output) <- as.character(Call[-1L]) # おかしなことをやっているかも
+  return(output)
+}
+
+anova.phreg(mod_exp, mod_wei)
+```
+
+## 加速時間ハザードモデル  
+### モデルの概要  
+加速時間ハザードモデルは、$T$を事象が発生するまでの時間とするとき、次のように書くことができる。なお、$u$は誤差項であり、独立変数とは統計的に独立で均一の分散$\sigma^2$をもつ。このモデルは、従属変数を$logT$とする通常のモデルと同じである。    
+
+$$
+logT = b_0 + b_1x_1 + b_2x_2 + u (\#eq:ht-acc) 
+$$
+
+モデルでは誤差項$u$の分布にとしては、正規分布、対数ガンマ分布、ロジスティック分布、極値分布など様々な分布が仮定される。これらの分布を仮定するとき、$T$はそれぞれ対数正規分布、ガンマ分布、対数ロジスティック分布、ワイブル分布になる(表\@ref(tab:tab-dist))。  
+
+```{r tab-dist}
+tibble("uの分布" = c("正規分布","対数ガンマ分布","ロジスティック分布","極値分布"),
+       "Tの分布" = c("対数正規分布","ガンマ分布","対数ロジスティック分布","ワイブル分布")) %>% 
+  kable(caption = "uの分布とTの分布の対応") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+<br/>  
+
+加速ハザードモデルでは従属変数を$logT$ではなくハザード率になるように書き換えることもできるが、複雑な式になる傾向がある。比例ハザードモデルと異なり、ハザード率は非単調関数(= 時間の経過とともに柔軟に増えたり減ったりする)である。パラメータの推定値は最尤法によって求められる。  
+
+## Rでの実装  
+ここでは、@Allison2014 に倣って再犯データにガンマ分布モデルを当てはめる。  
+
+分析には`flexsurv`パッケージの`flexsurvreg

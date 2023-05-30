@@ -18,13 +18,11 @@ rank <- read_dta("data/rank.dta")
 - `promo`: 助教への昇進の有無  
 
 **独立変数(非時間依存変数)**  
-
 - `undgrad`: 対象者の出身学部の選抜の厳しさの尺度  
 - `phdprest`: 博士号を取得した大学の威信の尺度  
 - `phdmed`: 医学博士の有無  
 
 **独立変数(時間依存変数)**  
-
 - `prest`: 勤務している大学の威信の尺度  
 - `arts`: 勤続年数ごとの累積発表論文数  
 - `cits`: 勤続年数ごとの論文の累積被引用回数  
@@ -35,7 +33,6 @@ rank <- read_dta("data/rank.dta")
 
 ```{r}
 rank %>% 
-  head(10) %>% 
   datatable(options = list(scrollX = 100), rownames = FALSE)
 ```
 <br/>  
@@ -203,12 +200,103 @@ model_parameters(mod1) %>%
   mutate(odds = exp(Coefficient)) 
 ```
 
+`undgrad`と`art_n`、`jobpres`について結果を図示すると以下のようになる(図\@ref(fig:fig-fitmod1))。曲線はモデルに基づく回帰曲線を、塗りつぶし部分は95%信頼区間を表す。  
+```{r fig-fitmod1, fig.dim = c(14,6), fig.cap = "モデル1の推定結果"}
+fit_mod1_a <- ggpredict(mod1,
+                      terms = c("art_n[0:50, by = 0.1]",
+                                "undgrad[1:7,by = 3]"))
+
+fit_mod1_a %>% 
+  data.frame() %>% 
+  rename(art_n = x, undgrad = group) %>% 
+  ggplot(aes(x = art_n, y = predicted))+
+  geom_line(aes(color = undgrad),
+            linewidth = 1)+
+  geom_ribbon(aes(fill = undgrad,
+                  ymin = conf.low, ymax = conf.high),
+              alpha = 0.2)+
+  labs(y = "ハ\nザ\nǀ\nド\n率")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        legend.position = "none",
+        axis.title.y = element_text(angle = 0, vjust = 0.5))+
+  scale_color_nejm()+
+  scale_fill_nejm() -> p_fit1_a
+
+fit_mod1_b <- ggpredict(mod1,
+                      terms = c("jobpres[0:5, by = 0.01]",
+                                "undgrad[1:7,by = 3]"))
+fit_mod1_b %>% 
+  data.frame() %>% 
+  rename(jobpres = x, undgrad = group) %>% 
+  ggplot(aes(x = jobpres, y = predicted))+
+  geom_line(aes(color = undgrad),
+            linewidth = 1)+
+  geom_ribbon(aes(fill = undgrad,
+                  ymin = conf.low, ymax = conf.high),
+              alpha = 0.2)+
+  labs(y = "ハ\nザ\nǀ\nド\n率")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        axis.title.y = element_text(angle = 0, vjust = 0.5))+
+  scale_color_nejm()+
+  scale_fill_nejm() -> p_fit1_b
+
+p_fit1_a + p_fit1_b
+```
+<br/>  
+
 モデル2も結果自体は大きく変わらないが、勤続年数とその二乗が有意に影響していることが分かる。また、「累積論文発表数(art_n)」の偏回帰係数が大幅に小さくなっており、オッズ比も1.14倍から1.08倍に減少している。  
 ```{r}
 model_parameters(mod2) %>% 
   data.frame() %>% 
   select(Parameter, Coefficient) %>% 
   mutate(odds = exp(Coefficient))
+```
+
+`undgrad`と`art_n`、`jobpres`について結果を図示すると以下のようになる(図\@ref(fig:fig-fitmod2))。左図の傾きが図\@ref(fig:fig-fitmod1)に比べて緩やかになっており、図からもモデル1との違いが読み取れる。  
+```{r fig-fitmod2, fig.dim = c(14,6), fig.cap = "モデル2の推定結果"}
+fit_mod2_a <- ggpredict(mod2,
+                      terms = c("art_n[0:50, by = 0.1]",
+                                "undgrad[1:7,by = 3]"))
+
+fit_mod2_a %>% 
+  data.frame() %>% 
+  rename(art_n = x, undgrad = group) %>% 
+  ggplot(aes(x = art_n, y = predicted))+
+  geom_line(aes(color = undgrad),
+            linewidth = 1)+
+  geom_ribbon(aes(fill = undgrad,
+                  ymin = conf.low, ymax = conf.high),
+              alpha = 0.2)+
+  labs(y = "ハ\nザ\nǀ\nド\n率")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        legend.position = "none",
+        axis.title.y = element_text(angle = 0, vjust = 0.5))+
+  scale_color_nejm()+
+  scale_fill_nejm() -> p_fit2_a
+
+fit_mod2_b <- ggpredict(mod2,
+                      terms = c("jobpres[0:5, by = 0.01]",
+                                "undgrad[1:7,by = 3]"))
+fit_mod2_b %>% 
+  data.frame() %>% 
+  rename(jobpres = x, undgrad = group) %>% 
+  ggplot(aes(x = jobpres, y = predicted))+
+  geom_line(aes(color = undgrad),
+            linewidth = 1)+
+  geom_ribbon(aes(fill = undgrad,
+                  ymin = conf.low, ymax = conf.high),
+              alpha = 0.2)+
+  labs(y = "ハ\nザ\nǀ\nド\n率")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        axis.title.y = element_text(angle = 0, vjust = 0.5))+
+  scale_color_nejm()+
+  scale_fill_nejm() -> p_fit2_b
+
+p_fit2_a + p_fit2_b
 ```
 
 ## 尤度比検定  
@@ -256,6 +344,53 @@ model_parameters(mod3) %>%
   kable(align = "c", caption = "mod3の結果") %>% 
   kable_styling(font_size = 11, full_width = FALSE)
 ```
+<br/>  
+
+`undgrad`と`art_n`、`jobpres`について結果を図示すると以下のようになる(図\@ref(fig:fig-fitmod3))。
+```{r fig-fitmod3, fig.dim = c(14,6), fig.cap = "モデル3の推定結果"}
+fit_mod3_a <- ggpredict(mod3,
+                      terms = c("art_n[0:50, by = 0.1]",
+                                "undgrad[1:7,by = 3]"))
+
+fit_mod3_a %>% 
+  data.frame() %>% 
+  rename(art_n = x, undgrad = group) %>% 
+  ggplot(aes(x = art_n, y = predicted))+
+  geom_line(aes(color = undgrad),
+            linewidth = 1)+
+  geom_ribbon(aes(fill = undgrad,
+                  ymin = conf.low, ymax = conf.high),
+              alpha = 0.2)+
+  labs(y = "ハ\nザ\nǀ\nド\n率")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        legend.position = "none",
+        axis.title.y = element_text(angle = 0, vjust = 0.5))+
+  scale_color_nejm()+
+  scale_fill_nejm() -> p_fit3_a
+
+fit_mod3_b <- ggpredict(mod3,
+                      terms = c("jobpres[0:5, by = 0.01]",
+                                "undgrad[1:7,by = 3]"))
+fit_mod3_b %>% 
+  data.frame() %>% 
+  rename(jobpres = x, undgrad = group) %>% 
+  ggplot(aes(x = jobpres, y = predicted))+
+  geom_line(aes(color = undgrad),
+            linewidth = 1)+
+  geom_ribbon(aes(fill = undgrad,
+                  ymin = conf.low, ymax = conf.high),
+              alpha = 0.2)+
+  labs(y = "ハ\nザ\nǀ\nド\n率")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        axis.title.y = element_text(angle = 0, vjust = 0.5))+
+  scale_color_nejm()+
+  scale_fill_nejm() -> p_fit3_b
+
+p_fit3_a + p_fit3_b
+```
+
 
 ## 打ち切りデータの扱い  
 今回のデータでは打ち切りは以下の2通りで生じており、これらは「右側打ち切り(right censoring)」と呼ばれ、最後に対象が観察された時点で事象がまだ発生していないことによるものである。  

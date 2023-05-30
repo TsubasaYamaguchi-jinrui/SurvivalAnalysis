@@ -35,3 +35,8 @@ fontregisterer
 Rcpp
 brms
 rstanarm
+ggeffects
+eha
+flexsurv
+flextable
+ggplotify

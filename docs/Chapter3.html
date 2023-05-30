@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 連続時間を用いたパラメトリックな手法 | Event History and Survival Analysis Using R</title>
+  <meta name="description" content="3 連続時間を用いたパラメトリックな手法 | Event History and Survival Analysis Using R" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 連続時間を用いたパラメトリックな手法 | Event History and Survival Analysis Using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 連続時間を用いたパラメトリックな手法 | Event History and Survival Analysis Using R" />
+  
+  
+  
+
+<meta name="author" content="Tsubasa Yamaguchi" />
+
+
+<meta name="date" content="2023-05-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="Chapter2.html"/>
+<link rel="next" href="sessioninfo.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.27/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/tabwid-1.1.3/tabwid.css" rel="stylesheet" />
+<script src="libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="custom_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>本稿の目的</a></li>
+<li class="chapter" data-level="" data-path="Chapter0.html"><a href="Chapter0.html"><i class="fa fa-check"></i>0. パッケージの読み込み</a></li>
+<li class="chapter" data-level="1" data-path="Chapter1.html"><a href="Chapter1.html"><i class="fa fa-check"></i><b>1</b> はじめに</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="Chapter1.html"><a href="Chapter1.html#s2-1"><i class="fa fa-check"></i><b>1.1</b> イベントヒストリー分析とは何か</a></li>
+<li class="chapter" data-level="1.2" data-path="Chapter1.html"><a href="Chapter1.html#s2-2"><i class="fa fa-check"></i><b>1.2</b> イベント・ヒストリー分析の難しさ</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="Chapter1.html"><a href="Chapter1.html#打ち切り"><i class="fa fa-check"></i><b>1.2.1</b> 打ち切り</a></li>
+<li class="chapter" data-level="1.2.2" data-path="Chapter1.html"><a href="Chapter1.html#時間依存共変量"><i class="fa fa-check"></i><b>1.2.2</b> 時間依存共変量</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="Chapter1.html"><a href="Chapter1.html#s2-3"><i class="fa fa-check"></i><b>1.3</b> イベント・ヒストリー分析の種類</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="Chapter1.html"><a href="Chapter1.html#繰り返しの有無"><i class="fa fa-check"></i><b>1.3.1</b> 繰り返しの有無</a></li>
+<li class="chapter" data-level="1.3.2" data-path="Chapter1.html"><a href="Chapter1.html#単一の事象と複数の事象"><i class="fa fa-check"></i><b>1.3.2</b> 単一の事象と複数の事象</a></li>
+<li class="chapter" data-level="1.3.3" data-path="Chapter1.html"><a href="Chapter1.html#パラメトリック法とノンパラメトリック法"><i class="fa fa-check"></i><b>1.3.3</b> パラメトリック法とノンパラメトリック法</a></li>
+<li class="chapter" data-level="1.3.4" data-path="Chapter1.html"><a href="Chapter1.html#離散時間と連続時間"><i class="fa fa-check"></i><b>1.3.4</b> 離散時間と連続時間</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Chapter2.html"><a href="Chapter2.html"><i class="fa fa-check"></i><b>2</b> 離散時間モデル</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="Chapter2.html"><a href="Chapter2.html#離散時間モデルの例"><i class="fa fa-check"></i><b>2.1</b> 離散時間モデルの例</a></li>
+<li class="chapter" data-level="2.2" data-path="Chapter2.html"><a href="Chapter2.html#離散時間ハザード"><i class="fa fa-check"></i><b>2.2</b> 離散時間ハザード</a></li>
+<li class="chapter" data-level="2.3" data-path="Chapter2.html"><a href="Chapter2.html#ロジスティック回帰モデル"><i class="fa fa-check"></i><b>2.3</b> ロジスティック回帰モデル</a></li>
+<li class="chapter" data-level="2.4" data-path="Chapter2.html"><a href="Chapter2.html#モデルの推定"><i class="fa fa-check"></i><b>2.4</b> モデルの推定</a></li>
+<li class="chapter" data-level="2.5" data-path="Chapter2.html"><a href="Chapter2.html#rでの実装"><i class="fa fa-check"></i><b>2.5</b> Rでの実装</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="Chapter2.html"><a href="Chapter2.html#データの加工"><i class="fa fa-check"></i><b>2.5.1</b> データの加工</a></li>
+<li class="chapter" data-level="2.5.2" data-path="Chapter2.html"><a href="Chapter2.html#分析"><i class="fa fa-check"></i><b>2.5.2</b> 分析</a></li>
+<li class="chapter" data-level="2.5.3" data-path="Chapter2.html"><a href="Chapter2.html#結果の解釈"><i class="fa fa-check"></i><b>2.5.3</b> 結果の解釈</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="Chapter2.html"><a href="Chapter2.html#尤度比検定"><i class="fa fa-check"></i><b>2.6</b> 尤度比検定</a></li>
+<li class="chapter" data-level="2.7" data-path="Chapter2.html"><a href="Chapter2.html#離散時間ロジスティック回帰モデルの注意点"><i class="fa fa-check"></i><b>2.7</b> 離散時間ロジスティック回帰モデルの注意点</a></li>
+<li class="chapter" data-level="2.8" data-path="Chapter2.html"><a href="Chapter2.html#打ち切りデータの扱い"><i class="fa fa-check"></i><b>2.8</b> 打ち切りデータの扱い</a></li>
+<li class="chapter" data-level="2.9" data-path="Chapter2.html"><a href="Chapter2.html#離散時間モデルと連続時間モデル"><i class="fa fa-check"></i><b>2.9</b> 離散時間モデルと連続時間モデル</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Chapter3.html"><a href="Chapter3.html"><i class="fa fa-check"></i><b>3</b> 連続時間を用いたパラメトリックな手法</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="Chapter3.html"><a href="Chapter3.html#連続時間ハザード率"><i class="fa fa-check"></i><b>3.1</b> 連続時間ハザード率</a></li>
+<li class="chapter" data-level="3.2" data-path="Chapter3.html"><a href="Chapter3.html#パラメトリックな比例ハザードモデル"><i class="fa fa-check"></i><b>3.2</b> パラメトリックな比例ハザードモデル</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="Chapter3.html"><a href="Chapter3.html#モデルの分類"><i class="fa fa-check"></i><b>3.2.1</b> モデルの分類</a>
+<ul>
+<li class="chapter" data-level="3.2.1.1" data-path="Chapter3.html"><a href="Chapter3.html#指数回帰モデル"><i class="fa fa-check"></i><b>3.2.1.1</b> 指数回帰モデル</a></li>
+<li class="chapter" data-level="3.2.1.2" data-path="Chapter3.html"><a href="Chapter3.html#ゴンぺルツ回帰モデル"><i class="fa fa-check"></i><b>3.2.1.2</b> ゴンぺルツ回帰モデル</a></li>
+<li class="chapter" data-level="3.2.1.3" data-path="Chapter3.html"><a href="Chapter3.html#ワイブル回帰モデル"><i class="fa fa-check"></i><b>3.2.1.3</b> ワイブル回帰モデル</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2.2" data-path="Chapter3.html"><a href="Chapter3.html#注意点"><i class="fa fa-check"></i><b>3.2.2</b> 注意点</a></li>
+<li class="chapter" data-level="3.2.3" data-path="Chapter3.html"><a href="Chapter3.html#rでの実装-1"><i class="fa fa-check"></i><b>3.2.3</b> Rでの実装</a>
+<ul>
+<li class="chapter" data-level="3.2.3.1" data-path="Chapter3.html"><a href="Chapter3.html#データの読み込み"><i class="fa fa-check"></i><b>3.2.3.1</b> データの読み込み</a></li>
+<li class="chapter" data-level="3.2.3.2" data-path="Chapter3.html"><a href="Chapter3.html#分析の実行"><i class="fa fa-check"></i><b>3.2.3.2</b> 分析の実行</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="Chapter3.html"><a href="Chapter3.html#加速時間ハザードモデル"><i class="fa fa-check"></i><b>3.3</b> 加速時間ハザードモデル</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="Chapter3.html"><a href="Chapter3.html#モデルの概要"><i class="fa fa-check"></i><b>3.3.1</b> モデルの概要</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="Chapter3.html"><a href="Chapter3.html#rでの実装-2"><i class="fa fa-check"></i><b>3.4</b> Rでの実装</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Event History and Survival Analysis Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="c3" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> 連続時間を用いたパラメトリックな手法<a href="Chapter3.html#c3" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>前章(<a href="Chapter2.html#c2">2</a>)の離散時間モデルは汎用性が高いが、イベント・ヒストリー分析では連続時間モデルが使われることが多い。本章では、事象が起きた時点が正確に記録されているデータに対して一般的に使われる<strong>パラメトリック</strong>な手法を解説する。この方法では、推定されるパラメータを除いて、モデルに含まれる値の分布の型がはっきり仮定される。</p>
+<div id="連続時間ハザード率" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> 連続時間ハザード率<a href="Chapter3.html#連続時間ハザード率" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>連続時間モデルでは、時点<span class="math inline">\(t\)</span>で事象を経験する可能性のある個体が、時点<span class="math inline">\(t\)</span>から<span class="math inline">\(t+s\)</span>までの間に事象を経験する確率<span class="math inline">\(P(t,t+s)\)</span>を考える。なお、<span class="math inline">\(t=1\)</span>のとき、これは離散時間のハザード率と同じになる。</p>
+<p>この確率を<span class="math inline">\(s\)</span>で割り、<span class="math inline">\(s\)</span>を0に限りなく近づけたときの極限値が連続時間のハザード率になる(式<a href="Chapter3.html#eq:ht">(3.1)</a>)。この値は、1より大きな値をとることもあるが負にはならない。</p>
+<p><span class="math display" id="eq:ht">\[
+h(t) = \lim_{s \to 0} \frac{P(t,t+s)}{s} \tag{3.1}  
+\]</span></p>
+<p>ハザード関数<span class="math inline">\(h(t)\)</span>の形によって連続時間のイベント・ヒストリー分析のタイプが分類できる。</p>
+</div>
+<div id="パラメトリックな比例ハザードモデル" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> パラメトリックな比例ハザードモデル<a href="Chapter3.html#パラメトリックな比例ハザードモデル" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="モデルの分類" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> モデルの分類<a href="Chapter3.html#モデルの分類" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>パラメトリックな分析には、「<strong>比例ハザードモデル</strong>(proportional hazards model)」と「<strong>加速時間ハザードモデル</strong>(accelerated failure time model)」の2種類があるが、本節では前者について解説する。</p>
+<p>比例ハザードモデルは、ハザード関数が時間と独立変数によってどのように規定されるかによって、以下の3つに分類できる。なお、いずれのモデルでもパラメータの推定は最尤法で行う。</p>
+<div id="指数回帰モデル" class="section level4 hasAnchor" number="3.2.1.1">
+<h4><span class="header-section-number">3.2.1.1</span> 指数回帰モデル<a href="Chapter3.html#指数回帰モデル" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>最もわかりやすい分析は、<span class="math inline">\(h(t)\)</span>を独立変数の線形関数にすることである(式<a href="Chapter3.html#eq:ht-exp">(3.2)</a>)。左辺で<span class="math inline">\(log\)</span>をとっているのは、線形関数が0より小さくならないようにするためである。<span class="math inline">\(x_1\)</span>と<span class="math inline">\(x_2\)</span>は非時間依存の独立変数を、<span class="math inline">\(b_0\)</span>~<span class="math inline">\(b_2\)</span>は推定されるパラメータを表す。なかでも<span class="math inline">\(b_1\)</span>と<span class="math inline">\(b_2\)</span>は偏回帰係数である。</p>
+<p><span class="math display" id="eq:ht-exp">\[
+log(h(t)) = b_0 + b_1x_1 + b_2x_2 \tag{3.2}
+\]</span></p>
+<p>この式ではハザード関数は時間に依存しない(= 時間に対して一定)。このようなモデルでは通常事象が発生するまでの時間として指数分布<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>を仮定するので、「<strong>指数回帰モデル</strong>」といわれる。指数分布の確率密度関数は1つのパラメータ<span class="math inline">\(\lambda\)</span>を用いて以下のように表せる。ハザード率は一定の値<span class="math inline">\(\lambda\)</span>で与えられる。</p>
+<p><span class="math display" id="eq:f-exp">\[
+f(t) = \lambda e^{-\lambda t} \;\; (t \geq 0)  \tag{3.3}
+\]</span></p>
+</div>
+<div id="ゴンぺルツ回帰モデル" class="section level4 hasAnchor" number="3.2.1.2">
+<h4><span class="header-section-number">3.2.1.2</span> ゴンぺルツ回帰モデル<a href="Chapter3.html#ゴンぺルツ回帰モデル" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>一般的に、ハザード率が時間を通して一定であると仮定するのは現実的でない。例えば生物の死を考えると、老化するほど死亡する確率は増大するはずである。そこで、指数回帰モデルの仮定を緩め、ハザード率の対数(log)が時間と共に直線的に増加/現象すると仮定するモデルを考える(式<a href="Chapter3.html#eq:ht-gom">(3.4)</a>)。</p>
+<p><span class="math display" id="eq:ht-gom">\[
+log(h(t)) = b_0 + b_1x_1 + b_2x_2 + ct \tag{3.4}
+\]</span></p>
+<p>このようなモデルでは通常事象が発生するまでの時間としてゴンぺルツ分布<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>を仮定するので、「<strong>ゴンぺルツ回帰モデル</strong>」といわれる。ゴンぺルツ分布の確率密度関数は２つのパラメータ<span class="math inline">\(a\)</span>と<span class="math inline">\(b\)</span>を用いて以下のように表せる。ハザード率は<span class="math inline">\(ae^{bt}\)</span>で与えられる。</p>
+<p><span class="math display" id="eq:f-gom">\[
+f(t) = a exp(at - \frac{a}{b}e^{bt} + \frac{a}{b}) \;\;(t \geq 0) \tag{3.5}
+\]</span></p>
+</div>
+<div id="ワイブル回帰モデル" class="section level4 hasAnchor" number="3.2.1.3">
+<h4><span class="header-section-number">3.2.1.3</span> ワイブル回帰モデル<a href="Chapter3.html#ワイブル回帰モデル" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>あるいは、ハザード率の対数が時間の対数と共に直線的に増加/減少するモデルを考えることもできる(式<a href="Chapter3.html#eq:ht-wei">(3.6)</a>)。</p>
+<p><span class="math display" id="eq:ht-wei">\[
+log(h(t)) = b_0 + b_1x_1 + b_2x_2 + clog(t) \tag{3.6}
+\]</span></p>
+<p>このようなモデルでは通常事象が発生するまでの時間としてワイブル分布<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>を仮定するので、「<strong>ワイブル回帰モデル</strong>」といわれる。ワイブル分布の確率密度関数は２つのパラメータ<span class="math inline">\(a\)</span>と<span class="math inline">\(b\)</span>を用いて以下のように表せる。ハザード率は<span class="math inline">\(\frac{a}{b^a} t^{a-1}\)</span>で与えられる。なお、式からわかるように指数分布はワイブル分布で<span class="math inline">\(a=1\)</span>のときである(<span class="math inline">\(\lambda = 1/b\)</span>)。</p>
+<p><span class="math display" id="eq:f-wei">\[
+f(t) =\frac{a}{b} \biggl(\frac{t}{b}\biggl)^{a-1} exp\biggl(-\biggl(\frac{t}{b}\biggl)^a\biggl) \;\;(t \geq 0)  \tag{3.7}
+\]</span></p>
+</div>
+</div>
+<div id="注意点" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> 注意点<a href="Chapter3.html#注意点" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>時間と独立変数の間の交互作用がない</strong><br />
+<span class="math inline">\(x_1\)</span>と<span class="math inline">\(x_2\)</span>の効果(<span class="math inline">\(b_1\)</span>と<span class="math inline">\(b_2\)</span>)は全ての時点で同じである。</p></li>
+<li><p><strong>ワイブル回帰モデルもゴンぺ留津回帰モデルも時間に対して単調増加/減少である</strong>
+ハザード率と時間の関係がU字型や逆U字型になることはない。これは、実際の分析では使いにくい場合がある。なお、第<a href="#s"><strong>??</strong></a>でこの制約のないモデルを検討する。</p></li>
+<li><p><strong>誤差項がない</strong><br />
+ただし、実際に事象が発生するまでの時間とモデルで推定される時間には誤差が含まれるので、決定論的なモデルではない。</p></li>
+</ol>
+</div>
+<div id="rでの実装-1" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Rでの実装<a href="Chapter3.html#rでの実装-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="データの読み込み" class="section level4 hasAnchor" number="3.2.3.1">
+<h4><span class="header-section-number">3.2.3.1</span> データの読み込み<a href="Chapter3.html#データの読み込み" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>まず、分析に用いる第<a href="Chapter1.html#c1">1</a>章で触れた服役囚の再販データを読み込む。このデータでは、432人の元服役囚の内、ランダムに選ばれた半分は経済的支援を受け、残りの半分は対照群として支援を受けなかった。変数の説明は以下の通り。なお、時間依存的な変数は本章では扱わず、次章で扱う。</p>
+<p><strong>従属変数にかかわる変数</strong><br />
+- <code>week</code>: 出所後の経過週数<br />
+- <code>arrest</code>: 再犯の有無</p>
+<p><strong>独立変数(非時間依存変数)</strong><br />
+- <code>age</code>: 年齢<br />
+- <code>race</code>: 黒人か否か(1/0)<br />
+- <code>mar</code>: 婚姻の有無(1/0)<br />
+- <code>prio</code>: 前科の数<br />
+- <code>paro</code>: 仮釈放か否か(1/0)<br />
+- <code>wexp</code>: 過去の就業経験の有無(1/0)<br />
+- <code>fin</code>: 経済的支援の有無(1/0)</p>
+<p><strong>独立変数(時間依存変数)</strong><br />
+- <code>work</code>: 週ごとの就業状態</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="Chapter3.html#cb26-1" aria-hidden="true" tabindex="-1"></a>recid <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;data/recid.dta&quot;</span>)　　</span>
+<span id="cb26-2"><a href="Chapter3.html#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="Chapter3.html#cb26-3" aria-hidden="true" tabindex="-1"></a>recid <span class="sc">%&gt;%</span> </span>
+<span id="cb26-4"><a href="Chapter3.html#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">options =</span> <span class="fu">list</span>(<span class="at">scrollX =</span> <span class="dv">100</span>), <span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-57e23d45764d455cb295" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-57e23d45764d455cb295">{"x":{"filter":"none","vertical":false,"data":[[20,17,25,52,52,52,23,52,52,52,52,52,37,52,25,46,28,52,52,52,52,52,24,52,52,52,52,52,52,52,52,52,52,52,52,50,52,52,52,52,52,52,10,52,52,52,52,20,52,52,52,52,52,50,52,52,52,52,52,52,6,52,52,52,52,52,52,52,49,52,52,52,52,52,52,52,43,52,52,5,27,52,52,52,22,52,52,18,52,52,52,52,52,52,52,24,52,52,52,52,2,26,52,49,52,21,48,52,52,52,52,52,52,52,52,52,52,52,8,52,52,49,52,52,52,52,52,52,52,52,8,52,52,13,52,52,52,52,8,52,33,52,52,11,52,52,52,52,52,37,52,52,52,44,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,9,17,52,52,52,52,52,52,16,52,52,3,52,52,52,52,52,52,52,52,52,52,45,52,52,52,52,52,52,28,52,16,15,52,52,52,52,14,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,7,52,52,43,46,40,52,14,52,52,8,52,52,52,52,52,25,52,52,17,37,52,52,52,32,52,52,52,52,52,52,52,52,12,52,18,52,52,14,52,52,52,52,38,52,24,20,32,52,52,52,52,52,52,52,52,52,52,52,31,20,40,52,52,52,52,42,52,26,52,52,52,52,52,47,52,52,40,52,52,52,52,21,52,52,52,52,52,1,43,24,11,52,52,52,52,33,52,46,36,52,52,18,52,52,50,52,34,52,35,52,52,39,9,52,52,52,34,52,52,52,44,52,52,35,30,39,52,52,52,52,19,52,43,52,48,37,20,52,52,36,52,52,52,52,52,52,52,30,52,52,52,52,52,52,52,52,42,52,52,52,52,26,40,52,52,52,35,52,46,52,49,52,52,49,52,52,52,52,52,35,52,52,52,52,27,52,52,52,52,45,4,52,36,52,52,8,15,52,19,52,12,52,52,52,52,52],[1,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,1,0,0,1,0,0,0,0,0,1,0,0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,0,0,0,1,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,1,1,0,0,1,0,0,1,0,1,0,1,0,0,1,1,0,0,0,1,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,1,0,1,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0,0,1,1,0,1,0,1,0,0,0,0,0],[0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,1,0,1,0,0,0,1,1,1,1,0,1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,0,1,1,1,0,0,1,0,1,0,0,1,0,0,0,0,0,0,1,0,1,1,0,0,1,1,0,0,1,1,0,1,1,1,1,1,0,0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0,1,1,0,1,0,1,1,0,0,1,0,1,0,0,0,1,0,1,1,1,1,1,1,0,0,1,1,1,0,1,1,0,0,1,1,0,0,0,0,1,1,1,1,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,1,0,0,1,0,1,1,0,0,1,1,1,0,1,1,0,0,0,0,0,1,1,1,0,0,1,1,0,1,1,0,0,1,1,1,0,0,0,0,1,0,1,1,1,1,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,1,1,1,1,0,0,1,0,0,0,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,0,1,1,0,0,1,0,0,1,0,1,1,1,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,1,1,1,1,0,1,1,1,1,0,1,0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,1,0,0,0,1,0,0,0,1,1,1,0,0,1,1,0,1,0,0,1,1,1,0,0,0,1,0,1,0,1,1,0,0,1,1,0,0,0,0,1,1,0,0,0,1,0,0,1,0,1,0,0,0,0,1,1,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,0,0,0,1,1,0,1,0,1],[27,18,19,23,19,24,25,21,22,20,26,40,17,37,20,22,19,20,25,24,23,44,29,28,21,19,33,19,19,23,23,19,42,23,24,20,22,27,19,28,33,24,21,22,19,22,22,23,32,27,36,22,32,19,28,32,33,26,20,42,19,22,22,36,23,27,21,22,35,21,25,18,26,30,20,43,23,42,21,19,29,30,21,20,19,22,25,22,22,24,39,21,20,24,25,21,20,19,24,24,44,32,23,19,20,27,19,21,20,25,20,23,20,30,25,22,24,18,40,22,23,21,24,24,38,26,29,21,21,22,23,27,18,23,24,21,20,27,20,29,19,20,18,19,24,28,26,17,21,34,26,43,20,20,32,25,22,31,42,32,20,20,36,34,28,21,18,20,17,44,30,22,30,23,20,19,21,22,19,21,38,24,39,30,37,23,21,31,24,31,24,24,21,22,20,21,24,25,19,20,20,24,18,28,19,19,25,19,25,24,20,30,29,28,36,23,23,24,29,26,39,20,23,21,21,20,20,27,18,25,20,20,20,24,23,28,21,25,24,29,22,28,19,20,20,22,20,21,21,19,26,23,22,24,40,32,38,26,27,29,20,22,22,19,22,19,32,25,21,36,40,20,19,18,28,22,25,28,25,20,24,24,36,34,19,23,19,40,31,23,42,26,20,27,24,25,22,20,20,22,18,20,20,22,30,36,25,29,19,24,21,35,19,20,22,23,19,18,38,18,22,21,21,21,17,22,23,19,21,35,23,22,25,20,19,20,41,23,26,26,38,27,19,25,30,42,20,23,21,20,17,26,24,37,28,33,22,25,20,20,24,26,26,25,26,23,28,27,23,17,20,20,20,22,31,43,29,21,24,30,22,26,20,23,25,40,30,22,18,18,24,25,19,24,24,18,18,23,20,18,23,20,23,23,23,20,26,30,36,43,20,24,22,20,21,18,18,33,19,21,21,21,22,18,18,24,22,31,20,20,29,24],[1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,0,1,0,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,0,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,1,0,1,1,1,1,1,1,0,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1],[0,0,1,1,1,1,1,1,0,1,0,1,1,1,0,1,0,0,0,1,0,1,1,1,1,1,1,0,0,1,0,0,1,1,1,1,1,1,0,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,0,0,1,1,0,1,1,1,1,0,1,1,0,1,1,1,0,0,0,1,1,0,0,1,0,0,1,0,1,1,1,0,1,1,0,0,0,1,1,1,1,0,0,1,0,1,0,0,0,1,0,1,1,1,1,0,1,0,0,1,1,0,1,1,1,0,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,1,1,0,0,0,1,1,1,0,1,1,1,0,1,1,1,0,0,0,1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,1,1,0,0,1,1,1,0,0,1,1,0,0,0,1,1,0,0,0,1,0,1,1,0,1,0,1,1,1,1,1,1,1,0,0,0,1,1,1,0,1,0,1,0,1,0,0,1,1,1,0,0,1,0,1,0,0,1,0,1,1,1,1,0,0,1,1,1,1,1,0,0,1,1,0,1,1,0,1,1,0,0,0,1,1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,0,1,0,1,0,0,1,0,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,0,0,1,0,0,1,0,1,0,1,0,0,1,1,0,1,1,1,0,0,1,0,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,0,0,1,1,1,1,0,1,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,1,0,1,1,0,1,1,1,1,1,1,1,1,1,0,0,0,1,1,0,1,0,1,1,1,0,1,1,0,0,1,1,1,1,0,1,1,1,1,1,0,0,0,1,1,0,1,0,1,0,0,0,1,1,1,0,1,1,1],[0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0],[1,1,1,1,1,0,1,1,0,0,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,0,0,1,1,0,0,1,0,1,1,1,1,0,0,1,1,1,0,1,1,0,1,0,1,1,1,0,0,0,1,0,0,1,1,1,1,1,1,1,1,0,1,1,1,0,0,0,0,1,1,1,1,1,1,0,1,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,1,0,1,0,1,0,1,1,0,0,1,1,1,1,0,1,1,0,0,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,0,1,0,0,1,0,1,1,1,0,1,1,1,0,0,1,1,1,1,1,0,1,0,0,1,0,0,0,0,0,0,1,1,1,1,1,0,0,1,1,1,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,0,0,1,1,1,0,1,1,1,0,0,1,0,0,0,0,0,1,0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,0,0,1,1,1,1,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,0,1,1,1,0,1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1],[3,8,13,1,3,2,0,4,6,0,3,2,5,2,3,2,7,2,12,1,4,0,2,1,0,2,1,2,3,9,3,1,0,2,3,2,5,2,4,3,9,1,14,2,2,2,15,5,2,0,0,1,1,10,1,3,1,1,0,9,6,2,5,11,2,3,1,2,3,4,5,0,2,4,2,1,4,2,2,3,4,3,10,7,10,1,3,4,4,2,4,1,2,1,2,4,1,3,2,1,2,2,3,1,1,0,6,1,1,3,6,3,2,1,0,1,3,4,1,1,6,1,2,14,2,3,1,8,2,4,5,2,2,5,2,3,4,4,11,5,10,8,0,2,1,4,4,0,3,2,1,2,0,1,1,1,1,1,4,10,8,1,8,2,3,2,6,4,3,3,5,11,3,8,2,10,1,6,2,10,3,7,2,3,0,2,1,1,13,3,2,1,1,2,5,0,2,1,1,2,4,1,4,5,4,1,0,1,2,0,1,1,4,4,1,7,2,4,1,2,3,1,3,2,1,2,3,2,3,1,6,5,7,11,1,4,2,1,1,3,2,18,1,1,5,1,8,2,1,3,1,2,4,8,5,2,0,1,0,3,4,1,5,12,1,3,1,2,2,1,2,1,0,4,0,2,1,2,2,4,5,0,2,1,5,1,3,2,2,0,2,1,9,1,5,2,3,2,2,3,1,2,1,2,2,1,5,3,3,2,0,6,4,0,3,1,18,3,2,6,1,3,1,5,3,1,0,4,1,5,8,2,11,4,1,1,3,4,0,2,1,1,3,1,2,1,2,1,3,3,1,5,1,1,1,0,4,2,10,1,4,11,1,1,1,3,4,0,3,7,4,5,9,2,1,1,1,0,2,3,0,1,0,6,5,2,0,2,2,0,2,2,2,2,2,3,0,0,2,1,2,1,5,1,2,4,4,1,4,4,1,1,1,1,0,5,1,2,2,1,1,4,3,3,2,2,2,3,1,1,3,1],[3,4,3,5,3,4,4,3,3,5,3,5,3,3,4,3,3,3,3,3,3,3,4,3,4,3,4,3,3,3,5,3,5,4,4,3,3,3,3,3,3,4,3,3,4,4,3,3,2,4,3,4,3,3,5,2,4,2,3,4,3,4,4,3,4,3,3,3,2,3,3,3,4,2,4,4,3,6,3,3,3,2,3,3,3,5,3,4,3,4,3,3,3,3,6,3,3,4,4,4,5,4,3,4,3,3,3,3,4,2,3,4,3,4,4,3,3,3,5,5,3,3,3,3,3,3,3,3,4,3,3,4,3,3,3,4,2,3,4,4,4,3,3,3,5,3,3,3,3,3,4,6,4,3,4,3,3,3,3,3,3,3,3,3,2,3,3,3,2,2,4,3,4,3,4,2,4,6,3,3,3,4,5,3,2,6,3,3,4,3,5,6,3,3,3,4,3,3,3,3,3,4,3,3,3,4,4,3,6,3,4,3,4,3,3,3,6,3,3,3,3,3,4,4,3,3,3,3,3,4,3,5,3,3,3,4,4,3,4,5,4,3,4,5,3,3,3,4,4,3,2,3,3,4,2,3,4,3,5,4,4,3,4,4,3,3,3,4,2,2,2,3,4,4,4,4,5,3,3,5,3,4,4,5,3,3,3,4,4,4,3,6,3,5,3,5,4,4,4,3,4,3,3,4,3,5,3,2,4,3,3,3,3,3,3,3,4,3,3,4,4,3,4,3,3,4,5,3,4,3,3,4,3,3,3,5,2,3,3,3,4,5,3,2,3,5,3,4,3,3,4,3,3,3,6,4,3,5,3,4,3,5,4,6,4,3,3,5,4,3,5,3,3,4,3,5,4,4,3,4,5,4,3,4,3,5,3,3,4,2,5,5,3,3,3,5,4,3,3,3,5,3,3,4,3,3,2,3,3,3,3,3,2,3,3,3,4,4,3,5,4,3,4,3,3,4,4,3,4,3,4,4],[0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,1,1,0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1],[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,1,1,0,0,1,1,1,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,1,0,0,0,1,0,1,1,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,1,1,0,1,0,0,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,0,0,0,null,0,1,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,1,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,1],[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,0,1,0,0,0,0,0,0,1,1,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,null,1,0,0,0,0,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,1,0,0,1,0,1,1,0,1,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,0,0,0,1,0,1,1,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,1,0,1,1,0,1,0,0,1,0,0,1,0,0,0,0,1,0,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,0,1,1,1,1,1,1,0,0,0,0,null,0,1,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,1,1,0,1,0,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,0,1,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,1,1],[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,0,1,0,0,1,0,0,0,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,null,1,0,0,0,1,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,0,1,0,0,1,1,0,0,0,0,0,0,1,0,1,1,0,0,1,0,0,1,0,1,1,1,1,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,1,null,1,0,0,1,0,1,0,1,1,0,0,1,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,0,0,0,1,0,1,1,0,0,0,0,0,1,1,0,1,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,0,1,0,0,0,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,0,1,0,1,1,1,1,0,0,1,0,null,0,1,0,0,1,0,1,1,1,0,1,0,0,0,1,1,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,0,1,0,1,0,1,1,1,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1],[0,0,0,1,0,1,1,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,1,1,0,1,1,0,1,1,1,0,0,0,1,0,0,1,0,0,0,1,0,0,1,1,0,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,1,0,1,1,0,1,0,1,0,0,0,0,1,null,1,0,0,0,1,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,0,1,1,0,1,0,1,1,0,1,1,0,0,0,0,0,0,1,0,1,1,0,0,1,0,0,1,0,1,1,1,1,1,1,1,0,0,0,0,0,1,0,0,1,0,1,0,1,null,1,0,0,1,0,1,0,1,1,0,0,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,1,0,0,0,1,0,1,1,1,0,1,0,0,0,1,0,1,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,0,1,1,1,1,1,1,0,0,0,1,1,0,0,1,0,0,0,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,1,1,0,0,1,0,0,0,1,1,1,1,1,0,0,0,1,0,1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,null,0,1,0,0,1,0,1,1,1,0,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,1,1,1,1,0,0,1,1,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,1,0,1,0,1,0,1,1,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,null,1,0,0,0,1,0,0,0,1,1,0,0,1,1,1],[0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,1,0,1,1,0,1,1,0,1,1,0,1,1,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,1,1,0,1,0,0,0,0,0,0,0,1,1,0,0,1,0,1,1,0,0,0,1,0,1,0,null,0,0,0,1,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,1,null,1,1,0,0,1,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,1,0,1,1,1,0,0,0,0,0,1,1,0,0,1,0,1,0,1,1,0,1,1,0,0,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,1,0,1,1,1,1,1,0,1,0,0,0,1,0,0,1,0,1,0,1,null,1,0,0,1,0,1,0,1,1,0,0,1,1,1,1,0,0,1,0,0,0,1,0,0,0,0,1,1,1,1,1,0,0,0,1,0,1,1,1,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,0,1,1,0,1,1,1,0,0,0,1,1,1,0,1,1,0,0,1,1,1,1,0,1,0,1,1,0,1,0,0,1,0,0,1,1,0,1,0,0,0,0,1,1,1,1,0,0,0,1,0,1,1,1,1,0,0,1,1,1,1,1,1,0,0,1,0,null,0,1,0,0,1,0,1,1,1,0,1,0,0,0,1,1,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,1,1,0,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,0,1,0,1,0,1,1,1,0,0,1,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,null,1,0,0,0,1,0,0,0,1,1,0,0,0,0,1],[0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,1,0,1,1,0,1,1,0,1,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,1,1,0,1,0,0,0,null,1,0,0,0,1,0,0,1,0,1,1,0,0,0,1,0,1,0,null,0,0,0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,1,null,1,1,0,0,1,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,1,0,1,1,1,0,0,0,0,0,1,1,0,0,1,0,1,0,1,1,0,1,1,0,0,0,1,0,1,0,1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,1,1,0,1,0,0,0,1,0,0,0,0,1,0,1,null,1,0,0,1,0,1,0,1,1,1,0,1,1,1,1,0,0,1,0,0,0,1,0,0,0,0,1,1,1,1,1,0,0,0,1,0,1,1,1,0,0,0,0,0,1,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,1,1,1,0,1,1,1,1,0,0,1,1,0,0,0,1,0,1,1,1,1,1,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,1,0,0,1,1,1,1,0,1,0,1,0,1,1,0,1,0,0,1,1,1,1,1,0,1,1,1,0,null,0,1,0,0,1,0,1,1,1,0,1,0,0,0,1,1,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,0,0,1,1,0,1,1,0,0,1,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,0,1,1,1,0,0,1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,0,null,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0],[0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,1,0,0,1,0,1,1,1,1,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,1,0,0,1,1,0,1,1,0,1,0,1,0,null,1,0,0,0,1,0,0,1,0,1,1,0,0,0,1,0,1,0,null,0,0,0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,null,1,1,0,0,1,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,1,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,0,1,0,1,1,0,0,0,1,0,1,0,1,1,1,0,0,1,0,1,0,0,1,0,1,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,0,1,null,1,0,0,1,0,1,1,1,1,1,0,1,1,1,1,0,0,1,0,0,0,0,1,0,0,0,1,1,1,1,1,0,0,0,1,0,1,1,1,0,1,null,0,0,1,0,1,0,0,1,1,0,0,0,0,0,1,0,1,0,0,0,1,1,1,0,1,1,1,1,0,0,1,1,0,0,0,0,0,1,1,1,1,1,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,1,0,0,1,0,1,0,1,1,0,0,0,0,1,1,1,1,1,0,1,0,1,0,null,0,1,0,0,1,0,1,1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,1,1,1,0,0,1,1,0,1,1,0,0,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,null,1,0,1,0,1,0,0,0,1,0,0,0,0,1,0],[0,0,0,1,0,1,1,0,0,0,1,1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,1,0,1,1,1,1,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0,1,0,1,1,1,0,1,1,0,1,0,0,0,null,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,null,0,0,0,0,1,0,0,1,1,0,1,0,0,0,1,0,0,0,0,1,null,1,1,0,0,1,0,1,0,0,0,1,0,0,1,1,1,1,null,0,0,1,0,1,0,1,1,1,0,0,null,0,0,1,1,0,0,0,null,0,1,0,1,0,1,1,0,0,0,1,0,1,0,1,1,1,1,0,1,0,1,0,0,1,0,1,0,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,1,null,1,0,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,1,0,1,0,1,1,1,1,1,0,0,1,1,0,1,1,1,0,1,null,0,0,1,0,1,0,0,0,1,null,0,0,0,0,1,0,1,0,0,0,1,1,1,0,1,1,1,1,0,0,1,1,0,1,0,0,0,1,1,1,1,1,0,1,0,1,1,0,1,0,0,1,0,1,1,1,0,0,0,0,1,1,1,0,1,0,0,1,0,1,0,1,1,0,0,0,0,1,1,1,1,1,0,1,1,0,0,null,0,1,0,0,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,1,0,0,1,1,1,1,1,0,1,1,0,1,1,0,0,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,1,0,0,1,0,0,0,0,1,1,0,0,1,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,null,1,0,1,0,null,0,0,0,1,0,0,1,0,1,0],[0,1,0,1,1,1,1,0,0,0,1,1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,1,0,1,1,1,1,1,0,1,0,1,0,0,0,0,0,1,1,0,0,0,1,0,1,1,1,0,1,1,0,1,0,1,0,null,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,null,0,0,0,0,1,0,0,1,1,1,1,0,0,0,1,0,0,0,0,0,null,1,0,0,0,1,0,0,0,0,0,1,0,0,1,1,1,1,null,1,0,1,0,1,0,1,1,1,1,0,null,0,0,1,1,0,1,0,null,1,1,0,0,0,1,1,0,0,0,1,0,1,0,1,1,1,1,0,1,0,1,1,0,1,0,1,0,1,1,1,0,0,null,0,0,0,1,0,0,0,1,0,1,null,1,0,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,1,0,1,0,1,1,1,1,1,0,0,1,1,1,1,1,1,0,1,null,0,0,1,0,1,0,0,0,1,null,0,0,0,0,1,0,1,0,0,0,1,1,1,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,1,0,1,1,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,1,0,1,1,0,1,0,1,0,1,1,0,0,0,0,1,1,1,1,1,0,1,1,1,0,null,0,1,0,0,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,null,0,0,1,1,1,1,1,0,1,1,0,1,1,0,0,1,1,0,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0,1,0,1,1,0,1,0,0,0,0,1,1,0,0,1,0,0,0,1,0,1,1,0,1,1,0,0,0,0,0,0,0,0,null,1,0,1,0,null,0,0,0,1,0,0,1,0,1,0],[0,1,0,1,1,0,1,0,0,0,1,1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,1,0,1,1,1,1,1,0,1,1,1,0,0,0,0,0,null,1,0,0,0,1,0,1,1,1,0,1,1,0,1,0,1,0,null,0,0,0,0,1,0,0,0,0,1,1,0,0,0,1,1,1,0,null,0,0,0,0,1,0,0,1,1,1,1,0,0,0,1,0,0,0,0,0,null,1,0,0,0,1,1,0,0,0,0,1,0,0,1,1,1,1,null,1,0,1,0,1,0,1,1,1,0,0,null,0,0,1,1,0,0,1,null,1,1,0,0,0,1,1,0,0,0,1,0,1,0,1,1,1,1,0,1,0,0,1,0,1,0,1,0,1,1,1,0,0,null,0,0,0,0,0,0,0,1,0,1,null,1,0,0,1,0,1,1,0,1,0,1,1,1,1,1,0,0,1,0,0,0,0,1,1,1,0,1,1,1,1,1,0,0,1,1,1,1,1,1,0,0,null,0,0,1,0,0,0,0,0,1,null,0,0,0,0,1,0,1,1,0,0,1,0,1,0,1,1,1,1,0,0,1,1,1,1,0,1,0,1,1,1,1,1,0,1,0,0,1,0,1,0,1,1,0,1,1,1,0,0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,1,0,0,0,0,1,1,1,1,1,0,1,1,1,1,null,0,1,0,0,1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,null,0,0,0,1,1,1,1,0,1,1,0,1,1,0,1,1,1,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,1,0,0,1,0,0,1,0,1,0,1,1,0,1,0,0,0,0,1,1,0,0,1,0,0,0,1,0,1,1,0,1,1,0,0,0,0,0,0,0,0,null,1,0,1,0,null,0,0,0,1,0,0,1,0,1,0],[0,1,0,1,1,0,1,0,0,0,1,1,0,0,0,1,0,0,1,1,0,1,0,1,0,0,1,0,1,1,1,1,1,0,1,1,1,0,0,0,0,0,null,0,0,0,0,1,0,1,1,1,0,1,1,0,0,0,0,0,null,0,0,0,0,1,0,0,0,0,1,1,0,0,0,1,1,1,0,null,0,0,0,0,0,0,0,1,0,1,1,0,1,0,1,0,1,0,0,0,null,1,0,0,0,1,1,0,0,0,0,1,0,0,1,1,1,1,null,1,0,1,0,1,0,1,1,1,1,1,null,0,0,1,1,0,0,1,null,1,1,0,0,null,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,0,0,1,0,1,0,1,0,1,1,1,0,0,null,0,0,0,0,0,0,0,1,0,1,null,1,0,0,0,0,1,1,0,1,0,1,1,1,1,1,0,0,1,0,0,0,0,1,1,1,0,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,null,0,0,1,0,0,0,0,0,1,null,0,0,0,0,1,0,1,1,0,1,1,0,1,0,1,0,1,1,0,0,1,1,0,1,0,1,0,1,1,1,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,1,0,1,1,0,1,0,0,0,1,1,0,0,0,0,1,1,1,1,1,0,1,1,1,0,null,0,1,null,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,0,1,0,null,0,0,0,1,1,1,1,0,1,1,0,0,1,0,1,1,1,0,1,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,1,1,0,0,1,0,0,1,0,1,0,1,1,0,1,0,0,0,0,1,1,0,0,1,0,0,0,1,0,1,1,0,1,1,0,0,0,0,0,0,0,0,null,1,0,1,0,null,0,0,0,1,0,0,1,0,1,0],[0,1,0,1,1,0,1,0,0,0,1,1,0,0,0,1,0,0,1,1,0,1,0,1,0,0,1,0,1,1,1,1,1,0,1,1,1,0,0,0,0,0,null,0,1,0,0,1,1,1,1,1,0,1,1,0,0,0,0,0,null,0,1,0,0,1,0,0,0,0,1,1,0,0,1,1,1,1,0,null,0,0,0,0,0,0,0,1,0,1,1,0,1,1,1,0,0,0,0,0,null,1,0,0,0,1,1,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,1,0,0,1,0,0,1,null,1,1,0,0,null,1,1,0,0,0,1,0,0,0,0,1,1,0,1,1,0,0,1,0,1,0,1,0,1,1,1,0,0,null,0,0,1,0,0,0,0,1,0,1,null,1,0,0,0,0,1,1,0,1,0,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,0,1,1,1,1,1,null,0,0,1,0,0,0,0,0,1,null,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1,0,1,1,0,0,1,1,null,1,0,1,0,1,1,1,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,1,0,0,0,1,1,0,0,0,0,1,1,1,1,1,0,1,1,1,0,null,0,1,null,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,0,1,0,null,1,0,0,0,1,1,1,0,1,1,0,0,1,0,1,1,1,0,1,1,0,0,0,1,0,0,0,1,1,0,1,0,0,0,1,1,1,0,0,1,0,0,1,0,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1,0,0,0,1,0,1,1,0,1,1,0,0,0,0,0,0,0,0,null,1,0,1,0,null,0,0,0,1,null,0,0,0,1,0],[0,1,0,1,1,0,1,0,0,0,1,1,0,0,0,1,1,0,1,1,0,1,0,1,0,0,1,0,1,1,1,1,1,0,1,1,1,0,0,0,1,0,null,0,1,0,0,1,1,1,1,0,0,1,1,0,0,0,0,0,null,0,1,0,0,1,0,0,0,0,0,0,0,0,1,1,1,1,0,null,0,0,0,0,0,0,0,1,0,1,1,0,1,0,1,0,0,0,0,0,null,1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,1,0,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,0,1,0,0,1,1,0,0,null,0,0,1,0,0,0,0,1,0,1,null,1,0,1,0,0,1,1,0,1,0,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,1,1,1,1,1,0,0,0,1,0,1,1,1,0,1,null,0,0,1,0,0,0,0,0,1,null,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1,0,1,1,0,0,1,1,null,1,0,1,0,0,1,1,1,1,0,1,0,0,1,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,1,1,0,0,1,0,1,1,1,1,1,0,1,0,1,0,null,0,1,null,0,1,0,1,0,1,0,0,1,0,0,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,1,1,0,0,1,0,0,1,0,0,1,1,0,1,1,0,0,0,1,0,0,0,1,1,0,1,0,0,0,1,1,1,0,0,1,0,0,0,0,1,0,1,1,0,1,0,1,0,0,1,1,1,0,1,0,0,0,1,0,1,1,0,1,1,0,0,0,0,0,0,0,0,null,1,0,1,1,null,0,0,0,1,null,0,0,0,1,0],[0,0,0,1,1,0,1,0,0,0,1,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,1,1,1,1,0,1,1,1,0,0,0,1,0,null,0,1,0,0,1,1,1,1,0,0,1,0,0,0,0,0,0,null,0,1,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,0,null,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,1,null,1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,1,0,null,1,0,0,1,null,1,1,1,0,null,1,1,0,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,1,1,0,1,0,0,1,1,0,0,null,0,0,1,0,0,0,0,1,0,1,null,1,0,1,0,1,1,1,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,1,1,1,null,1,0,1,1,1,0,0,0,1,0,1,1,0,0,1,null,0,0,1,0,0,0,null,0,1,null,0,0,0,0,0,0,1,1,0,1,0,0,1,0,1,0,1,1,0,1,1,1,null,1,0,1,1,null,1,1,1,1,0,1,0,0,1,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,0,1,0,1,0,null,1,1,null,0,1,0,1,0,1,0,0,1,0,0,1,1,0,1,0,0,0,0,1,0,null,1,0,1,0,1,1,1,0,0,1,0,0,1,0,0,1,1,0,1,1,0,0,0,1,0,1,0,1,1,0,1,1,0,0,1,0,1,0,0,1,0,0,0,0,1,0,1,1,0,1,0,1,0,0,1,1,1,0,1,0,1,0,1,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,0,0,0,1,null,0,0,0,1,0],[0,0,0,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,1,0,1,1,1,1,0,1,0,0,0,1,0,null,0,1,0,1,1,1,1,1,0,0,1,0,0,0,0,0,0,null,0,1,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,0,null,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,0,1,1,null,1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,1,0,0,1,1,1,0,1,null,1,0,null,1,0,0,1,null,1,1,1,0,null,1,1,0,0,0,1,0,1,1,0,1,1,0,1,1,0,0,0,1,1,0,1,0,0,1,1,0,0,null,0,0,1,0,0,0,0,0,0,1,null,1,0,1,0,1,1,0,0,1,0,0,1,1,1,1,0,0,0,0,0,null,0,1,1,1,null,1,0,1,1,1,0,0,0,1,0,1,1,0,0,1,null,0,0,1,0,0,0,null,0,1,null,0,0,0,0,0,0,1,1,0,1,0,0,1,0,1,0,1,1,0,1,1,1,null,1,0,1,0,null,1,1,1,1,0,1,0,0,1,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,0,0,1,1,1,1,1,0,1,0,1,0,null,1,1,null,0,1,0,1,0,1,0,0,1,0,0,1,1,0,1,0,0,0,0,1,0,null,1,0,1,1,1,1,1,0,0,1,0,0,1,0,0,1,1,0,1,1,0,0,0,1,0,1,0,1,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0,0,1,0,1,1,0,1,0,1,0,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,null,0,0,1,null,0,0,0,1,0],[0,0,1,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,0,1,1,0,1,1,1,1,0,1,0,0,0,1,0,null,0,1,0,1,1,1,1,1,0,0,1,0,0,0,0,0,0,null,0,0,0,0,1,0,0,0,0,1,0,0,1,1,1,1,1,0,null,0,0,0,0,0,0,0,1,1,1,1,0,1,1,0,0,0,0,0,1,null,1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,1,0,0,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,0,1,1,0,0,null,0,0,1,1,0,0,0,null,0,1,null,1,0,1,0,1,1,0,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,1,1,null,0,0,1,1,1,0,0,0,1,0,1,1,0,0,1,null,0,0,1,0,0,0,null,0,1,null,0,0,0,0,0,0,1,1,0,1,1,0,1,0,1,0,1,1,0,1,1,1,null,1,0,0,0,null,1,1,1,1,0,1,0,1,1,0,1,0,1,1,0,1,0,1,0,0,1,0,0,0,0,1,1,1,0,1,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,1,0,1,0,null,1,1,null,0,1,0,1,0,1,0,0,1,0,0,1,1,0,1,0,0,0,0,1,0,null,1,0,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,0,1,1,1,0,0,1,0,1,0,0,1,0,1,0,0,0,1,0,1,0,0,1,0,0,1,0,1,0,1,1,0,1,0,1,0,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,null,0,0,1,null,0,0,1,1,0],[0,null,0,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,1,1,0,1,0,1,1,1,1,0,0,1,0,1,1,1,1,0,1,0,0,0,1,0,null,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,null,0,0,0,0,1,1,0,0,0,1,0,0,1,1,1,1,1,0,null,0,0,0,0,1,0,0,1,1,1,1,0,1,1,0,0,0,0,0,1,null,1,0,1,0,0,0,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,1,0,0,0,0,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,1,1,0,0,null,null,0,1,1,0,0,0,null,0,1,null,1,0,1,0,1,1,0,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,1,1,null,0,0,1,1,1,0,0,0,1,1,1,1,0,0,1,null,0,0,1,0,1,0,null,0,1,null,0,0,0,0,0,0,1,1,null,1,0,0,1,0,1,0,1,1,0,1,1,0,null,1,0,0,0,null,1,1,1,1,0,1,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0,0,0,0,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,1,0,1,0,null,1,1,null,0,1,0,1,0,1,0,0,1,0,0,1,1,0,1,0,0,0,0,1,0,null,1,0,1,1,1,1,1,1,0,1,0,0,1,0,1,1,1,0,1,1,0,0,0,1,0,1,0,0,1,0,1,0,0,0,1,0,1,0,0,1,0,1,1,1,1,0,1,1,0,1,0,1,0,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,null,0,0,1,null,0,0,1,1,0],[0,null,0,1,1,0,1,0,1,0,0,1,0,1,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,0,1,1,0,1,0,1,0,0,0,1,0,null,0,0,1,1,1,1,1,1,0,0,1,0,0,1,0,0,0,null,0,0,0,0,1,1,0,0,1,1,0,0,1,1,1,1,1,0,null,0,0,0,0,0,0,0,null,1,1,1,0,1,1,0,0,0,0,0,1,null,1,0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,1,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,0,0,0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,1,1,0,1,1,1,0,0,null,null,0,1,1,0,0,0,null,0,1,null,1,0,1,0,1,1,0,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,1,1,null,0,0,1,1,1,1,0,0,1,1,1,1,0,0,1,null,0,0,1,0,1,0,null,0,1,null,0,0,0,0,0,0,1,1,null,1,0,0,1,0,1,0,1,1,0,1,1,0,null,1,null,0,0,null,1,1,1,1,0,1,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0,0,0,0,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,1,0,1,0,null,1,1,null,0,1,0,1,0,1,0,0,1,0,null,1,1,0,1,0,0,0,0,1,0,null,1,0,1,1,1,1,1,1,0,1,0,0,1,1,1,1,1,1,1,1,0,0,0,1,0,1,0,0,1,0,1,0,0,0,1,0,1,0,1,1,0,1,1,1,1,0,1,1,0,1,0,1,0,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,null,0,0,1,null,0,0,1,1,0],[0,null,0,1,1,0,1,1,1,0,0,1,0,1,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,0,1,1,0,1,0,0,1,0,0,1,0,null,0,0,1,1,1,1,1,1,0,0,1,0,0,1,0,0,0,null,0,0,0,0,1,1,0,0,1,1,0,0,1,1,1,1,1,0,null,0,0,0,0,0,0,0,null,0,1,1,0,1,1,0,0,0,0,0,1,null,1,0,1,0,0,0,1,0,1,0,1,1,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,1,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,0,0,0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,1,1,0,1,1,1,0,0,null,null,0,1,1,0,0,0,null,0,1,null,1,0,1,0,0,1,0,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,0,1,null,0,0,1,1,1,1,0,0,1,1,0,1,0,0,1,null,0,1,1,1,1,0,null,0,1,null,0,0,1,0,0,0,1,1,null,1,0,0,1,0,1,0,1,1,0,1,1,0,null,1,null,0,0,null,1,1,1,1,0,1,0,1,1,0,1,0,0,1,0,1,0,1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,1,0,1,0,null,1,1,null,0,1,0,1,0,1,0,0,1,0,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,null,1,1,0,0,0,0,0,1,0,0,1,0,1,0,0,0,1,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,0,1,1,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,null,0,null,1,null,1,0,1,1,0],[null,null,0,1,1,0,1,1,1,0,0,1,0,1,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,0,1,1,0,1,1,0,1,0,0,0,1,null,0,0,1,1,null,1,1,1,0,0,1,0,0,1,0,0,1,null,1,0,0,0,0,1,0,0,1,1,0,0,1,1,1,1,1,0,null,0,0,0,0,0,0,0,null,0,1,1,0,1,1,0,0,0,0,0,1,null,1,1,1,0,0,0,1,0,1,0,1,1,0,1,1,0,1,null,1,0,1,0,0,0,1,1,1,1,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,0,0,0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,1,1,0,1,1,1,0,0,null,null,1,1,1,0,0,0,null,0,1,null,1,0,1,0,0,1,0,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,0,1,null,0,0,1,1,1,1,0,0,1,1,0,1,0,0,1,null,0,1,1,1,1,0,null,0,1,null,0,0,1,0,0,0,1,1,null,1,0,0,1,0,1,0,1,0,0,1,1,0,null,1,null,0,0,null,1,1,1,1,0,1,0,null,1,0,1,0,0,1,0,1,0,1,0,0,1,null,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,0,0,1,0,1,0,null,1,1,null,0,1,0,1,1,1,0,0,1,0,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,1,1,1,1,0,0,1,0,0,1,0,1,1,1,null,1,1,0,0,0,null,0,1,0,0,1,0,1,0,0,0,1,0,1,0,1,1,0,1,0,0,1,0,0,1,0,1,0,1,1,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,0,0,1,0,1,0,0,0,null,1,0,1,1,null,null,0,null,1,null,1,0,1,1,0],[null,null,0,0,1,0,1,0,1,0,0,1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,1,0,0,1,0,1,1,0,1,1,0,1,0,0,0,1,null,0,0,1,1,null,1,1,1,0,0,1,0,0,1,0,0,1,null,1,0,0,0,0,1,0,0,1,1,0,0,1,1,1,1,1,0,null,0,0,0,0,0,0,0,null,0,1,1,0,1,1,0,0,0,1,0,1,null,1,1,1,0,null,0,1,0,1,0,1,1,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,1,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,0,0,0,0,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,1,1,0,1,1,1,0,0,null,null,1,1,1,0,0,0,null,0,1,null,1,0,1,0,1,1,0,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,0,1,null,0,0,1,0,1,1,0,0,1,1,0,1,0,0,1,null,0,1,1,1,1,0,null,0,1,null,0,0,1,0,0,0,1,1,null,1,0,0,1,0,1,1,1,0,0,1,1,0,null,1,null,0,0,null,1,1,1,1,0,1,0,null,1,0,1,0,0,1,0,1,0,1,0,0,1,null,0,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,null,0,1,0,1,0,null,1,1,null,1,1,0,1,1,1,0,0,1,0,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,1,1,0,1,0,0,1,0,0,1,0,1,1,1,null,1,1,0,0,0,null,0,1,0,0,1,0,1,0,0,0,1,1,1,0,1,1,0,1,0,0,1,0,0,1,0,0,0,1,1,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,null,0,null,1,null,1,0,1,1,0],[null,null,0,0,1,1,0,0,0,0,0,1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,1,0,1,1,0,1,0,0,0,1,null,0,0,1,1,null,1,1,1,0,0,1,1,0,1,0,1,1,null,1,0,0,0,0,1,0,0,0,1,0,0,1,1,1,1,1,0,null,0,0,0,0,null,0,0,null,0,1,1,0,1,1,0,0,0,0,0,1,null,1,1,1,0,null,0,1,0,1,0,1,1,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,1,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,0,0,0,0,1,0,1,1,0,1,0,0,0,1,1,0,0,1,1,1,1,0,1,1,1,0,0,null,null,1,1,1,0,0,0,null,0,1,null,1,0,1,0,1,1,0,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,0,1,null,0,0,0,0,1,0,0,0,1,1,0,0,0,0,1,null,0,1,1,1,1,1,null,0,0,null,0,0,1,0,0,0,1,1,null,1,0,0,1,0,1,1,1,0,0,1,1,0,null,1,null,1,0,null,1,1,1,1,0,1,0,null,1,0,1,0,0,1,0,0,0,1,0,0,1,null,0,1,1,1,1,1,0,0,0,0,1,0,0,0,0,1,0,1,1,1,1,null,0,1,1,1,0,null,1,1,null,1,1,0,0,1,1,0,0,1,1,null,1,1,0,0,0,0,0,0,1,0,null,1,0,0,1,1,0,1,0,1,1,0,0,1,0,1,1,1,null,1,1,0,0,0,null,0,1,0,1,1,0,1,0,0,0,1,1,1,0,1,1,0,1,1,1,1,0,0,1,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,null,0,null,1,null,1,0,1,1,0],[null,null,0,0,1,1,null,1,0,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,1,0,1,1,0,0,0,0,0,1,null,0,0,1,1,null,1,1,1,0,0,1,1,0,1,0,1,1,null,1,0,0,0,0,1,0,0,0,1,0,0,1,1,1,1,1,0,null,0,0,0,0,null,0,0,null,0,1,1,0,1,1,0,0,0,0,0,1,null,1,0,1,0,null,0,1,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,0,0,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,1,1,1,0,1,1,0,0,0,null,null,1,1,1,0,0,0,null,0,1,null,1,0,1,0,1,0,0,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,0,1,null,0,0,0,0,1,0,0,0,1,1,0,0,0,0,1,null,0,1,1,1,1,1,null,0,0,null,0,0,0,0,0,0,1,1,null,0,0,0,1,0,0,1,1,0,0,1,1,1,null,1,null,1,0,null,1,1,1,1,0,1,0,null,1,0,1,0,0,1,0,0,0,1,0,0,1,null,0,1,1,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,1,1,1,null,0,1,1,1,0,null,1,0,null,1,1,0,0,1,1,0,0,1,1,null,1,1,0,0,0,1,0,0,1,0,null,1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,1,1,null,1,1,0,0,0,null,0,1,0,1,1,0,1,0,0,0,1,1,1,0,1,1,0,1,1,1,1,0,0,1,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,0,0,null,1,0,1,1,null,null,0,null,1,null,1,0,1,1,0],[null,null,0,0,1,1,null,1,0,0,0,1,0,1,0,1,0,1,0,1,0,1,null,1,0,1,1,0,0,1,0,1,1,0,1,1,0,0,0,0,0,1,null,0,0,1,1,null,1,1,1,0,1,1,1,0,1,0,1,1,null,1,0,0,0,0,1,0,0,0,1,0,1,1,1,1,1,1,0,null,0,0,0,0,null,0,0,null,0,1,1,0,1,1,0,null,0,0,0,1,null,1,0,1,0,null,0,1,0,1,0,1,1,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,0,0,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,1,1,1,0,1,1,0,0,0,null,null,1,1,1,0,0,0,null,0,1,null,1,0,1,0,1,0,1,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,0,1,null,1,0,0,0,1,0,0,0,1,1,0,0,0,0,1,null,0,1,1,1,1,1,null,0,0,null,0,0,0,0,0,0,0,1,null,0,0,0,1,0,0,1,1,0,0,1,1,1,null,1,null,1,0,null,1,1,1,1,0,1,null,null,1,0,1,0,0,1,0,1,0,1,0,0,1,null,0,1,1,1,1,1,0,0,0,0,1,0,0,0,0,1,0,0,1,1,1,null,0,1,1,1,0,null,1,null,null,1,1,0,0,1,1,0,0,1,1,null,1,1,0,0,0,1,0,0,1,0,null,1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,1,1,null,1,1,0,0,0,null,0,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,1,0,0,1,1,0,0,0,null,1,0,1,1,null,null,0,null,1,null,1,0,1,1,0],[null,null,null,0,1,1,null,0,0,0,0,1,0,1,null,1,0,1,0,1,0,1,null,1,1,1,1,0,0,1,0,1,1,0,1,1,0,0,0,0,0,1,null,0,0,1,1,null,1,1,1,0,1,1,1,0,1,0,1,1,null,1,0,0,0,0,1,0,0,0,1,0,1,1,1,1,1,1,0,null,0,0,0,0,null,0,0,null,0,1,1,0,1,1,0,null,0,0,0,1,null,1,0,1,0,null,0,1,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,1,0,null,1,0,0,1,null,1,1,0,0,null,1,0,0,0,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,1,1,1,0,1,1,0,0,0,null,null,1,1,0,0,0,0,null,0,1,null,1,0,1,0,1,0,1,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,0,1,null,1,0,1,0,1,0,0,0,1,1,0,0,0,0,1,null,1,1,1,1,1,1,null,0,0,null,0,0,1,0,0,null,0,1,null,0,0,1,1,0,0,1,1,0,0,1,1,1,null,1,null,1,0,null,1,1,1,1,0,1,null,null,1,0,1,0,0,1,0,1,0,1,0,0,1,null,0,1,1,1,1,1,0,0,0,0,1,1,0,0,0,1,0,0,1,1,1,null,0,1,1,1,0,null,1,null,null,1,1,0,0,1,1,0,1,0,1,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,1,1,null,1,1,0,0,0,null,0,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,1,0,0,1,1,0,0,0,null,1,0,1,1,null,null,0,null,1,null,1,0,1,1,0],[null,null,null,0,1,1,null,0,0,0,0,1,0,1,null,1,0,1,0,1,0,1,null,1,1,1,1,0,0,1,0,1,1,0,1,1,1,0,0,0,0,1,null,0,0,1,1,null,1,1,1,0,1,1,1,0,1,0,1,1,null,1,0,0,0,0,1,0,0,0,1,0,1,1,1,1,0,1,0,null,0,0,0,0,null,0,0,null,0,1,1,0,1,1,0,null,0,1,0,1,null,null,0,1,0,null,0,1,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,1,0,null,1,1,0,1,null,0,1,0,0,null,1,0,0,0,0,1,0,1,1,1,1,1,1,0,1,1,0,0,1,1,1,1,0,1,1,0,0,0,null,null,1,1,0,0,0,0,null,0,1,null,1,0,1,0,1,0,1,0,1,0,0,1,1,1,1,0,0,0,0,null,null,0,1,0,1,null,1,0,1,0,1,1,0,0,1,1,0,0,0,0,1,null,1,1,1,1,1,1,null,0,0,null,0,0,1,0,0,null,0,1,null,0,0,1,1,0,0,1,1,0,0,1,1,1,null,1,null,1,0,null,1,1,1,1,0,1,null,null,1,0,1,0,0,1,0,1,0,1,0,0,0,null,0,1,1,1,1,1,0,null,0,0,1,1,0,0,0,1,0,0,1,1,1,null,0,1,0,1,0,null,1,null,null,1,1,0,0,1,1,0,0,0,1,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,1,1,null,1,1,0,0,0,null,0,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,0,1,1,1,1,0,0,1,null,0,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,1,0,0,0,1,0,0,0,null,1,0,1,1,null,null,1,null,1,null,1,0,1,1,1],[null,null,null,0,1,1,null,0,0,0,0,1,1,1,null,1,0,1,0,1,0,1,null,1,1,1,1,0,0,1,0,1,1,0,1,1,1,0,0,0,0,1,null,0,0,1,1,null,1,1,1,0,1,1,1,0,1,0,1,1,null,1,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,0,0,null,0,0,null,0,1,1,0,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,1,0,null,1,1,0,1,null,0,1,0,0,null,1,0,0,0,0,1,0,1,0,1,1,1,1,0,1,1,0,0,1,1,1,1,1,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,0,0,0,null,null,0,1,0,1,null,1,0,1,0,1,1,0,0,0,1,0,0,0,0,1,null,1,1,1,0,1,1,null,0,0,null,0,0,1,0,0,null,1,1,null,0,0,1,1,0,0,1,1,0,0,1,1,0,null,1,null,1,0,null,1,1,1,1,0,1,null,null,1,0,1,0,0,1,0,1,0,1,0,0,0,null,0,1,1,1,1,1,0,null,0,0,1,1,0,0,0,1,0,0,1,1,1,null,1,1,0,1,0,null,1,null,null,1,1,0,0,1,1,0,0,0,1,null,1,1,0,0,0,0,0,1,1,0,null,1,0,1,0,1,0,1,1,1,0,0,0,1,0,1,1,1,null,1,1,0,0,0,null,0,1,0,1,1,1,1,0,1,0,1,1,0,0,0,1,0,1,1,1,1,1,0,1,null,0,0,1,1,1,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,0,0,null,0,1,0,0,0,null,1,0,1,1,null,null,1,null,1,null,1,0,1,1,1],[null,null,null,0,1,1,null,0,0,0,0,1,1,1,null,1,null,1,0,0,0,1,null,1,1,1,1,0,0,1,0,1,1,0,1,1,1,0,0,0,1,0,null,0,0,1,1,null,1,1,1,0,1,1,1,0,1,0,1,1,null,1,1,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,1,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,0,1,null,1,0,null,1,1,0,0,null,0,1,0,1,null,1,0,0,0,0,1,0,1,0,1,1,1,1,0,1,1,0,0,1,1,1,1,1,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,0,0,null,0,null,null,0,1,0,1,null,1,0,1,0,1,1,0,0,0,1,0,0,0,0,1,null,1,1,1,0,1,1,null,0,0,null,0,0,1,0,0,null,1,1,null,0,0,1,1,0,1,1,1,0,0,1,1,0,null,1,null,1,0,null,1,1,1,1,0,1,null,null,1,0,1,0,0,1,0,0,0,1,0,0,0,null,0,1,1,1,1,1,0,null,0,0,1,1,0,0,0,1,0,0,1,1,1,null,1,1,0,1,0,null,0,null,null,1,1,0,0,1,1,0,0,0,1,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,0,1,0,1,0,0,0,1,0,1,1,1,null,1,1,0,1,0,null,0,1,0,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,1,1,0,0,1,null,0,0,1,1,1,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,0,0,null,0,1,0,0,0,null,1,0,1,1,null,null,0,null,1,null,1,0,1,1,1],[null,null,null,0,1,0,null,0,0,0,0,1,0,1,null,1,null,1,0,0,0,1,null,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,1,0,null,0,0,1,1,null,1,1,1,0,1,1,1,0,1,1,1,1,null,1,1,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,1,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,0,1,null,1,0,null,1,1,0,0,null,0,1,0,1,null,1,0,0,0,0,1,0,1,1,1,1,1,1,0,1,1,0,0,1,1,1,1,0,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,0,null,1,0,1,0,1,0,0,0,1,0,1,1,1,1,1,0,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,0,0,1,1,0,0,0,0,1,null,1,0,1,0,0,1,null,0,0,null,0,0,1,0,0,null,1,1,null,0,0,1,1,0,1,1,1,0,0,1,1,0,null,1,null,0,0,null,1,1,1,1,0,0,null,null,1,0,1,0,0,1,0,0,0,1,0,0,0,null,0,1,1,1,1,1,0,null,0,0,1,1,0,0,0,1,0,0,1,1,1,null,1,1,0,1,0,null,0,null,null,1,1,0,0,1,1,0,0,0,1,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,0,1,0,1,0,0,0,1,1,1,1,1,null,1,1,0,1,0,null,0,1,0,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,1,1,0,1,1,null,0,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,1,0,0,null,0,1,0,0,0,null,1,0,1,1,null,null,1,null,1,null,1,0,1,1,1],[null,null,null,0,1,0,null,0,0,0,0,1,0,1,null,1,null,1,0,0,1,1,null,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,1,1,1,1,null,1,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,1,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,0,1,null,1,0,null,1,1,0,0,null,0,1,0,1,null,1,0,0,0,0,1,0,1,1,1,1,1,1,0,1,1,0,0,1,1,1,1,0,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,0,null,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,0,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,0,0,1,1,0,0,0,0,1,null,1,0,1,0,0,1,null,0,0,null,0,0,1,0,0,null,1,1,null,0,0,1,1,0,1,1,1,0,0,1,1,0,null,1,null,0,0,null,1,1,1,1,0,0,null,null,1,0,1,0,0,1,0,0,0,1,0,0,0,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,0,1,0,0,1,1,1,null,1,1,0,1,0,null,0,null,null,1,1,0,0,1,1,0,0,0,1,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,1,1,0,1,0,0,null,1,1,1,1,1,null,1,1,0,1,0,null,0,1,0,1,1,1,1,1,1,0,null,1,0,0,0,1,0,1,1,1,1,0,1,1,null,0,0,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1,0,1,1,0,0,null,0,1,0,0,0,null,1,0,1,1,null,null,1,null,1,null,1,0,1,1,1],[null,null,null,1,1,0,null,0,0,0,0,1,0,1,null,1,null,1,1,0,1,1,null,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,1,1,1,1,null,1,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,1,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,0,0,0,0,null,1,0,0,0,0,1,0,1,1,1,1,1,1,0,1,1,0,0,1,1,1,1,0,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,0,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,0,0,1,1,0,0,1,0,1,null,1,0,1,0,0,1,null,0,0,null,0,0,1,0,0,null,1,1,null,0,0,1,1,0,1,1,1,0,0,1,1,0,null,1,null,0,0,null,1,1,1,1,0,0,null,null,0,0,1,0,0,1,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,0,1,1,1,null,0,1,0,1,0,null,0,null,null,1,1,0,0,1,1,0,0,0,1,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,1,1,0,1,0,0,null,1,1,1,1,1,null,1,1,0,1,0,null,0,1,0,1,1,1,1,1,0,0,null,1,0,0,0,1,0,0,1,1,1,0,1,1,null,0,0,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1,0,1,1,1,0,null,0,1,0,0,0,null,1,0,1,1,null,null,1,null,1,null,1,0,1,1,1],[null,null,null,1,1,0,null,0,0,0,0,1,0,1,null,1,null,1,1,0,1,1,null,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,1,1,1,1,null,1,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,1,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,0,0,0,0,null,1,0,0,0,0,0,1,1,1,1,1,1,1,0,1,1,0,0,1,1,1,1,0,0,0,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,0,null,0,null,null,1,1,1,1,null,1,0,1,0,0,1,0,0,1,1,0,0,1,0,1,null,1,0,1,0,0,1,null,0,1,null,0,1,1,0,0,null,1,1,null,0,0,1,1,null,1,1,1,0,0,1,1,0,null,1,null,0,0,null,1,1,1,1,0,0,null,null,null,0,1,0,0,1,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,0,1,1,1,null,0,1,0,1,0,null,0,null,null,1,1,0,0,1,1,0,0,0,0,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,1,1,0,1,0,0,null,1,1,1,1,1,null,1,1,0,1,0,null,0,1,0,1,1,1,1,1,0,0,null,1,0,0,0,1,0,0,1,1,1,0,1,1,null,0,0,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1,0,1,1,1,0,null,0,1,0,0,0,null,1,0,0,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,1,0,null,0,0,0,0,1,0,1,null,1,null,0,1,0,0,1,null,0,1,1,1,0,0,1,0,1,0,0,1,1,1,0,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,1,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,1,0,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,0,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,0,1,0,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,0,1,1,1,1,1,0,1,0,1,1,0,0,1,1,1,1,0,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,0,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,0,0,1,1,0,0,1,0,1,null,1,0,0,0,0,1,null,0,1,null,0,1,1,0,0,null,1,1,null,0,0,1,1,null,1,1,1,0,0,1,1,0,null,1,null,1,0,null,1,1,1,1,1,0,null,null,null,0,1,0,0,1,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,0,1,1,1,null,0,1,0,1,0,null,0,null,null,1,1,0,0,null,1,0,0,0,0,null,1,1,0,0,0,0,0,0,1,0,null,1,0,1,0,1,1,1,0,1,1,0,null,1,1,1,0,1,null,1,1,0,1,0,null,0,1,0,1,1,1,1,1,0,0,null,1,0,0,0,1,0,0,1,1,1,0,1,1,null,0,0,1,1,0,0,1,0,0,1,0,0,0,0,0,0,1,0,1,1,1,0,null,0,1,0,0,0,null,1,0,1,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,0,0,null,0,0,0,0,1,0,1,null,1,null,0,1,0,0,1,null,0,1,1,1,0,0,0,0,1,0,0,1,1,1,0,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,1,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,1,0,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,0,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,1,1,1,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,1,1,1,1,1,1,0,1,0,1,1,0,0,1,1,1,1,0,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,0,0,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,0,1,0,0,1,null,0,1,null,0,1,1,0,0,null,1,1,null,0,0,1,1,null,1,1,1,0,0,1,1,0,null,1,null,1,0,null,1,1,1,1,1,0,null,null,null,0,1,0,0,1,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,0,1,1,1,null,0,1,0,1,0,null,0,null,null,1,1,0,0,null,1,0,0,0,0,null,1,1,0,0,null,0,0,0,1,0,null,1,0,1,null,1,1,1,0,1,1,0,null,1,1,1,0,1,null,1,1,0,1,0,null,0,1,0,1,1,1,1,1,0,0,null,1,0,0,0,1,0,0,1,0,1,0,1,1,null,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,1,0,1,1,1,0,null,0,1,0,0,0,null,1,0,1,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,0,0,null,0,0,0,0,1,0,1,null,1,null,0,1,0,0,1,null,0,1,1,1,0,1,0,0,1,0,0,1,1,0,0,0,0,1,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,1,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,1,0,1,0,1,0,null,null,0,1,0,null,0,1,null,1,1,1,0,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,1,1,1,0,1,1,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,1,1,1,1,1,1,0,1,0,1,1,0,0,1,1,1,1,0,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,0,0,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,0,1,1,0,1,null,0,1,null,0,1,1,0,0,null,1,1,null,0,0,1,1,null,1,1,1,0,0,1,1,0,null,1,null,1,0,null,1,1,1,1,1,0,null,null,null,0,1,0,0,1,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,1,1,1,1,null,0,1,0,1,0,null,0,null,null,1,1,0,0,null,1,0,0,0,0,null,1,1,0,0,null,0,null,0,1,0,null,1,0,1,null,1,1,1,0,1,1,null,null,1,1,1,0,1,null,1,1,0,1,0,null,0,1,0,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,0,1,0,0,1,null,0,0,1,1,null,0,1,1,0,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,0,1,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,0,0,null,0,0,0,0,1,0,1,null,1,null,0,1,0,0,1,null,0,1,1,1,0,1,0,0,1,0,0,1,1,0,0,0,0,1,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,1,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,1,0,1,0,1,0,null,null,0,1,0,null,0,1,null,1,1,1,0,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,0,0,1,1,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,1,1,1,1,1,1,0,1,0,1,0,0,0,1,1,1,1,0,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,0,1,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,0,1,1,0,1,null,0,1,null,0,0,1,0,0,null,0,1,null,0,0,1,1,null,1,1,1,0,0,1,1,0,null,0,null,1,0,null,1,1,1,1,1,0,null,null,null,0,1,0,0,0,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,1,1,1,1,null,0,1,0,1,0,null,0,null,null,0,1,0,0,null,1,0,null,0,0,null,1,1,0,0,null,0,null,0,1,0,null,1,0,1,null,1,1,1,0,1,1,null,null,1,1,1,0,1,null,1,0,0,1,0,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,0,1,0,0,1,null,0,0,1,1,null,0,1,1,1,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,0,1,null,1,null,1,null,0,1,0,0,1,null,0,1,1,1,0,1,0,0,1,0,0,1,1,0,0,0,0,1,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,1,1,1,1,null,0,0,1,0,0,1,0,1,0,0,0,1,1,0,1,0,1,0,null,null,0,1,0,null,0,1,null,1,1,1,0,1,1,0,null,1,0,0,1,null,null,0,1,0,null,0,1,0,1,1,1,0,1,1,1,1,1,null,1,0,0,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,null,1,1,1,1,1,0,1,0,1,0,0,0,1,1,1,1,0,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,0,1,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,0,1,1,0,1,null,0,1,null,0,0,1,0,0,null,0,1,null,null,0,1,1,null,1,1,1,0,0,1,1,0,null,0,null,0,0,null,1,1,1,1,1,0,null,null,null,0,1,0,0,0,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,1,0,1,1,null,0,1,0,1,0,null,0,null,null,0,1,0,0,null,1,0,null,0,0,null,0,1,0,0,null,0,null,0,1,0,null,1,0,1,null,1,1,1,0,1,1,null,null,1,0,1,0,1,null,1,0,1,1,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,0,1,0,0,1,null,0,0,1,1,null,0,1,1,1,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,0,1,null,1,null,1,null,0,1,0,0,1,null,0,0,1,1,0,1,0,0,1,0,0,1,1,0,0,0,0,1,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,1,1,1,1,null,0,0,1,0,0,1,0,1,0,0,0,1,1,0,1,0,1,0,null,null,0,1,0,null,0,1,null,1,1,1,1,1,1,0,null,1,0,0,1,null,null,0,0,0,null,0,1,0,1,1,1,0,1,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,null,1,1,1,1,1,0,1,0,1,0,0,0,1,1,1,1,1,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,0,1,1,1,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,0,1,1,0,1,null,0,1,null,0,0,1,0,1,null,0,1,null,null,0,1,1,null,1,1,1,0,0,1,0,0,null,0,null,0,0,null,1,1,1,1,null,0,null,null,null,0,1,0,0,0,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,1,0,1,1,null,0,1,0,1,0,null,0,null,null,0,1,0,0,null,1,0,null,0,0,null,0,1,0,0,null,0,null,0,1,0,null,1,0,1,null,1,1,1,0,1,1,null,null,1,0,1,0,1,null,1,0,1,0,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,0,1,0,0,1,null,0,0,1,1,null,0,1,1,1,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,0,null,1,null,1,1,1,1,1],[null,null,null,1,0,0,null,0,1,0,0,1,null,1,null,1,null,0,1,0,0,1,null,0,0,1,1,0,1,0,0,1,0,0,1,1,0,1,0,0,1,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,1,1,1,0,null,1,0,0,1,null,null,0,0,0,null,0,1,0,1,1,1,0,1,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,null,1,1,1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,0,1,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,0,1,1,0,1,null,0,1,null,0,0,1,0,1,null,0,1,null,null,0,1,1,null,1,1,1,0,0,1,0,0,null,1,null,0,0,null,1,1,1,1,null,0,null,null,null,0,1,0,0,0,0,0,0,1,0,0,null,null,0,1,1,1,0,1,0,null,0,0,1,1,0,0,1,1,0,1,0,1,1,null,0,1,0,1,0,null,0,null,null,0,1,0,0,null,1,0,null,0,1,null,0,1,0,0,null,0,null,0,1,null,null,1,0,1,null,1,1,1,0,0,1,null,null,null,0,0,0,1,null,1,0,1,0,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,0,1,0,0,1,null,0,0,1,1,null,1,0,1,1,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,0,null,1,null,1,1,1,1,1],[null,null,null,1,0,0,null,0,1,0,0,1,null,1,null,1,null,0,1,0,0,1,null,0,0,1,1,0,1,1,0,1,0,0,1,1,0,1,0,0,1,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,1,1,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,1,0,null,0,0,null,1,1,1,1,1,1,0,null,1,0,1,1,null,null,0,0,0,null,0,1,0,1,1,1,0,1,1,0,1,1,null,1,0,1,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,null,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,1,1,0,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,0,1,1,null,1,null,0,1,null,0,0,1,0,1,null,0,1,null,null,0,1,1,null,1,1,1,0,0,1,0,0,null,1,null,0,0,null,1,1,1,1,null,0,null,null,null,0,1,0,0,0,0,0,0,1,0,0,null,null,null,1,1,1,0,1,0,null,0,0,1,1,0,1,1,1,null,1,0,1,1,null,0,1,0,1,0,null,0,null,null,0,1,0,0,null,1,0,null,0,1,null,0,1,0,0,null,0,null,0,1,null,null,1,0,0,null,1,1,1,0,0,1,null,null,null,0,0,0,1,null,1,0,1,0,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,0,0,0,0,1,null,null,0,1,1,null,1,0,1,1,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,0,null,1,null,1,1,1,1,1],[null,null,null,1,0,0,null,0,1,0,0,1,null,1,null,1,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,1,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,1,0,null,0,0,null,0,1,1,0,1,1,0,null,1,0,1,1,null,null,0,0,0,null,0,1,0,1,1,1,0,1,1,0,1,1,null,1,0,0,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,null,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,1,1,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,1,1,1,null,1,null,0,1,null,1,0,1,0,1,null,0,1,null,null,0,1,1,null,0,1,1,0,0,1,0,0,null,1,null,0,0,null,1,1,1,1,null,1,null,null,null,0,1,0,0,0,0,0,0,1,0,0,null,null,null,1,1,1,0,0,0,null,1,0,1,0,0,1,1,1,null,1,0,1,1,null,0,1,0,1,0,null,0,null,null,0,1,0,0,null,1,0,null,0,1,null,0,1,0,0,null,0,null,0,1,null,null,1,0,0,null,1,1,1,0,0,1,null,null,null,0,0,0,1,null,1,0,0,1,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,0,0,0,0,1,null,null,0,1,1,null,1,0,1,0,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,0,null,1,null,1,1,0,1,1],[null,null,null,1,0,0,null,0,1,0,0,1,null,1,null,1,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,0,null,null,0,1,0,null,0,0,null,0,1,1,0,1,1,0,null,1,1,1,1,null,null,0,0,0,null,0,1,0,1,1,1,0,0,1,0,1,1,null,1,0,0,0,0,0,1,1,1,0,1,null,0,0,null,1,1,0,0,null,1,null,0,0,null,1,0,0,0,0,null,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,1,1,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,0,1,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,1,1,0,null,1,null,0,1,null,0,0,1,0,1,null,0,1,null,null,0,1,1,null,1,1,1,0,0,1,0,0,null,1,null,0,0,null,1,1,1,1,null,1,null,null,null,0,1,0,0,0,0,0,0,1,0,0,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,1,1,1,null,1,0,1,1,null,0,1,0,1,0,null,0,null,null,0,1,0,0,null,1,0,null,0,1,null,0,1,0,0,null,0,null,0,1,null,null,1,0,0,null,1,1,1,0,0,1,null,null,null,0,0,0,1,null,1,0,0,1,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,null,0,0,0,1,null,null,0,1,1,null,1,0,1,0,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,1,null,1,null,1,1,0,1,1],[null,null,null,1,0,0,null,0,1,0,0,1,null,1,null,1,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,0,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,1,1,1,1,1,0,null,1,0,1,1,null,null,0,0,0,null,0,1,0,1,1,1,0,0,1,0,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,0,0,null,1,1,0,0,null,0,null,0,0,null,1,0,0,0,0,null,1,1,0,1,1,0,1,0,1,1,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,0,1,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,1,null,0,null,1,null,0,1,null,1,0,1,0,1,null,0,1,null,null,0,1,1,null,1,0,1,0,0,1,0,0,null,1,null,0,0,null,1,1,1,1,null,1,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,1,1,1,null,1,0,1,1,null,0,1,0,1,0,null,null,null,null,0,1,0,0,null,1,0,null,0,1,null,0,1,0,0,null,0,null,0,1,null,null,1,0,0,null,1,1,1,0,0,1,null,null,null,0,1,0,1,null,1,null,0,1,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,null,0,0,0,1,null,null,0,1,1,null,1,0,1,0,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,1,1,null,1,null,1,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,0,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,1,1,1,1,1,0,null,1,0,1,1,null,null,0,0,0,null,0,1,0,1,1,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,0,0,null,1,1,0,0,null,0,null,0,0,null,1,0,0,0,0,null,1,1,0,null,1,0,1,0,1,0,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,0,0,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,1,null,0,null,1,null,0,1,null,1,0,1,0,1,null,0,1,null,null,0,1,1,null,1,0,1,0,0,1,0,0,null,1,null,0,0,null,1,1,1,1,null,1,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,0,1,1,null,1,0,1,1,null,0,1,0,1,0,null,null,null,null,0,1,0,0,null,1,0,null,0,1,null,0,1,0,1,null,0,null,0,1,null,null,1,0,0,null,1,1,1,null,0,1,null,null,null,0,1,0,1,null,1,null,0,1,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,null,0,1,0,1,null,null,0,1,1,null,1,0,1,0,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,0,null,1,null,1,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,1,1,null,1,null,0,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,1,0,null,1,0,1,1,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,0,1,0,0,0,0,0,1,0,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,1,1,1,1,1,0,null,1,0,1,1,null,null,0,0,0,null,0,1,0,1,1,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,0,0,null,1,1,0,0,null,0,null,0,0,null,1,0,0,0,1,null,1,1,0,null,1,0,1,0,1,0,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,0,null,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,0,1,0,0,1,0,0,null,1,1,null,0,null,1,null,0,1,null,1,0,1,0,1,null,0,1,null,null,0,1,1,null,1,0,1,0,0,1,1,0,null,1,null,0,0,null,1,1,1,1,null,1,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,0,1,1,null,1,0,1,1,null,0,1,0,1,0,null,null,null,null,0,1,0,0,null,1,0,null,0,1,null,0,1,0,1,null,0,null,0,1,null,null,1,0,0,null,1,1,1,null,0,1,null,null,null,0,1,0,1,null,1,null,0,1,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,null,0,1,0,1,null,null,0,1,1,null,1,1,1,0,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,null,null,1,null,1,1,null,null,1,null,1,null,1,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,1,1,null,1,null,null,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,1,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,1,1,0,0,0,0,0,1,0,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,1,1,1,1,1,0,null,1,0,1,1,null,null,0,0,0,null,0,1,0,1,1,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,0,0,null,1,1,0,0,null,0,null,0,0,null,1,0,0,0,1,null,1,1,0,null,1,0,1,0,1,1,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,1,null,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,0,1,0,0,1,0,0,null,1,1,null,null,null,1,null,0,1,null,0,0,1,0,1,null,0,1,null,null,0,1,1,null,1,0,1,0,0,1,1,0,null,1,null,1,1,null,1,1,1,1,null,1,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,0,1,1,null,1,0,1,1,null,0,1,0,1,0,null,null,null,null,0,1,0,0,null,1,null,null,0,1,null,0,1,0,1,null,0,null,0,1,null,null,1,0,0,null,1,1,1,null,0,1,null,null,null,0,1,0,1,null,1,null,0,1,null,null,0,1,null,1,1,1,1,1,0,0,null,0,0,0,0,1,0,0,1,null,0,1,0,1,null,null,0,1,1,null,1,null,1,0,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,null,null,1,null,1,1,null,null,1,null,1,null,0,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,1,1,null,1,null,null,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,0,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,1,1,0,0,0,0,0,1,0,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,1,1,1,1,1,0,null,1,0,1,1,null,null,0,0,0,null,0,1,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,1,0,null,1,1,0,0,null,0,null,0,0,null,1,0,0,0,1,null,1,1,0,null,1,0,1,0,1,1,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,0,0,0,0,1,0,1,1,1,1,null,1,1,1,1,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,0,1,0,0,1,0,0,null,1,1,null,null,null,1,null,0,1,null,0,0,1,0,1,null,1,1,null,null,0,1,1,null,1,0,1,0,0,1,1,1,null,1,null,1,1,null,1,1,1,1,null,1,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,null,1,1,null,1,0,1,1,null,0,1,0,1,0,null,null,null,null,0,1,0,0,null,1,null,null,0,1,null,0,1,0,1,null,0,null,0,1,null,null,1,0,0,null,1,1,1,null,0,1,null,null,null,0,1,0,1,null,1,null,0,1,null,null,0,1,null,1,1,1,0,1,0,0,null,0,0,0,0,1,0,0,1,null,0,1,0,1,null,null,0,1,1,null,1,null,1,0,1,0,0,0,0,0,0,1,null,1,1,1,0,null,1,1,0,0,null,null,1,null,1,1,null,null,1,null,1,null,0,0,1,1,1],[null,null,null,1,0,0,null,0,1,0,1,1,null,1,null,null,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,0,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,1,1,0,0,0,0,0,1,0,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,1,1,1,1,1,0,null,1,0,1,1,null,null,0,0,0,null,null,1,0,1,0,1,0,0,1,1,1,1,null,1,0,0,0,0,0,1,1,1,1,1,null,1,0,null,1,1,0,0,null,0,null,0,0,null,1,0,0,0,1,null,1,1,0,null,1,0,1,0,1,1,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,0,0,0,0,1,0,1,1,1,0,null,1,1,1,0,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,1,1,0,0,1,0,0,null,1,1,null,null,null,1,null,0,1,null,0,0,1,0,1,null,0,1,null,null,0,1,1,null,1,0,1,0,0,1,0,0,null,1,null,1,1,null,1,1,1,1,null,1,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,null,1,1,null,1,0,1,1,null,0,1,0,1,0,null,null,null,null,0,1,0,0,null,1,null,null,0,1,null,0,1,0,1,null,0,null,1,1,null,null,1,0,0,null,1,1,1,null,1,1,null,null,null,0,1,0,1,null,1,null,0,null,null,null,0,1,null,1,1,1,0,0,0,0,null,0,0,0,0,1,0,0,1,null,0,1,0,1,null,null,0,1,1,null,1,null,1,0,1,0,0,0,0,0,0,1,null,1,1,0,0,null,1,1,0,0,null,null,1,null,1,1,null,null,1,null,1,null,0,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,1,1,null,1,null,null,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,0,0,0,null,1,0,1,0,null,1,1,1,0,1,1,1,0,0,1,1,1,null,0,0,0,0,1,1,0,null,0,0,0,1,1,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,0,1,1,1,1,0,null,1,0,1,1,null,null,0,null,0,null,null,1,0,1,0,1,0,0,1,1,1,1,null,1,0,null,0,0,0,1,1,1,1,1,null,1,0,null,1,1,0,0,null,0,null,0,0,null,1,0,0,0,1,null,1,1,0,null,1,0,1,0,1,0,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,0,0,0,0,1,0,1,1,1,0,null,1,1,1,0,1,0,null,0,null,null,0,1,1,1,null,0,0,1,0,0,1,1,0,1,1,0,0,1,0,0,null,1,1,null,null,null,1,null,0,1,null,0,0,1,0,1,null,0,1,null,null,0,1,0,null,1,0,1,0,0,1,0,0,null,1,null,1,1,null,1,1,1,1,null,0,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,null,1,1,null,0,0,1,1,null,0,1,0,1,0,null,null,null,null,1,1,0,0,null,1,null,null,0,1,null,0,1,0,1,null,0,null,0,1,null,null,1,0,0,null,1,1,1,null,1,1,null,null,null,0,1,0,1,null,1,null,0,null,null,null,0,1,null,1,1,0,0,0,0,0,null,0,0,0,0,1,0,0,1,null,0,1,0,1,null,null,0,1,1,null,1,null,1,null,1,0,null,0,0,0,0,1,null,1,1,0,0,null,1,1,0,0,null,null,1,null,1,1,null,null,1,null,1,null,0,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,1,1,null,1,null,null,null,0,1,0,0,1,null,1,0,1,1,0,1,1,0,1,0,1,1,null,0,1,0,0,0,0,null,1,0,1,0,null,1,1,1,0,1,null,1,0,0,1,1,1,null,0,0,0,0,1,1,0,null,0,0,0,1,1,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,0,1,1,1,1,0,null,1,0,1,1,null,null,0,null,1,null,null,1,0,1,0,1,0,0,1,1,1,1,null,1,0,null,0,0,0,0,1,1,1,1,null,1,0,null,1,1,0,0,null,0,null,0,0,null,1,0,0,0,1,null,1,1,0,null,1,0,1,0,1,0,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,0,null,1,1,1,0,1,0,null,0,null,null,0,1,0,1,null,1,0,1,0,0,1,1,0,1,1,0,0,1,0,0,null,1,1,null,null,null,1,null,0,1,null,0,0,1,0,1,null,0,0,null,null,0,1,0,null,1,0,1,0,0,1,0,0,null,1,null,1,1,null,1,1,1,1,null,0,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,null,1,1,null,0,0,1,1,null,0,1,0,1,0,null,null,null,null,1,1,0,0,null,1,null,null,0,1,null,0,1,null,1,null,0,null,0,1,null,null,1,0,0,null,1,1,1,null,1,1,null,null,null,1,1,0,1,null,1,null,0,null,null,null,0,1,null,1,1,0,0,0,0,0,null,0,0,0,0,1,0,0,1,null,0,1,0,1,null,null,0,1,1,null,1,null,1,null,1,0,null,0,0,0,0,1,null,1,1,0,0,null,1,1,0,0,null,null,1,null,1,1,null,null,1,null,1,null,0,0,0,1,1],[null,null,null,1,0,0,null,0,1,0,1,1,null,1,null,null,null,0,1,0,1,1,null,1,0,1,1,0,1,1,0,1,0,0,1,null,0,1,0,0,0,0,null,1,0,1,0,null,1,1,1,0,1,null,1,0,0,1,1,1,null,0,0,0,0,1,1,0,null,0,0,0,1,1,1,1,null,1,0,null,null,0,1,0,null,0,0,null,0,0,1,1,1,1,0,null,1,0,1,1,null,null,0,null,1,null,null,1,0,1,0,1,0,0,1,0,1,1,null,1,0,null,0,0,0,0,0,1,1,1,null,1,0,null,1,1,0,1,null,0,null,0,0,null,1,0,0,0,1,null,1,1,0,null,1,0,1,0,1,0,1,0,1,1,1,1,0,1,1,0,0,1,null,null,1,1,0,0,0,0,null,0,1,null,1,0,0,0,1,0,1,1,1,0,null,1,1,1,0,1,0,null,0,null,null,0,1,0,1,null,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,null,1,1,null,null,null,1,null,0,1,null,0,0,1,0,1,null,0,0,null,null,0,1,0,null,1,0,1,0,0,1,0,0,null,1,null,1,1,null,1,1,1,1,null,0,null,null,null,0,1,1,0,0,0,0,0,1,0,1,null,null,null,1,1,1,0,null,0,null,1,0,1,0,0,null,1,1,null,0,0,1,1,null,0,1,0,1,0,null,null,null,null,1,1,0,0,null,1,null,null,0,1,null,0,1,null,1,null,0,null,0,1,null,null,1,0,0,null,0,1,1,null,1,1,null,null,null,1,1,0,1,null,1,null,1,null,null,null,0,1,null,1,1,0,0,0,0,0,null,0,0,0,0,1,0,0,1,null,0,1,0,1,null,null,0,1,1,null,1,null,1,null,1,0,null,0,0,0,0,1,null,1,1,0,0,null,1,1,0,0,null,null,1,null,1,1,null,null,1,null,1,null,0,0,0,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>week<\/th>\n      <th>arrest<\/th>\n      <th>fin<\/th>\n      <th>age<\/th>\n      <th>race<\/th>\n      <th>wexp<\/th>\n      <th>mar<\/th>\n      <th>paro<\/th>\n      <th>prio<\/th>\n      <th>educ<\/th>\n      <th>work1<\/th>\n      <th>work2<\/th>\n      <th>work3<\/th>\n      <th>work4<\/th>\n      <th>work5<\/th>\n      <th>work6<\/th>\n      <th>work7<\/th>\n      <th>work8<\/th>\n      <th>work9<\/th>\n      <th>work10<\/th>\n      <th>work11<\/th>\n      <th>work12<\/th>\n      <th>work13<\/th>\n      <th>work14<\/th>\n      <th>work15<\/th>\n      <th>work16<\/th>\n      <th>work17<\/th>\n      <th>work18<\/th>\n      <th>work19<\/th>\n      <th>work20<\/th>\n      <th>work21<\/th>\n      <th>work22<\/th>\n      <th>work23<\/th>\n      <th>work24<\/th>\n      <th>work25<\/th>\n      <th>work26<\/th>\n      <th>work27<\/th>\n      <th>work28<\/th>\n      <th>work29<\/th>\n      <th>work30<\/th>\n      <th>work31<\/th>\n      <th>work32<\/th>\n      <th>work33<\/th>\n      <th>work34<\/th>\n      <th>work35<\/th>\n      <th>work36<\/th>\n      <th>work37<\/th>\n      <th>work38<\/th>\n      <th>work39<\/th>\n      <th>work40<\/th>\n      <th>work41<\/th>\n      <th>work42<\/th>\n      <th>work43<\/th>\n      <th>work44<\/th>\n      <th>work45<\/th>\n      <th>work46<\/th>\n      <th>work47<\/th>\n      <th>work48<\/th>\n      <th>work49<\/th>\n      <th>work50<\/th>\n      <th>work51<\/th>\n      <th>work52<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":100,"columnDefs":[{"className":"dt-right","targets":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61]}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="分析の実行" class="section level4 hasAnchor" number="3.2.3.2">
+<h4><span class="header-section-number">3.2.3.2</span> 分析の実行<a href="Chapter3.html#分析の実行" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>eha</code>パッケージの<code>phreg</code>関数を用いる。従属変数としては、期間中に事象を経験したかの変数(<code>arrest</code>)と、事象を経験した場合はその時間を、しなかった場合は打ち切りの時間を示す変数(<code>week</code>)を入れる必要がある。</p>
+<p>以下のように実行できる。指数分布はワイブル分布で<span class="math inline">\(a=1\)</span>のときなので、<code>dist = "weibull</code>で<code>shape = 1</code>としてあげればよい。</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="Chapter3.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 指数回帰モデル</span></span>
+<span id="cb27-2"><a href="Chapter3.html#cb27-2" aria-hidden="true" tabindex="-1"></a>mod_exp <span class="ot">&lt;-</span> <span class="fu">phreg</span>(<span class="fu">Surv</span>(week, arrest) <span class="sc">~</span> fin <span class="sc">+</span> age <span class="sc">+</span> race <span class="sc">+</span> wexp <span class="sc">+</span> mar </span>
+<span id="cb27-3"><a href="Chapter3.html#cb27-3" aria-hidden="true" tabindex="-1"></a>                 <span class="sc">+</span> paro <span class="sc">+</span> prio, <span class="at">data =</span> recid, <span class="at">dist =</span> <span class="st">&quot;weibull&quot;</span>, <span class="at">shape =</span> <span class="dv">1</span>)</span>
+<span id="cb27-4"><a href="Chapter3.html#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="Chapter3.html#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="do">## ゴンぺルツ回帰モデル</span></span>
+<span id="cb27-6"><a href="Chapter3.html#cb27-6" aria-hidden="true" tabindex="-1"></a>mod_gom <span class="ot">&lt;-</span> <span class="fu">phreg</span>(<span class="fu">Surv</span>(week, arrest) <span class="sc">~</span> fin <span class="sc">+</span> age <span class="sc">+</span> race <span class="sc">+</span> wexp <span class="sc">+</span> mar </span>
+<span id="cb27-7"><a href="Chapter3.html#cb27-7" aria-hidden="true" tabindex="-1"></a>                 <span class="sc">+</span> paro <span class="sc">+</span> prio, <span class="at">data =</span> recid, <span class="at">dist =</span> <span class="st">&quot;gompertz&quot;</span>)</span>
+<span id="cb27-8"><a href="Chapter3.html#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="Chapter3.html#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="do">## ワイブル回帰モデル</span></span>
+<span id="cb27-10"><a href="Chapter3.html#cb27-10" aria-hidden="true" tabindex="-1"></a>mod_wei <span class="ot">&lt;-</span> <span class="fu">phreg</span>(<span class="fu">Surv</span>(week, arrest) <span class="sc">~</span> fin <span class="sc">+</span> age <span class="sc">+</span> race <span class="sc">+</span> wexp <span class="sc">+</span> mar </span>
+<span id="cb27-11"><a href="Chapter3.html#cb27-11" aria-hidden="true" tabindex="-1"></a>                 <span class="sc">+</span> paro <span class="sc">+</span> prio, <span class="at">data =</span> recid, <span class="at">dist =</span> <span class="st">&quot;weibull&quot;</span>)</span></code></pre></div>
+<p>結果は以下の通りである。<code>Coef</code>は偏回帰係数の推定値を、<code>Exp(Coef)</code>は<span class="math inline">\(e^{偏回帰係数}\)</span>を、<code>se(Coef)</code>は偏回帰係数の標準誤差を表している。</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="Chapter3.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 指数回帰モデル  </span></span>
+<span id="cb28-2"><a href="Chapter3.html#cb28-2" aria-hidden="true" tabindex="-1"></a>mod_exp</span></code></pre></div>
+<pre><code>## Call:
+## phreg(formula = Surv(week, arrest) ~ fin + age + race + wexp + 
+##     mar + paro + prio, data = recid, dist = &quot;weibull&quot;, shape = 1)
+## 
+## Covariate          W.mean      Coef Exp(Coef)  se(Coef)    Wald p
+## fin                 0.511    -0.366     0.693     0.191     0.055 
+## age                24.765    -0.056     0.946     0.022     0.011 
+## race                0.872     0.305     1.357     0.308     0.322 
+## wexp                0.596    -0.147     0.864     0.212     0.488 
+## mar                 0.132    -0.427     0.652     0.381     0.263 
+## paro                0.622    -0.083     0.921     0.196     0.673 
+## prio                2.841     0.086     1.089     0.028     0.002 
+## 
+## log(scale)                    4.051               0.586     0.000 
+## 
+##  Shape is fixed at  1 
+## 
+## Events                    114 
+## Total time at risk         19809 
+## Max. log. likelihood      -686.37 
+## LR test statistic         31.22 
+## Degrees of freedom        7 
+## Overall p-value           5.65729e-05</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="Chapter3.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ゴンぺルツ回帰モデル</span></span>
+<span id="cb30-2"><a href="Chapter3.html#cb30-2" aria-hidden="true" tabindex="-1"></a>mod_gom</span></code></pre></div>
+<pre><code>## Call:
+## phreg(formula = Surv(week, arrest) ~ fin + age + race + wexp + 
+##     mar + paro + prio, data = recid, dist = &quot;gompertz&quot;)
+## 
+## Covariate          W.mean      Coef Exp(Coef)  se(Coef)    Wald p
+## fin                 0.511    -0.381     0.683     0.191     0.046 
+## age                24.765    -0.057     0.944     0.022     0.009 
+## race                0.872     0.313     1.367     0.308     0.310 
+## wexp                0.596    -0.148     0.862     0.212     0.485 
+## mar                 0.132    -0.435     0.648     0.382     0.255 
+## paro                0.622    -0.082     0.921     0.196     0.674 
+## prio                2.841     0.092     1.096     0.029     0.001 
+## 
+## log(scale)                    3.894               0.311     0.000 
+## log(shape)                   -0.676               0.816     0.408 
+## 
+## Events                    114 
+## Total time at risk         19809 
+## Max. log. likelihood      -681.14 
+## LR test statistic         33.35 
+## Degrees of freedom        7 
+## Overall p-value           2.27754e-05</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="Chapter3.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ワイブル回帰モデル  </span></span>
+<span id="cb32-2"><a href="Chapter3.html#cb32-2" aria-hidden="true" tabindex="-1"></a>mod_wei</span></code></pre></div>
+<pre><code>## Call:
+## phreg(formula = Surv(week, arrest) ~ fin + age + race + wexp + 
+##     mar + paro + prio, data = recid, dist = &quot;weibull&quot;)
+## 
+## Covariate          W.mean      Coef Exp(Coef)  se(Coef)    Wald p
+## fin                 0.511    -0.382     0.682     0.191     0.046 
+## age                24.765    -0.057     0.944     0.022     0.009 
+## race                0.872     0.316     1.371     0.308     0.306 
+## wexp                0.596    -0.150     0.861     0.212     0.481 
+## mar                 0.132    -0.437     0.646     0.382     0.253 
+## paro                0.622    -0.083     0.921     0.196     0.673 
+## prio                2.841     0.092     1.097     0.029     0.001 
+## 
+## log(scale)                    3.990               0.419     0.000 
+## log(shape)                    0.339               0.089     0.000 
+## 
+## Events                    114 
+## Total time at risk         19809 
+## Max. log. likelihood      -679.92 
+## LR test statistic         33.42 
+## Degrees of freedom        7 
+## Overall p-value           2.2149e-05</code></pre>
+<p>3つのモデルから推定されたハザード関数を描画したのが図<a href="Chapter3.html#fig:fig-hazardrate">3.1</a>である。定義通り、指数回帰モデルでは時間に依らずハザード率が一定であることが分かる。</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="Chapter3.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.ggplot</span>(<span class="sc">~</span><span class="fu">plot</span>(mod_exp, <span class="at">xlab =</span> <span class="st">&quot;week&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;hazard rate&quot;</span>, <span class="at">main =</span> <span class="st">&quot;exponential model&quot;</span>))<span class="sc">+</span></span>
+<span id="cb34-2"><a href="Chapter3.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ggplot</span>(<span class="sc">~</span><span class="fu">plot</span>(mod_gom, <span class="at">xlab =</span> <span class="st">&quot;week&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;hazard rate&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Gompertz model&quot;</span>))<span class="sc">+</span></span>
+<span id="cb34-3"><a href="Chapter3.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ggplot</span>(<span class="sc">~</span><span class="fu">plot</span>(mod_wei, <span class="at">xlab =</span> <span class="st">&quot;week&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;hazard rate&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Weibull model&quot;</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-hazardrate"></span>
+<img src="SurvivalAnalysis_Using_R_files/figure-html/fig-hazardrate-1.png" alt="モデルから推定されたハザード関数" width="1344" />
+<p class="caption">
+図3.1: モデルから推定されたハザード関数
+</p>
+</div>
+<p>各モデルの偏回帰係数の推定値を比較したものが以下の表である(表<a href="Chapter3.html#tab:tab-modelcomparison">3.1</a>)。３つのモデルの推定結果はほとんど変わらない。いずれのモデルでも有意な影響を持っていたのは<code>age</code>と<code>prio</code>であり、<code>fin</code>はワイブル回帰モデルのみで有意になった。</p>
+<p>偏回帰係数は、ほかの変数の影響を統制したうえでその独立変数が1増加したときにハザード率の対数(式<a href="Chapter3.html#eq:ht-exp">(3.2)</a> ~ 式<a href="Chapter3.html#eq:ht-wei">(3.6)</a>を思い出してほしい)がどの程度増加するかを表している。例えば指数回帰モデルでは、表<a href="Chapter3.html#tab:tab-modelcomparison">3.1</a>の偏回帰係数の推定値(<code>Coef(exp)</code>)より、他の変数の影響をコントロールしたときに年齢(<code>age</code>)が1歳上がるとハザード率の対数が0.056低下する。より直感的に理解するためには、<span class="math inline">\(e^{偏回帰係数}\)</span>を求めればよい(<code>Exp(Coef_exp)</code>)。これは、<strong>ハザード比</strong>と呼ばれ、独立変数が1増加したときにハザード率の比がどの程度変化するかを示している。例えば、経済的援助がある場合(<code>fin = 1</code>)のハザード率は、ない場合(<code>fin = 0</code>)に比べると0.693倍になる。</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="Chapter3.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">Covariate =</span> mod_exp<span class="sc">$</span>covar,</span>
+<span id="cb35-2"><a href="Chapter3.html#cb35-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Coef(exp)&quot;</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&quot;%.3f&quot;</span>,<span class="fu">coef</span>(mod_exp))[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>],</span>
+<span id="cb35-3"><a href="Chapter3.html#cb35-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Exp(Coef_exp)&quot;</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&quot;%.3f&quot;</span>,<span class="fu">exp</span>(<span class="fu">coef</span>(mod_exp)))[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>],</span>
+<span id="cb35-4"><a href="Chapter3.html#cb35-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Coef(gom)&quot;</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&quot;%.3f&quot;</span>,<span class="fu">coef</span>(mod_gom))[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>],</span>
+<span id="cb35-5"><a href="Chapter3.html#cb35-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Exp(Coef_gom)&quot;</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&quot;%.3f&quot;</span>,<span class="fu">exp</span>(<span class="fu">coef</span>(mod_gom)))[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>],</span>
+<span id="cb35-6"><a href="Chapter3.html#cb35-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Coef(wei)&quot;</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&quot;%.3f&quot;</span>,<span class="fu">coef</span>(mod_wei))[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>],</span>
+<span id="cb35-7"><a href="Chapter3.html#cb35-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Exp(Coef_wei)&quot;</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&quot;%.3f&quot;</span>,<span class="fu">exp</span>(<span class="fu">coef</span>(mod_wei))[<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>])) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-8"><a href="Chapter3.html#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flextable</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb35-9"><a href="Chapter3.html#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_row</span>(<span class="at">colwidth =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb35-10"><a href="Chapter3.html#cb35-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;&quot;</span>,<span class="st">&quot;指数分布&quot;</span>,<span class="st">&quot;ゴンぺルツ&quot;</span>, <span class="st">&quot;ワイブル&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-11"><a href="Chapter3.html#cb35-11" aria-hidden="true" tabindex="-1"></a>  flextable<span class="sc">::</span><span class="fu">align</span>(<span class="at">align =</span> <span class="st">&quot;center&quot;</span>, <span class="at">part =</span> <span class="st">&quot;all&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-12"><a href="Chapter3.html#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_caption</span>(<span class="st">&quot;各モデルの推定値の比較&quot;</span>)</span></code></pre></div>
+<div class="tabwid"><style>.cl-1a0e7682{}.cl-1a063760{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-1a0a5bba{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-1a0a70fa{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1a0a7104{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-1a0a7105{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-1a0e7682'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:tab-modelcomparison">表3.1: </span><span>各モデルの推定値の比較</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760"></span></p></th><th  colspan="2"class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">指数分布</span></p></th><th  colspan="2"class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">ゴンぺルツ</span></p></th><th  colspan="2"class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">ワイブル</span></p></th></tr><tr style="overflow-wrap:break-word;"><th class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">Covariate</span></p></th><th class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">Coef(exp)</span></p></th><th class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">Exp(Coef_exp)</span></p></th><th class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">Coef(gom)</span></p></th><th class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">Exp(Coef_gom)</span></p></th><th class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">Coef(wei)</span></p></th><th class="cl-1a0a70fa"><p class="cl-1a0a5bba"><span class="cl-1a063760">Exp(Coef_wei)</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">fin</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.366</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.693</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.381</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.683</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.382</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.682</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">age</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.056</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.946</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.057</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.944</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.057</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.944</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">race</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.305</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">1.357</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.313</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">1.367</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.316</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">1.371</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">wexp</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.147</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.864</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.148</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.862</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.150</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.861</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">mar</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.427</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.652</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.435</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.648</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.437</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.646</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">paro</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.083</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.921</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.082</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.921</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">-0.083</span></p></td><td class="cl-1a0a7104"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.921</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-1a0a7105"><p class="cl-1a0a5bba"><span class="cl-1a063760">prio</span></p></td><td class="cl-1a0a7105"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.086</span></p></td><td class="cl-1a0a7105"><p class="cl-1a0a5bba"><span class="cl-1a063760">1.089</span></p></td><td class="cl-1a0a7105"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.092</span></p></td><td class="cl-1a0a7105"><p class="cl-1a0a5bba"><span class="cl-1a063760">1.096</span></p></td><td class="cl-1a0a7105"><p class="cl-1a0a5bba"><span class="cl-1a063760">0.092</span></p></td><td class="cl-1a0a7105"><p class="cl-1a0a5bba"><span class="cl-1a063760">1.097</span></p></td></tr></tbody></table></div>
+<p><br/></p>
+<p>指数回帰モデルはワイブル回帰モデルの特殊な場合(<span class="math inline">\(a=1\)</span>の場合)なので、これらのモデルは尤度比検定で適合度を比較することができる。<code>anova()</code>関数は<code>phreg</code>クラスには適用できないようだが、自分で対数尤度を求めることで計算することはできる。以下の自作関数<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>を用いて尤度比検定を行うと、ワイブル回帰モデルの方が有意に適合度が高い。すなわち、ハザード率が時間によって変化すると考える方がより妥当だと考えられる。</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="Chapter3.html#cb36-1" aria-hidden="true" tabindex="-1"></a>anova.phreg <span class="ot">&lt;-</span> <span class="cf">function</span>(...){</span>
+<span id="cb36-2"><a href="Chapter3.html#cb36-2" aria-hidden="true" tabindex="-1"></a>  phreg.models <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb36-3"><a href="Chapter3.html#cb36-3" aria-hidden="true" tabindex="-1"></a>  log.liks <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb36-4"><a href="Chapter3.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  n.parameters <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb36-5"><a href="Chapter3.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(phreg.models)){</span>
+<span id="cb36-6"><a href="Chapter3.html#cb36-6" aria-hidden="true" tabindex="-1"></a>    log.liks <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb36-7"><a href="Chapter3.html#cb36-7" aria-hidden="true" tabindex="-1"></a>      log.liks,</span>
+<span id="cb36-8"><a href="Chapter3.html#cb36-8" aria-hidden="true" tabindex="-1"></a>      phreg.models[[i]]<span class="sc">$</span>loglik[<span class="dv">2</span>]</span>
+<span id="cb36-9"><a href="Chapter3.html#cb36-9" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb36-10"><a href="Chapter3.html#cb36-10" aria-hidden="true" tabindex="-1"></a>    n.parameters <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb36-11"><a href="Chapter3.html#cb36-11" aria-hidden="true" tabindex="-1"></a>      n.parameters,</span>
+<span id="cb36-12"><a href="Chapter3.html#cb36-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">nrow</span>(phreg.models[[i]]<span class="sc">$</span>var)</span>
+<span id="cb36-13"><a href="Chapter3.html#cb36-13" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb36-14"><a href="Chapter3.html#cb36-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb36-15"><a href="Chapter3.html#cb36-15" aria-hidden="true" tabindex="-1"></a>  deviance.models <span class="ot">&lt;-</span>  <span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> log.liks</span>
+<span id="cb36-16"><a href="Chapter3.html#cb36-16" aria-hidden="true" tabindex="-1"></a>  Df <span class="ot">&lt;-</span> n.parameters[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">-</span> n.parameters[<span class="sc">-</span><span class="fu">length</span>(log.liks)]</span>
+<span id="cb36-17"><a href="Chapter3.html#cb36-17" aria-hidden="true" tabindex="-1"></a>  lrs <span class="ot">&lt;-</span> deviance.models[<span class="sc">-</span><span class="fu">length</span>(log.liks)] <span class="sc">-</span> deviance.models[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb36-18"><a href="Chapter3.html#cb36-18" aria-hidden="true" tabindex="-1"></a>  p.values <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(lrs, Df)</span>
+<span id="cb36-19"><a href="Chapter3.html#cb36-19" aria-hidden="true" tabindex="-1"></a>  lr.test <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="st">&quot;deviance&quot;</span> <span class="ot">=</span> lrs, Df, p.values)</span>
+<span id="cb36-20"><a href="Chapter3.html#cb36-20" aria-hidden="true" tabindex="-1"></a>  lr.test <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>), lr.test)</span>
+<span id="cb36-21"><a href="Chapter3.html#cb36-21" aria-hidden="true" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="st">&quot;Log likelihood&quot;</span> <span class="ot">=</span> log.liks, n.parameters, lr.test)</span>
+<span id="cb36-22"><a href="Chapter3.html#cb36-22" aria-hidden="true" tabindex="-1"></a>  Call <span class="ot">&lt;-</span> <span class="fu">match.call</span>()  <span class="co"># 以下3行は返値の行列に各モデルの名前をつけるための操作だが、</span></span>
+<span id="cb36-23"><a href="Chapter3.html#cb36-23" aria-hidden="true" tabindex="-1"></a>  Call<span class="sc">$</span>k <span class="ot">&lt;-</span> <span class="cn">NULL</span>  <span class="co"># 訳も分からず AIC.logLik() を真似ているだけなので、</span></span>
+<span id="cb36-24"><a href="Chapter3.html#cb36-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(output) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(Call[<span class="sc">-</span>1L]) <span class="co"># おかしなことをやっているかも</span></span>
+<span id="cb36-25"><a href="Chapter3.html#cb36-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(output)</span>
+<span id="cb36-26"><a href="Chapter3.html#cb36-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-27"><a href="Chapter3.html#cb36-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-28"><a href="Chapter3.html#cb36-28" aria-hidden="true" tabindex="-1"></a><span class="fu">anova.phreg</span>(mod_exp, mod_wei)</span></code></pre></div>
+<pre><code>##         Log likelihood n.parameters deviance Df    p.values
+## mod_exp      -686.3659            8       NA NA          NA
+## mod_wei      -679.9166            9 12.89875  1 0.000328801</code></pre>
+</div>
+</div>
+</div>
+<div id="加速時間ハザードモデル" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> 加速時間ハザードモデル<a href="Chapter3.html#加速時間ハザードモデル" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="モデルの概要" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> モデルの概要<a href="Chapter3.html#モデルの概要" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>加速時間ハザードモデルは、<span class="math inline">\(T\)</span>を事象が発生するまでの時間とするとき、次のように書くことができる。なお、<span class="math inline">\(u\)</span>は誤差項であり、独立変数とは統計的に独立で均一の分散<span class="math inline">\(\sigma^2\)</span>をもつ。このモデルは、従属変数を<span class="math inline">\(logT\)</span>とする通常のモデルと同じである。</p>
+<p><span class="math display" id="eq:ht-acc">\[
+logT = b_0 + b_1x_1 + b_2x_2 + u \tag{3.8}
+\]</span></p>
+<p>モデルでは誤差項<span class="math inline">\(u\)</span>の分布にとしては、正規分布、対数ガンマ分布、ロジスティック分布、極値分布など様々な分布が仮定される。これらの分布を仮定するとき、<span class="math inline">\(T\)</span>はそれぞれ対数正規分布、ガンマ分布、対数ロジスティック分布、ワイブル分布になる(表<a href="Chapter3.html#tab:tab-dist">3.2</a>)。</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="Chapter3.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="st">&quot;uの分布&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;正規分布&quot;</span>,<span class="st">&quot;対数ガンマ分布&quot;</span>,<span class="st">&quot;ロジスティック分布&quot;</span>,<span class="st">&quot;極値分布&quot;</span>),</span>
+<span id="cb38-2"><a href="Chapter3.html#cb38-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Tの分布&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;対数正規分布&quot;</span>,<span class="st">&quot;ガンマ分布&quot;</span>,<span class="st">&quot;対数ロジスティック分布&quot;</span>,<span class="st">&quot;ワイブル分布&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-3"><a href="Chapter3.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&quot;uの分布とTの分布の対応&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-4"><a href="Chapter3.html#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">11</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<table class="table" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-dist">表3.2: </span>uの分布とTの分布の対応
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+uの分布
+</th>
+<th style="text-align:left;">
+Tの分布
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+正規分布
+</td>
+<td style="text-align:left;">
+対数正規分布
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+対数ガンマ分布
+</td>
+<td style="text-align:left;">
+ガンマ分布
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ロジスティック分布
+</td>
+<td style="text-align:left;">
+対数ロジスティック分布
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+極値分布
+</td>
+<td style="text-align:left;">
+ワイブル分布
+</td>
+</tr>
+</tbody>
+</table>
+<p><br/></p>
+<p>加速ハザードモデルでは従属変数を<span class="math inline">\(logT\)</span>ではなくハザード率になるように書き換えることもできるが、複雑な式になる傾向がある。比例ハザードモデルと異なり、ハザード率は非単調関数(= 時間の経過とともに柔軟に増えたり減ったりする)である。パラメータの推定値は最尤法によって求められる。</p>
+</div>
+</div>
+<div id="rでの実装-2" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Rでの実装<a href="Chapter3.html#rでの実装-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>ここでは、<span class="citation">Allison (<a href="#ref-Allison2014" role="doc-biblioref">2014</a>)</span> に倣って再犯データにガンマ分布モデルを当てはめる。</p>
+<p>分析には<code>flexsurv</code>パッケージの`flexsurvreg</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Allison2014" class="csl-entry">
+Allison, P. D. (2014). <em>Event history and survival analysis: Regression for longitudinal event data</em>. SAGE Publications.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="5">
+<li id="fn5"><p>指数分布が分からない方は<a href="https://bellcurve.jp/statistics/course/8009.html">こちら</a>。<a href="Chapter3.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>ゴンぺルツ分布が分からない方は<a href="https://academ-aid.com/statistics/gompertz">こちら</a>。<a href="Chapter3.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>ワイブル分布が分からない方は<a href="https://gijutsu-keisho.com/technical-commentary/management_engineering-002/">こちら</a>。<a href="Chapter3.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>自作関数は<a href="http://tarohmaru.web.fc2.com/R/EventHistory/ContinuousTimeModel_recid.html">こちら</a>のサイトを参考にした。<a href="Chapter3.html#fnref8" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Chapter2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sessioninfo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
