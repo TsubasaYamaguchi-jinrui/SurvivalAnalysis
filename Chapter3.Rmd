@@ -119,7 +119,7 @@ mod_wei <- phreg(Surv(week, arrest) ~ fin + age + race + wexp + mar
                  + paro + prio, data = recid, dist = "weibull")
 ```
 
-結果は以下の通りである。`Coef`は偏回帰係数の推定値を、`Exp(Coef)`は$e^{偏回帰係数}$を、`se(Coef)`は偏回帰係数の標準誤差を表している。  
+結果は以下の通りである。`Coef`は偏回帰係数の推定値を、`Exp(Coef)`は偏回帰係数を指数変換したもの($e^{偏回帰係数}$)を、`se(Coef)`は偏回帰係数の標準誤差を表している。ゴンぺルツモデルとワイブルモデルの結果では、`shape`は確率密度関数(式\@ref(eq:f-gom)と式\@ref(eq:f-wei))のパラメータ$a$の、scale`はパラメータ$b$の推定値である。  
 ```{r}
 ## 指数回帰モデル  
 mod_exp
@@ -131,17 +131,24 @@ mod_gom
 mod_wei
 ```
 
-3つのモデルから推定されたハザード関数を描画したのが図\@ref(fig:fig-hazardrate)である。定義通り、指数回帰モデルでは時間に依らずハザード率が一定であることが分かる。    
+3つのモデルから推定されたハザード関数を描画したのが図\@ref(fig:fig-hazardrate)である。定義通り、指数回帰モデルでは時間に依らずハザード率が一定であることが分かる。なお、これらは全ての独立変数を平均値にしたときのものであり、以後本稿で示されるハザード関数はいずれも同様である。    
 ```{r fig-hazardrate, fig.dim = c(14,6), fig.cap = "モデルから推定されたハザード関数"}
-as.ggplot(~plot(mod_exp, xlab = "week", ylab = "hazard rate", main = "exponential model"))+
-  as.ggplot(~plot(mod_gom, xlab = "week", ylab = "hazard rate", main = "Gompertz model"))+
-  as.ggplot(~plot(mod_wei, xlab = "week", ylab = "hazard rate", main = "Weibull model"))
+as.ggplot(~plot(mod_exp, xlab = "week", ylab = "hazard rate", main = "exponential model", ylim = c(0,0.03)))+
+  as.ggplot(~plot(mod_gom, xlab = "week", ylab = "hazard rate", main = "Gompertz model", ylim = c(0,0.03)))+
+  as.ggplot(~plot(mod_wei, xlab = "week", ylab = "hazard rate", main = "Weibull model", ylim = c(0,0.03)))
 ```
 
+なお、推定された**生存曲線**(= 時間の経過とともに再犯をしていない元服役囚の数がどのように減っていくかを表したもの)は以下のようになる(図\@ref(fig:fig-survplot))。ハザード関数と同様に、これらは全ての独立変数を平均値にしたときのものである。  
+```{r fig-survplot, fig.dim = c(14,6), fig.cap = "モデルから推定された生存曲線"}
+as.ggplot(~plot(mod_exp, fn = "sur", xlab = "week", ylab = "survival rate", main = "exponential model"))+
+  as.ggplot(~plot(mod_gom, fn = "sur", xlab = "week", ylab = "survival rate", main = "Gompertz model"))+
+  as.ggplot(~plot(mod_wei, fn = "sur", xlab = "week", ylab = "survival rate", main = "Weibull model"))
+```
+<br/>  
 
 各モデルの偏回帰係数の推定値を比較したものが以下の表である(表\@ref(tab:tab-modelcomparison))。３つのモデルの推定結果はほとんど変わらない。いずれのモデルでも有意な影響を持っていたのは`age`と`prio`であり、`fin`はワイブル回帰モデルのみで有意になった。    
 
-偏回帰係数は、ほかの変数の影響を統制したうえでその独立変数が1増加したときにハザード率の対数(式\@ref(eq:ht-exp) ~ 式\@ref(eq:ht-wei)を思い出してほしい)がどの程度増加するかを表している。例えば指数回帰モデルでは、表\@ref(tab:tab-modelcomparison)の偏回帰係数の推定値(`Coef(exp)`)より、他の変数の影響をコントロールしたときに年齢(`age`)が1歳上がるとハザード率の対数が0.056低下する。より直感的に理解するためには、$e^{偏回帰係数}$を求めればよい(`Exp(Coef_exp)`)。これは、**ハザード比**と呼ばれ、独立変数が1増加したときにハザード率の比がどの程度変化するかを示している。例えば、経済的援助がある場合(`fin = 1`)のハザード率は、ない場合(`fin = 0`)に比べると0.693倍になる。  
+偏回帰係数は、ほかの変数の影響を統制したうえでその独立変数が1増加したときにハザード率の対数(式\@ref(eq:ht-exp) ~ 式\@ref(eq:ht-wei)を思い出してほしい)がどの程度増加するかを表している。例えば指数回帰モデルでは、表\@ref(tab:tab-modelcomparison)の偏回帰係数の推定値(`Coef(exp)`)より、他の変数の影響をコントロールしたときに年齢(`age`)が1歳上がるとハザード率の対数が0.056低下する。より直感的に理解するためには、偏回帰係数を指数変換すればよい(`Exp(Coef_exp)`)。これは、**ハザード比**と呼ばれ、独立変数が1増加したときにハザード率の比がどの程度変化するかを示している。例えば、経済的援助がある場合(`fin = 1`)のハザード率は、ない場合(`fin = 0`)に比べると0.693倍になる。  
 
 ```{r tab-modelcomparison}
 tibble(Covariate = mod_exp$covar,
@@ -212,9 +219,171 @@ tibble("uの分布" = c("正規分布","対数ガンマ分布","ロジスティ�
 ```
 <br/>  
 
-加速ハザードモデルでは従属変数を$logT$ではなくハザード率になるように書き換えることもできるが、複雑な式になる傾向がある。比例ハザードモデルと異なり、ハザード率は非単調関数(= 時間の経過とともに柔軟に増えたり減ったりする)である。パラメータの推定値は最尤法によって求められる。  
+加速ハザードモデルでは従属変数を$logT$ではなくハザード率になるように書き換えることもできるが、複雑な式になる傾向がある。比例ハザードモデルと異なり、対数ロジスティックモデルと対数正規モデルではハザード率は非単調関数(= 時間の経過とともに柔軟に増えたり減ったりする)である。パラメータの推定値は最尤法によって求められる。  
 
 ## Rでの実装  
-ここでは、@Allison2014 に倣って再犯データにガンマ分布モデルを当てはめる。  
+ここでは、@Allison2014 に倣って再犯データにガンマ分布モデルを当てはめる。分析には`flexsurv`パッケージの`flexsurvreg()`関数を用いる。このパッケージは比例ハザードモデルも含め様々なパラメトリックモデルに対応している。  
 
-分析には`flexsurv`パッケージの`flexsurvreg
+以下のようにモデリングできる。`method`で採用推定を行うアルゴリズムを指定でき、「Nelder-Mead法」「BFGS法」「L-BFGS法」などを選べる。今回はL-BFGS法を用いる
+```{r}
+mod_gam <- flexsurvreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "gamma", method = "L-BFGS-B")
+```
+
+結果は以下の通り。比例ハザードモデルと同様に、`age`と`prio`が5%水準で有意な影響を持った(95%信頼区間が0にまたがっていない)。      
+```{r}
+mod_gam
+```
+
+注意が必要なのは、生存時間分析でよく使われる統計ソフト(StataやSAS)とは偏回帰係数の推定値の正負が逆になっている点である。推定値の正負を逆転させ、指数回帰モデルとワイブル回帰モデルの結果と比較したのが表\@ref(tab:tab-modelcomparison2)である。指数回帰モデルやワイブル回帰モデルとガンマ分布モデルの偏回帰係数の正負が逆になるのは、前者がハザード率を従属変数にしているのに対し、後者は事象が起きるまでの時間$T$を従属変数にしているからである。ハザード率が低いほど$T$は大きくなるので、偏回帰係数の符号は逆になる。  
+```{r tab-modelcomparison2}
+tibble(Covariate = mod_exp$covar,
+       "Coef(exp)" = sprintf("%.3f",coef(mod_exp))[1:7],
+       "Exp(Coef_exp)" = sprintf("%.3f",exp(coef(mod_exp)))[1:7],
+       "Coef(wei)" = sprintf("%.3f",coef(mod_wei))[1:7],
+       "Exp(Coef_wei)" = sprintf("%.3f",exp(coef(mod_wei))[1:7]),
+       "Coef(gam)" = sprintf("%.3f",-coef(mod_gam))[3:9],
+       "Exp(Coef_gam)" = sprintf("%.3f",exp(-coef(mod_gam)))[3:9]) %>% 
+  flextable() %>% 
+  add_header_row(colwidth = c(1,2,2,2),
+                 values = c("","指数分布","ワイブル","ガンマ")) %>% 
+  flextable::align(align = "center", part = "all") %>% 
+  set_caption("各モデルの推定値の比較2")
+```
+<br/>  
+
+ガンマ分布モデルでは、指数変換された`Exp(Coef_gam)`は事象が起きるまでの時間のとして解釈できる。例えば、経済的支援(`fin`)の偏回帰係数を指数変換した値は1.327だが、これは経済的支援を受けた元服役囚の方がそうでない元服役囚よりも再犯までの時間が32.7%長くなることを表す。  
+
+ガンマ分布以外の分布のモデルは`eha`パッケージの`aftreg()`関数か、ガンマ分布と同様に`flexsurvreg()`関数で実行できる。`aftreg()`の方がStataなどと符号が同じなので使いやすそう？  
+```{r}
+## 対数正規分布  
+mod_lnorm <- aftreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "lognormal")
+
+mod_lnorm2 <- flexsurvreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "lognormal")
+
+## 対数ロジスティックモデル  
+mod_llog <- aftreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "loglogistic")
+
+mod_llog2 <- flexsurvreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "llogis")
+
+## ワイブル分布  
+mod_wei_acc <- aftreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "weibull")
+
+mod_wei_acc2 <- flexsurvreg(Surv(week, arrest) ~ fin + age + race + wexp + mar 
+                 + paro + prio, data = recid, dist = "weibull")
+
+## flexsurvreg関数で比例ハザードモデルのワイブル回帰モデルをおこなうときは、`dist = "weibullPH"`とする。 
+```
+
+モデルから推定されたハザード関数は以下のようになる(図\@ref(fig:fig-hazardrate2))。  
+```{r fig-hazardrate2, fig.dim = c(14,6), fig.cap = "モデルから推定されたハザード関数"}
+as.ggplot(~plot(mod_lnorm, fn = "haz", xlab = "week", ylab = "hazard rate", main = "log normal", xaxs = "i", yaxs = "i", ylim = c(0,0.03)))+
+  as.ggplot(~plot(mod_llog, fn = "haz", xlab = "week", ylab = "hazard rate", main = "log logistic", xaxs = "i", yaxs = "i", ylim = c(0,0.03)))+
+  as.ggplot(~plot(mod_wei_acc, fn = "haz", xlab = "week", ylab = "hazard rate", main = "Weibull model (AFT)", xaxs = "i", yaxs = "i", ylim = c(0,0.03)))
+```
+
+## 適合度の評価  
+たくさんのモデルがあるが、どのモデルが最も妥当なモデルといえるだろうか?以下では、まったく同じデータを使用しているモデルに限ってその比較方法を見ていく。    
+
+1つの目の方法としては、推定されたモデルの対数尤度(= 推定したモデルから観測データが得られる確率の対数)を比較することである。対数尤度は大まかにいえば、推定したモデルが観測データにどの程度当てはまっているかを表す。対数尤度は通常負の値をとるので-2をかけて比較することが多く、小さいほど当てはまりがよい。これはモデルの**逸脱度**と呼ばれる。    
+
+表\@ref(tab:tab-loglik)は各モデルの逸脱度(対数尤度の-2倍)を表したものである。表からわかるように、ワイブル回帰モデルが最も当てはまりが良いが、対数ロジスティックモデルやガンマ分布モデルとの差は大きくない。前述したように、アルモデルが別のモデルの特殊なケースであり、一方が他方の「入れ子構造」になっている場合は尤度比検定で適合度の検定を行うこともできる。        
+```{r tab-loglik}
+tibble(model = c("ガンマ分布", "対数正規分布", "対数ロジスティック分布", "ワイブル回帰", "ゴンぺルツ回帰", "指数回帰"),
+       逸脱度 = c(-2*mod_gam$loglik,-2*mod_lnorm$loglik[[2]], -2*mod_llog$loglik[[2]], -2*mod_wei$loglik[[2]], -2*mod_gom$loglik[[2]],-2*mod_exp$loglik[[2]])) %>% 
+  kable(caption = "各モデルの逸脱度") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+<br/>  
+
+対数尤度を適合度の指標として用いる問題点は、推定するパラメータの数が多ければ多いほど対数尤度が高くなってしまうことである[^foot9]。そこで、その特性を修正するためにパラメータ数による影響を取り除いたものが**AIC**(赤池情報量規準)や**BIC**(ベイズ情報量規準)である。なお、$L$はモデルの対数尤度を、$k$はパラメータ数を、$n$はデータ数を表す。$log(n)$は通常2より大きいので、BICのほうがよりパラメータの数の影響を強く修正している。これらいずれもは**予測の良さ**を重視した指標で、いずれも小さいほど予測がいいことを表す。  
+
+$$
+\begin{align}
+AIC &= -2log(L) + 2k\\
+BIC &= -2log(L) +klog(n)
+\end{align}
+$$
+
+[^foot9]: このあたりの説明やAICについては @Kubo2012 が分かりやすい。  
+
+AICとBICは以下の自作関数で容易に求められる。  
+```{r}
+AICreg <- function(mod, k = 2){
+  if(class(mod) == "flexsurvreg"){
+    loglik <- mod_gam$loglik
+    n_parameters <- mod$npars
+    AIC <- -2*loglik + k*n_parameters
+  }else{
+  loglik <- mod$loglik[[2]]
+  n_parameters <- nrow(mod$var)
+  AIC <- -2*loglik + k*n_parameters
+  }
+  return(AIC)
+}
+
+BICreg <- function(mod){
+  if(class(mod) == "flexsurvreg"){
+    loglik <- mod_gam$loglik
+    n_parameters <- mod$npars
+    N = nrow(mod$data$Y)
+    BIC <- -2*loglik + n_parameters*log(N)
+  }else{
+  loglik <- mod$loglik[[2]]
+  n_parameters <- nrow(mod$var) 
+  N = mod$n
+  BIC <- -2*loglik + n_parameters*log(N)
+  }
+  return(BIC)
+}
+```
+
+各モデルのAICとBICを記したのが表\@ref(tab:tab-AIC)である。いずれにおいても、ワイブル回帰モデルの適合度が最も高く、その次に対数ロジスティックモデルの適合度が高いことが分かる。    
+```{r tab-AIC}
+list_mod <- list(mod_gam, mod_lnorm, mod_llog, mod_wei, mod_gom, mod_exp)
+
+tibble(model = c("ガンマ分布", "対数正規分布", "対数ロジスティック分布", "ワイブル回帰", "ゴンぺルツ回帰", "指数回帰"),
+       AIC = map_dbl(list_mod, AICreg),
+       BIC = map_dbl(list_mod, BICreg)) %>% 
+  kable(caption = "各モデルのAICとBIC") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+<br/>  
+
+両者のモデルから推定されるハザード率を再度図示すると以下のようになる。ワイブル回帰モデルはハザード率が単調増加なのに対し、対数ロジスティックモデルは途中まではハザード率が上昇するものの、その後低下していることが分かる。今回のデータの期間(52週)はハザード率が減少に転じるほど十分に長くはなかったため、ワイブル回帰モデルの方が適合度が高くなったのかもしれない。    
+```{r}
+as.ggplot(~plot(mod_wei, fn = "haz", xlab = "week", ylab = "hazard rate", main = "weibull", xaxs = "i", yaxs = "i", ylim = c(0,0.03)))+
+  as.ggplot(~plot(mod_llog, fn = "haz", xlab = "week", ylab = "hazard rate", main = "log logistic", xaxs = "i", yaxs = "i", ylim = c(0,0.03)))
+```
+
+## 観察されない異質性の原因  
+<u>個体のハザード率が期間を通して一定であっても</u>、独立変数では説明しきれない個体間の異質性によって、時間とともにハザード率が減少する傾向があることが知られている。これは、一般的にハザード率が高い個体は早い段階で事象を経験してリスク集合から抜けていくため、時間が経過するにつれてハザード率の低い個体がリスク集合に残りやすい傾向があるためである。このとき、ハザード率が時間の減少と共に本当に減少しているのか、それとも個体の異質性によってハザード率が低下しているのかを区別するのは難しい[^foot10]。このように、一般に時間がハザード率に与える影響を検討する際には十分な注意が必要である。  
+
+[^foot10]: 他方で、時間の経過とともにハザード率の上昇が観察されたなら、それはかなりの個体で実際にハザード率が時間とともに増加していると考えてよい。  
+
+個体の異質性に対処する最も良い方法は、個体の異質性をもたらす要因を独立変数としてモデルに明示的に入れることである。しかし、こうした要因をすべて測定することは現実的ではない。この問題を解決するため、**異質性の原因を誤差項に含めるパラメトリックなモデル**(= frailty model)が提案されている。例えば、ランダムな誤差項を持つワイブル回帰モデルは以下のようにs定式化できる(式\@ref(eq:ht-randwei))。理論的には、これによって時間がハザード率に与える影響と、個体の異質性による影響を区別することができる。     
+
+$$
+log(h(t)) = b_0 + b_1x_1 + b_2x_2 + clog(t) + e (\#eq:ht-randwei) 
+$$
+
+通常、誤差項$e$にどのような分布を仮定するかで偏回帰係数の推定値は大きく変わってしまう。一般に、以下の2つの場合を除いてこのモデルを用いることは推奨されない。  
+
+1. 分析対象が繰り返し事象を経験する場合  
+2. 分析対象をいくつかの大きなグループに分けることができ、同じグループに属するすべての個体の$e$が同じだと仮定できる場合。  
+
+## なぜパラメトリックモデルを用いるのか  
+次章では最も一般的な手法であるコックス比例ハザードモデルを扱うが、パラメトリックモデルはコックス比例ハザードモデルよりも優れた特徴が二つある。ただし、多くのパッケージで時間依存の独立変数を扱うことができないという弱点もある。    
+
+1. 「左側打ち切り」と「区間打ち切り」を扱うのが容易  
+- 左側打ち切り: すでに事象を経験したが、それがいつか分からない場合   
+- 区間打ち切り: 事象が二つの時点の間に発生したことはわかっているが、それがいつか正確にわからない場合  
+
+2. 予測値の推定が優れている  
+次章の発生までの予想時間、事象発生までの時間の中央値や分位点、事象の確率分布などあらゆる推定が可能である。  
+

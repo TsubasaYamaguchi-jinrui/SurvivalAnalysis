@@ -16,9 +16,15 @@ eq:f-gom
 eq:ht-wei
 eq:f-wei
 fig:fig-hazardrate
+fig:fig-survplot
 tab:tab-modelcomparison
 eq:ht-acc
 tab:tab-dist
+tab:tab-modelcomparison2
+fig:fig-hazardrate2
+tab:tab-loglik
+tab:tab-AIC
+eq:ht-randwei
 c1
 s2-1
 s2-2
@@ -56,3 +62,6 @@ rでの実装-1
 加速時間ハザードモデル
 モデルの概要
 rでの実装-2
+適合度の評価
+観察されない異質性の原因
+なぜパラメトリックモデルを用いるのか

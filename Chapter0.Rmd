@@ -3,10 +3,10 @@
 
 - `survival`[パッケージ](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://cran.r-project.org/web/packages/survival/survival.pdf)   
 - `flexsurv`[パッケージ](https://cran.r-project.org/web/packages/flexsurv/index.html)    
-- `ggsurvfit`[パッケージ](http://www.danieldsjoberg.com/ggsurvfit/index.html)  
 - `eha`[パッケージ](https://ehar.se/r/eha/)   
 - `mets`[パッケージ](https://kkholst.github.io/mets/index.html)  
 - `flexsurv`[パッケージ](https://cran.r-project.org/web/packages/flexsurv/index.html)  
+- `survminer`[パッケージ](https://cran.r-project.org/web/packages/survminer/readme/README.html)  
 - `brms`[パッケージ](https://github.com/paul-buerkner/brms)  
 - `rstanarm`[パッケージ](https://mc-stan.org/rstanarm/articles/jm.html)  
 
@@ -18,6 +18,9 @@ library(eha)
 library(flexsurv)
 library(brms)
 library(rstanarm)
+
+## ggplotでの可視化
+library(survminer)
 
 ## データハンドリング
 library(tidyverse)
