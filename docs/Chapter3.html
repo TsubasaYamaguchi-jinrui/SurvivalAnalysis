@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="Chapter2.html"/>
-<link rel="next" href="sessioninfo.html"/>
+<link rel="next" href="Chapter4.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -231,6 +231,18 @@ div.csl-indent {
 <li class="chapter" data-level="3.6" data-path="Chapter3.html"><a href="Chapter3.html#観察されない異質性の原因"><i class="fa fa-check"></i><b>3.6</b> 観察されない異質性の原因</a></li>
 <li class="chapter" data-level="3.7" data-path="Chapter3.html"><a href="Chapter3.html#なぜパラメトリックモデルを用いるのか"><i class="fa fa-check"></i><b>3.7</b> なぜパラメトリックモデルを用いるのか</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="Chapter4.html"><a href="Chapter4.html"><i class="fa fa-check"></i><b>4</b> コックス回帰モデル</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザードモデル"><i class="fa fa-check"></i><b>4.1</b> 比例ハザードモデル</a></li>
+<li class="chapter" data-level="4.2" data-path="Chapter4.html"><a href="Chapter4.html#部分尤度法"><i class="fa fa-check"></i><b>4.2</b> 部分尤度法</a></li>
+<li class="chapter" data-level="4.3" data-path="Chapter4.html"><a href="Chapter4.html#rによる実装"><i class="fa fa-check"></i><b>4.3</b> Rによる実装</a></li>
+<li class="chapter" data-level="4.4" data-path="Chapter4.html"><a href="Chapter4.html#時間に依存する独立変数"><i class="fa fa-check"></i><b>4.4</b> 時間に依存する独立変数</a></li>
+<li class="chapter" data-level="4.5" data-path="Chapter4.html"><a href="Chapter4.html#時間依存独立変数を含むモデル"><i class="fa fa-check"></i><b>4.5</b> 時間依存独立変数を含むモデル</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="Chapter4.html"><a href="Chapter4.html#プログラミングステートメント法programming-statements-method"><i class="fa fa-check"></i><b>4.5.1</b> プログラミング・ステートメント法(programming statements method)</a></li>
+<li class="chapter" data-level="4.5.2" data-path="Chapter4.html"><a href="Chapter4.html#エピソード分割法episode-splitting-method"><i class="fa fa-check"></i><b>4.5.2</b> エピソード分割法(episode splitting method)</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
 </ul>
 
@@ -306,7 +318,7 @@ f(t) =\frac{a}{b} \biggl(\frac{t}{b}\biggl)^{a-1} exp\biggl(-\biggl(\frac{t}{b}\
 <ol style="list-style-type: decimal">
 <li><p><strong>時間と独立変数の間の交互作用がない</strong><br />
 <span class="math inline">\(x_1\)</span>と<span class="math inline">\(x_2\)</span>の効果(<span class="math inline">\(b_1\)</span>と<span class="math inline">\(b_2\)</span>)は全ての時点で同じである。</p></li>
-<li><p><strong>ワイブル回帰モデルもゴンぺ留津回帰モデルも時間に対して単調増加/減少である</strong>
+<li><p><strong>ワイブル回帰モデルもゴンぺルツ回帰モデルも時間に対して単調増加/減少である</strong>
 ハザード率と時間の関係がU字型や逆U字型になることはない。これは、実際の分析では使いにくい場合がある。なお、第<a href="#s"><strong>??</strong></a>でこの制約のないモデルを検討する。</p></li>
 <li><p><strong>誤差項がない</strong><br />
 ただし、実際に事象が発生するまでの時間とモデルで推定される時間には誤差が含まれるので、決定論的なモデルではない。</p></li>
@@ -933,7 +945,7 @@ Allison, P. D. (2014). <em>Event history and survival analysis: Regression for l
         </div>
       </div>
 <a href="Chapter2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="sessioninfo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="Chapter4.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

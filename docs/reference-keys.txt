@@ -25,6 +25,11 @@ fig:fig-hazardrate2
 tab:tab-loglik
 tab:tab-AIC
 eq:ht-randwei
+eq:eq-cox
+eq:eq-cox2
+eq:eq-cox3
+eq:eq-cox4
+tab:tab-coxmodelcomp
 c1
 s2-1
 s2-2
@@ -65,3 +70,11 @@ rでの実装-2
 適合度の評価
 観察されない異質性の原因
 なぜパラメトリックモデルを用いるのか
+c4
+比例ハザードモデル
+部分尤度法
+rによる実装
+時間に依存する独立変数
+時間依存独立変数を含むモデル
+プログラミングステートメント法programming-statements-method
+エピソード分割法episode-splitting-method
