@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-05-31" />
+<meta name="date" content="2023-06-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -222,7 +222,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.2.3.2" data-path="Chapter3.html"><a href="Chapter3.html#分析の実行"><i class="fa fa-check"></i><b>3.2.3.2</b> 分析の実行</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="Chapter3.html"><a href="Chapter3.html#加速時間ハザードモデル"><i class="fa fa-check"></i><b>3.3</b> 加速時間ハザードモデル</a>
+<li class="chapter" data-level="3.3" data-path="Chapter3.html"><a href="Chapter3.html#s3-3"><i class="fa fa-check"></i><b>3.3</b> 加速時間ハザードモデル</a>
 <ul>
 <li class="chapter" data-level="3.3.1" data-path="Chapter3.html"><a href="Chapter3.html#モデルの概要"><i class="fa fa-check"></i><b>3.3.1</b> モデルの概要</a></li>
 </ul></li>
@@ -241,6 +241,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.5.1" data-path="Chapter4.html"><a href="Chapter4.html#プログラミングステートメント法programming-statements-method"><i class="fa fa-check"></i><b>4.5.1</b> プログラミング・ステートメント法(programming statements method)</a></li>
 <li class="chapter" data-level="4.5.2" data-path="Chapter4.html"><a href="Chapter4.html#エピソード分割法episode-splitting-method"><i class="fa fa-check"></i><b>4.5.2</b> エピソード分割法(episode splitting method)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.6</b> 比例ハザード性の仮定の検討と修正</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.6.1</b> シェフィールド残差を用いた検討</a></li>
+<li class="chapter" data-level="4.6.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.6.2</b> 仮定が満たされないときの修正</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
@@ -318,8 +323,8 @@ f(t) =\frac{a}{b} \biggl(\frac{t}{b}\biggl)^{a-1} exp\biggl(-\biggl(\frac{t}{b}\
 <ol style="list-style-type: decimal">
 <li><p><strong>時間と独立変数の間の交互作用がない</strong><br />
 <span class="math inline">\(x_1\)</span>と<span class="math inline">\(x_2\)</span>の効果(<span class="math inline">\(b_1\)</span>と<span class="math inline">\(b_2\)</span>)は全ての時点で同じである。</p></li>
-<li><p><strong>ワイブル回帰モデルもゴンぺルツ回帰モデルも時間に対して単調増加/減少である</strong>
-ハザード率と時間の関係がU字型や逆U字型になることはない。これは、実際の分析では使いにくい場合がある。なお、第<a href="#s"><strong>??</strong></a>でこの制約のないモデルを検討する。</p></li>
+<li><p><strong>ワイブル回帰モデルもゴンぺルツ回帰モデルも時間に対して単調増加/減少である</strong><br />
+ハザード率と時間の関係がU字型や逆U字型になることはない。これは、実際の分析では使いにくい場合がある。なお、次節(<a href="Chapter3.html#s3-3">3.3</a>)でこの制約のないモデルを検討する。</p></li>
 <li><p><strong>誤差項がない</strong><br />
 ただし、実際に事象が発生するまでの時間とモデルで推定される時間には誤差が含まれるので、決定論的なモデルではない。</p></li>
 </ol>
@@ -516,8 +521,8 @@ f(t) =\frac{a}{b} \biggl(\frac{t}{b}\biggl)^{a-1} exp\biggl(-\biggl(\frac{t}{b}\
 </div>
 </div>
 </div>
-<div id="加速時間ハザードモデル" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> 加速時間ハザードモデル<a href="Chapter3.html#加速時間ハザードモデル" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="s3-3" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> 加速時間ハザードモデル<a href="Chapter3.html#s3-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="モデルの概要" class="section level3 hasAnchor" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> モデルの概要<a href="Chapter3.html#モデルの概要" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>加速時間ハザードモデルは、<span class="math inline">\(T\)</span>を事象が発生するまでの時間とするとき、次のように書くことができる。なお、<span class="math inline">\(u\)</span>は誤差項であり、独立変数とは統計的に独立で均一の分散<span class="math inline">\(\sigma^2\)</span>をもつ。このモデルは、従属変数を<span class="math inline">\(logT\)</span>とする通常のモデルと同じである。</p>

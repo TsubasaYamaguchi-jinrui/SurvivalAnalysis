@@ -30,6 +30,8 @@ eq:eq-cox2
 eq:eq-cox3
 eq:eq-cox4
 tab:tab-coxmodelcomp
+eq:eq-cox-int
+tab:tab-cox-int
 c1
 s2-1
 s2-2
@@ -64,7 +66,7 @@ c3
 rでの実装-1
 データの読み込み
 分析の実行
-加速時間ハザードモデル
+s3-3
 モデルの概要
 rでの実装-2
 適合度の評価
@@ -78,3 +80,6 @@ rによる実装
 時間依存独立変数を含むモデル
 プログラミングステートメント法programming-statements-method
 エピソード分割法episode-splitting-method
+比例ハザード性の仮定の検討と修正
+シェフィールド残差を用いた検討
+仮定が満たされないときの修正

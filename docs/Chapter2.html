@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-05-31" />
+<meta name="date" content="2023-06-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -222,7 +222,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.2.3.2" data-path="Chapter3.html"><a href="Chapter3.html#分析の実行"><i class="fa fa-check"></i><b>3.2.3.2</b> 分析の実行</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="Chapter3.html"><a href="Chapter3.html#加速時間ハザードモデル"><i class="fa fa-check"></i><b>3.3</b> 加速時間ハザードモデル</a>
+<li class="chapter" data-level="3.3" data-path="Chapter3.html"><a href="Chapter3.html#s3-3"><i class="fa fa-check"></i><b>3.3</b> 加速時間ハザードモデル</a>
 <ul>
 <li class="chapter" data-level="3.3.1" data-path="Chapter3.html"><a href="Chapter3.html#モデルの概要"><i class="fa fa-check"></i><b>3.3.1</b> モデルの概要</a></li>
 </ul></li>
@@ -241,6 +241,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.5.1" data-path="Chapter4.html"><a href="Chapter4.html#プログラミングステートメント法programming-statements-method"><i class="fa fa-check"></i><b>4.5.1</b> プログラミング・ステートメント法(programming statements method)</a></li>
 <li class="chapter" data-level="4.5.2" data-path="Chapter4.html"><a href="Chapter4.html#エピソード分割法episode-splitting-method"><i class="fa fa-check"></i><b>4.5.2</b> エピソード分割法(episode splitting method)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.6</b> 比例ハザード性の仮定の検討と修正</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.6.1</b> シェフィールド残差を用いた検討</a></li>
+<li class="chapter" data-level="4.6.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.6.2</b> 仮定が満たされないときの修正</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
@@ -1206,7 +1211,7 @@ log[-log(1-P(t))] = b_0 + b_1x_1 + b_2x_2(t) + b_3t + b_4t^2 \tag{2.2}
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="Chapter2.html#cb23-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(promo <span class="sc">~</span> undgrad <span class="sc">+</span> phdmed <span class="sc">+</span> phdprest <span class="sc">+</span> jobpres <span class="sc">+</span> art_n <span class="sc">+</span> cit_n <span class="sc">+</span> year <span class="sc">+</span> <span class="fu">I</span>(year<span class="sc">^</span><span class="dv">2</span>),</span>
 <span id="cb23-2"><a href="Chapter2.html#cb23-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> rank4,</span>
 <span id="cb23-3"><a href="Chapter2.html#cb23-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;cloglog&quot;</span>))</span></code></pre></div>
-<p>結果は以下の通り(表<a href="Chapter2.html#tab:tab-mod3">2.4</a>)。ロジスティック回帰モデルと結果は大きく変わらない。特にP地だけに着目する場合はどちらのモデルを選んでも決定的な差はない。</p>
+<p>結果は以下の通り(表<a href="Chapter2.html#tab:tab-mod3">2.4</a>)。ロジスティック回帰モデルと結果は大きく変わらない。特にP値だけに着目する場合はどちらのモデルを選んでも決定的な差はない。</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="Chapter2.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(mod3) <span class="sc">%&gt;%</span> </span>
 <span id="cb24-2"><a href="Chapter2.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb24-3"><a href="Chapter2.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">95%CI</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_c</span>(<span class="st">&quot;[&quot;</span>,<span class="fu">sprintf</span>(<span class="st">&quot;%.2f&quot;</span>,CI_low),<span class="st">&quot;, &quot;</span>,<span class="fu">sprintf</span>(<span class="st">&quot;%.2f&quot;</span>,CI_high),<span class="st">&quot;}&quot;</span>)) <span class="sc">%&gt;%</span> </span>

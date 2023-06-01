@@ -334,7 +334,7 @@ mod3 <- glm(promo ~ undgrad + phdmed + phdprest + jobpres + art_n + cit_n + year
             family = binomial(link = "cloglog"))
 ```
 
-結果は以下の通り(表\@ref(tab:tab-mod3))。ロジスティック回帰モデルと結果は大きく変わらない。特にP地だけに着目する場合はどちらのモデルを選んでも決定的な差はない。  
+結果は以下の通り(表\@ref(tab:tab-mod3))。ロジスティック回帰モデルと結果は大きく変わらない。特にP値だけに着目する場合はどちらのモデルを選んでも決定的な差はない。  
 ```{r tab-mod3}
 model_parameters(mod3) %>% 
   data.frame() %>% 
