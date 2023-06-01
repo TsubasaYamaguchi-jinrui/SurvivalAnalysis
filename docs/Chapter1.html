@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-06-01" />
+<meta name="date" content="2023-06-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -245,8 +245,14 @@ div.csl-indent {
 <li class="chapter" data-level="4.6" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.6</b> 比例ハザード性の仮定の検討と修正</a>
 <ul>
 <li class="chapter" data-level="4.6.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.6.1</b> シェフィールド残差を用いた検討</a></li>
-<li class="chapter" data-level="4.6.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.6.2</b> 仮定が満たされないときの修正</a></li>
+<li class="chapter" data-level="4.6.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.6.2</b> 仮定が満たされないときの修正</a>
+<ul>
+<li class="chapter" data-level="4.6.2.1" data-path="Chapter4.html"><a href="Chapter4.html#時間との交互作用をモデルに加える"><i class="fa fa-check"></i><b>4.6.2.1</b> 時間との交互作用をモデルに加える</a></li>
+<li class="chapter" data-level="4.6.2.2" data-path="Chapter4.html"><a href="Chapter4.html#層化stratification"><i class="fa fa-check"></i><b>4.6.2.2</b> 層化(stratification)</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="Chapter4.html"><a href="Chapter4.html#観測期間の選択"><i class="fa fa-check"></i><b>4.7</b> 観測期間の選択</a></li>
+<li class="chapter" data-level="4.8" data-path="Chapter4.html"><a href="Chapter4.html#コックスモデルによる予測"><i class="fa fa-check"></i><b>4.8</b> コックス・モデルによる予測</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
 </ul>
@@ -306,12 +312,12 @@ div.csl-indent {
 </p>
 </div>
 <p><br/></p>
-<p>このようなデータは、通常の分析ではデータを扱うのが難しい。なぜなら、再逮捕されなかった服役囚に適切に従属変数<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>を割り当てることができないからである。彼らは10年たっても再逮捕されなかったかもしれないし、出所後13ヶ月に再逮捕されていたかもしれないが、このデータから知ることは不可能である。彼らに一律に同じ値を割り振っても（例えば期間の最大値である1年を割り振る）、彼らのデータを除外してもデータに大きなバイアスがかかってしまう。</p>
+<p>このようなデータは、通常の分析ではデータを扱うのが難しい。なぜなら、再逮捕されなかった服役囚に適切に従属変数(応答変数ともいう)<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>を割り当てることができないからである。彼らは10年たっても再逮捕されなかったかもしれないし、出所後13ヶ月に再逮捕されていたかもしれないが、このデータから知ることは不可能である。彼らに一律に同じ値を割り振っても（例えば期間の最大値である1年を割り振る）、彼らのデータを除外してもデータに大きなバイアスがかかってしまう。</p>
 <p>このように、測定値が不完全にしかわからないデータを<strong>打ち切りデータ</strong>という。打ち切りには、上記のように(1)調査終了時点ではまだイベントが起きていない場合と、(2)何らかの事情(e.g., 予期せぬ死、消息不明など)で調査期間の途中でその個体のデータが追跡できなくなっている場合(= 脱落)の2種類が存在する。</p>
 </div>
 <div id="時間依存共変量" class="section level3 hasAnchor" number="1.2.2">
 <h3><span class="header-section-number">1.2.2</span> 時間依存共変量<a href="Chapter1.html#時間依存共変量" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>もう一つの特殊性は、対象の期間中に独立変数の値が変化する場合があることである（＝<strong>時間依存共変量</strong>）。</p>
+<p>もう一つの特殊性は、対象の期間中に独立変数(説明変数ともいう)の値が変化する場合があることである（＝<strong>時間依存共変量</strong>）。</p>
 <p>例えば、先ほどの例でも対象の12ヶ月の間に仕事の有無が変化していた(<code>emp1</code>~<code>emp52</code>)。こうした場合、回帰モデルに1ヶ月ごとの仕事の有無（e.g., 1ヶ月目の仕事の有無、2ヶ月目の仕事の有無、…）をすべて独立変数として入れることはできるが、この方法では出所後12ヶ月以内に再逮捕された服役囚に対して独立変数を割り振れないところが出てくる。なぜなら、出所後3ヶ月で再逮捕されたとすると、その服役囚の4ヶ月目以降の仕事のデータはないからである。</p>
 </div>
 </div>

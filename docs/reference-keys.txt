@@ -31,7 +31,10 @@ eq:eq-cox3
 eq:eq-cox4
 tab:tab-coxmodelcomp
 eq:eq-cox-int
+fig:fig-coxcheck
 tab:tab-cox-int
+tab:tab-coxmodelcomp2
+fig:fig-survfit
 c1
 s2-1
 s2-2
@@ -83,3 +86,7 @@ rによる実装
 比例ハザード性の仮定の検討と修正
 シェフィールド残差を用いた検討
 仮定が満たされないときの修正
+時間との交互作用をモデルに加える
+層化stratification
+観測期間の選択
+コックスモデルによる予測
