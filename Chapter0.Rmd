@@ -6,21 +6,24 @@
 - `eha`[パッケージ](https://ehar.se/r/eha/)   
 - `mets`[パッケージ](https://kkholst.github.io/mets/index.html)  
 - `flexsurv`[パッケージ](https://cran.r-project.org/web/packages/flexsurv/index.html)  
+- `ggsurvfit`[パッケージ](http://www.danieldsjoberg.com/ggsurvfit/)  
 - `survminer`[パッケージ](https://cran.r-project.org/web/packages/survminer/readme/README.html)  
+- `cmprsk`[パッケージ](https://cran.r-project.org/web/packages/cmprsk/index.html)  
 - `brms`[パッケージ](https://github.com/paul-buerkner/brms)  
 - `rstanarm`[パッケージ](https://mc-stan.org/rstanarm/articles/jm.html)  
 
 ```{r}
 ## 生存時間分析
 library(survival)
-library(ggsurvfit)
 library(eha)
 library(flexsurv)
 library(brms)
 library(rstanarm)
+library(cmprsk)
 
 ## ggplotでの可視化
 library(survminer)
+library(ggsurvfit)
 
 ## データハンドリング
 library(tidyverse)

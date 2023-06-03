@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>補遺 ノンパラメトリックな推定 | Event History and Survival Analysis Using R</title>
+  <meta name="description" content="補遺 ノンパラメトリックな推定 | Event History and Survival Analysis Using R" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="補遺 ノンパラメトリックな推定 | Event History and Survival Analysis Using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="補遺 ノンパラメトリックな推定 | Event History and Survival Analysis Using R" />
+  
+  
+  
+
+<meta name="author" content="Tsubasa Yamaguchi" />
+
+
+<meta name="date" content="2023-06-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="Chapter4.html"/>
+<link rel="next" href="sessioninfo.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.27/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/tabwid-1.1.3/tabwid.css" rel="stylesheet" />
+<script src="libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="custom_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>本稿の目的</a></li>
+<li class="chapter" data-level="" data-path="Chapter0.html"><a href="Chapter0.html"><i class="fa fa-check"></i>0. パッケージの読み込み</a></li>
+<li class="chapter" data-level="1" data-path="Chapter1.html"><a href="Chapter1.html"><i class="fa fa-check"></i><b>1</b> はじめに</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="Chapter1.html"><a href="Chapter1.html#s2-1"><i class="fa fa-check"></i><b>1.1</b> イベントヒストリー分析とは何か</a></li>
+<li class="chapter" data-level="1.2" data-path="Chapter1.html"><a href="Chapter1.html#s2-2"><i class="fa fa-check"></i><b>1.2</b> イベント・ヒストリー分析の難しさ</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="Chapter1.html"><a href="Chapter1.html#打ち切り"><i class="fa fa-check"></i><b>1.2.1</b> 打ち切り</a></li>
+<li class="chapter" data-level="1.2.2" data-path="Chapter1.html"><a href="Chapter1.html#時間依存共変量"><i class="fa fa-check"></i><b>1.2.2</b> 時間依存共変量</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="Chapter1.html"><a href="Chapter1.html#s2-3"><i class="fa fa-check"></i><b>1.3</b> イベント・ヒストリー分析の種類</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="Chapter1.html"><a href="Chapter1.html#繰り返しの有無"><i class="fa fa-check"></i><b>1.3.1</b> 繰り返しの有無</a></li>
+<li class="chapter" data-level="1.3.2" data-path="Chapter1.html"><a href="Chapter1.html#単一の事象と複数の事象"><i class="fa fa-check"></i><b>1.3.2</b> 単一の事象と複数の事象</a></li>
+<li class="chapter" data-level="1.3.3" data-path="Chapter1.html"><a href="Chapter1.html#パラメトリック法とノンパラメトリック法"><i class="fa fa-check"></i><b>1.3.3</b> パラメトリック法とノンパラメトリック法</a></li>
+<li class="chapter" data-level="1.3.4" data-path="Chapter1.html"><a href="Chapter1.html#離散時間と連続時間"><i class="fa fa-check"></i><b>1.3.4</b> 離散時間と連続時間</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Chapter2.html"><a href="Chapter2.html"><i class="fa fa-check"></i><b>2</b> パラメトリックな離散時間モデル</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="Chapter2.html"><a href="Chapter2.html#離散時間モデルの例"><i class="fa fa-check"></i><b>2.1</b> 離散時間モデルの例</a></li>
+<li class="chapter" data-level="2.2" data-path="Chapter2.html"><a href="Chapter2.html#離散時間ハザード"><i class="fa fa-check"></i><b>2.2</b> 離散時間ハザード</a></li>
+<li class="chapter" data-level="2.3" data-path="Chapter2.html"><a href="Chapter2.html#ロジスティック回帰モデル"><i class="fa fa-check"></i><b>2.3</b> ロジスティック回帰モデル</a></li>
+<li class="chapter" data-level="2.4" data-path="Chapter2.html"><a href="Chapter2.html#モデルの推定"><i class="fa fa-check"></i><b>2.4</b> モデルの推定</a></li>
+<li class="chapter" data-level="2.5" data-path="Chapter2.html"><a href="Chapter2.html#rでの実装"><i class="fa fa-check"></i><b>2.5</b> Rでの実装</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="Chapter2.html"><a href="Chapter2.html#データの加工"><i class="fa fa-check"></i><b>2.5.1</b> データの加工</a></li>
+<li class="chapter" data-level="2.5.2" data-path="Chapter2.html"><a href="Chapter2.html#分析"><i class="fa fa-check"></i><b>2.5.2</b> 分析</a></li>
+<li class="chapter" data-level="2.5.3" data-path="Chapter2.html"><a href="Chapter2.html#結果の解釈"><i class="fa fa-check"></i><b>2.5.3</b> 結果の解釈</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="Chapter2.html"><a href="Chapter2.html#尤度比検定"><i class="fa fa-check"></i><b>2.6</b> 尤度比検定</a></li>
+<li class="chapter" data-level="2.7" data-path="Chapter2.html"><a href="Chapter2.html#離散時間ロジスティック回帰モデルの注意点"><i class="fa fa-check"></i><b>2.7</b> 離散時間ロジスティック回帰モデルの注意点</a></li>
+<li class="chapter" data-level="2.8" data-path="Chapter2.html"><a href="Chapter2.html#打ち切りデータの扱い"><i class="fa fa-check"></i><b>2.8</b> 打ち切りデータの扱い</a></li>
+<li class="chapter" data-level="2.9" data-path="Chapter2.html"><a href="Chapter2.html#離散時間モデルと連続時間モデル"><i class="fa fa-check"></i><b>2.9</b> 離散時間モデルと連続時間モデル</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Chapter3.html"><a href="Chapter3.html"><i class="fa fa-check"></i><b>3</b> 連続時間を用いたパラメトリックな手法</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="Chapter3.html"><a href="Chapter3.html#連続時間ハザード率"><i class="fa fa-check"></i><b>3.1</b> 連続時間ハザード率</a></li>
+<li class="chapter" data-level="3.2" data-path="Chapter3.html"><a href="Chapter3.html#パラメトリックな比例ハザードモデル"><i class="fa fa-check"></i><b>3.2</b> パラメトリックな比例ハザードモデル</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="Chapter3.html"><a href="Chapter3.html#モデルの分類"><i class="fa fa-check"></i><b>3.2.1</b> モデルの分類</a>
+<ul>
+<li class="chapter" data-level="3.2.1.1" data-path="Chapter3.html"><a href="Chapter3.html#指数回帰モデル"><i class="fa fa-check"></i><b>3.2.1.1</b> 指数回帰モデル</a></li>
+<li class="chapter" data-level="3.2.1.2" data-path="Chapter3.html"><a href="Chapter3.html#ゴンぺルツ回帰モデル"><i class="fa fa-check"></i><b>3.2.1.2</b> ゴンぺルツ回帰モデル</a></li>
+<li class="chapter" data-level="3.2.1.3" data-path="Chapter3.html"><a href="Chapter3.html#ワイブル回帰モデル"><i class="fa fa-check"></i><b>3.2.1.3</b> ワイブル回帰モデル</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2.2" data-path="Chapter3.html"><a href="Chapter3.html#注意点"><i class="fa fa-check"></i><b>3.2.2</b> 注意点</a></li>
+<li class="chapter" data-level="3.2.3" data-path="Chapter3.html"><a href="Chapter3.html#rでの実装-1"><i class="fa fa-check"></i><b>3.2.3</b> Rでの実装</a>
+<ul>
+<li class="chapter" data-level="3.2.3.1" data-path="Chapter3.html"><a href="Chapter3.html#データの読み込み"><i class="fa fa-check"></i><b>3.2.3.1</b> データの読み込み</a></li>
+<li class="chapter" data-level="3.2.3.2" data-path="Chapter3.html"><a href="Chapter3.html#分析の実行"><i class="fa fa-check"></i><b>3.2.3.2</b> 分析の実行</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="Chapter3.html"><a href="Chapter3.html#s3-3"><i class="fa fa-check"></i><b>3.3</b> 加速時間ハザードモデル</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="Chapter3.html"><a href="Chapter3.html#モデルの概要"><i class="fa fa-check"></i><b>3.3.1</b> モデルの概要</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="Chapter3.html"><a href="Chapter3.html#rでの実装-2"><i class="fa fa-check"></i><b>3.4</b> Rでの実装</a></li>
+<li class="chapter" data-level="3.5" data-path="Chapter3.html"><a href="Chapter3.html#適合度の評価"><i class="fa fa-check"></i><b>3.5</b> 適合度の評価</a></li>
+<li class="chapter" data-level="3.6" data-path="Chapter3.html"><a href="Chapter3.html#観察されない異質性の原因"><i class="fa fa-check"></i><b>3.6</b> 観察されない異質性の原因</a></li>
+<li class="chapter" data-level="3.7" data-path="Chapter3.html"><a href="Chapter3.html#なぜパラメトリックモデルを用いるのか"><i class="fa fa-check"></i><b>3.7</b> なぜパラメトリックモデルを用いるのか</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="Chapter4.html"><a href="Chapter4.html"><i class="fa fa-check"></i><b>4</b> コックス回帰モデル</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザードモデル"><i class="fa fa-check"></i><b>4.1</b> 比例ハザードモデル</a></li>
+<li class="chapter" data-level="4.2" data-path="Chapter4.html"><a href="Chapter4.html#部分尤度法"><i class="fa fa-check"></i><b>4.2</b> 部分尤度法</a></li>
+<li class="chapter" data-level="4.3" data-path="Chapter4.html"><a href="Chapter4.html#rによる実装"><i class="fa fa-check"></i><b>4.3</b> Rによる実装</a></li>
+<li class="chapter" data-level="4.4" data-path="Chapter4.html"><a href="Chapter4.html#時間に依存する独立変数"><i class="fa fa-check"></i><b>4.4</b> 時間に依存する独立変数</a></li>
+<li class="chapter" data-level="4.5" data-path="Chapter4.html"><a href="Chapter4.html#時間依存独立変数を含むモデル"><i class="fa fa-check"></i><b>4.5</b> 時間依存独立変数を含むモデル</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="Chapter4.html"><a href="Chapter4.html#プログラミングステートメント法programming-statements-method"><i class="fa fa-check"></i><b>4.5.1</b> プログラミング・ステートメント法(programming statements method)</a></li>
+<li class="chapter" data-level="4.5.2" data-path="Chapter4.html"><a href="Chapter4.html#エピソード分割法episode-splitting-method"><i class="fa fa-check"></i><b>4.5.2</b> エピソード分割法(episode splitting method)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.6</b> 比例ハザード性の仮定の検討と修正</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.6.1</b> シェフィールド残差を用いた検討</a></li>
+<li class="chapter" data-level="4.6.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.6.2</b> 仮定が満たされないときの修正</a>
+<ul>
+<li class="chapter" data-level="4.6.2.1" data-path="Chapter4.html"><a href="Chapter4.html#時間との交互作用をモデルに加える"><i class="fa fa-check"></i><b>4.6.2.1</b> 時間との交互作用をモデルに加える</a></li>
+<li class="chapter" data-level="4.6.2.2" data-path="Chapter4.html"><a href="Chapter4.html#層化stratification"><i class="fa fa-check"></i><b>4.6.2.2</b> 層化(stratification)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="Chapter4.html"><a href="Chapter4.html#観測期間の選択"><i class="fa fa-check"></i><b>4.7</b> 観測期間の選択</a></li>
+<li class="chapter" data-level="4.8" data-path="Chapter4.html"><a href="Chapter4.html#コックスモデルによる予測"><i class="fa fa-check"></i><b>4.8</b> コックス・モデルによる予測</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapterx.html"><a href="Chapterx.html"><i class="fa fa-check"></i>補遺 ノンパラメトリックな推定</a>
+<ul>
+<li class="chapter" data-level="" data-path="Chapterx.html"><a href="Chapterx.html#kaplan-meier法"><i class="fa fa-check"></i>Kaplan-Meier法</a></li>
+<li class="chapter" data-level="" data-path="Chapterx.html"><a href="Chapterx.html#nelson-aalen法"><i class="fa fa-check"></i>Nelson-Aalen法</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Event History and Survival Analysis Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="補遺-ノンパラメトリックな推定" class="section level1 unnumbered hasAnchor">
+<h1>補遺 ノンパラメトリックな推定<a href="Chapterx.html#補遺-ノンパラメトリックな推定" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><span class="citation">Allison (<a href="#ref-Allison2014" role="doc-biblioref">2014</a>)</span> ではほとんど解説がなかったが、分布に何も仮定を置かない<strong>ノンパラメトリック</strong>な方法で分析を行うこともできる。以下では、2つの代表的な方法を紹介する。</p>
+<div id="kaplan-meier法" class="section level2 unnumbered hasAnchor">
+<h2>Kaplan-Meier法<a href="Chapterx.html#kaplan-meier法" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Kaplan-Maier</strong>法は<u>生存関数</u>を推定するための推定量で、時点<span class="math inline">\(t_n\)</span>における生存率<span class="math inline">\(S_n\)</span>の推定値は以下のように定義される。なお、時点<span class="math inline">\(t_n\)</span>でのリスク集合の大きさを<span class="math inline">\(l_n\)</span>、時点<span class="math inline">\(t_n\)</span>に発生した事象の数を<span class="math inline">\(d_n\)</span>としている。推定量は最尤推定によって得られる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+S(t_n) &amp;= \biggl(1-\frac{d_1}{l_1}\biggl) \times \biggl(1-\frac{d_2}{l_2}\biggl) \times \cdots \times \biggl(1-\frac{d_n}{l_n}\biggl) \\
+&amp;= \prod_{k=1}^n \biggl(1-\frac{d_k}{l_k}\biggl)
+\end{aligned}
+\]</span></p>
+<p>Kaplan-Meier推定量は1からスタートし、事象の発生が確認されるたびに値が小さくなる階段関数である。Rでは<code>survival</code>パケージの<code>survfit()</code>関数で推定できる。ここでは、第<a href="Chapter2.html#c2">2</a>章で使用した生化学者の准教授への昇進データ(<code>rank</code>)を使用する。</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="Chapterx.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb90-2"><a href="Chapterx.html#cb90-2" aria-hidden="true" tabindex="-1"></a>rank <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;data/rank.dta&quot;</span>)</span></code></pre></div>
+<p>第<a href="Chapter3.html#c3">3</a>章と第<a href="Chapter4.html#c4">4</a>章のモデルと同様に、従属変数を<code>Surv(観察期間, 事象の発生の有無)</code>もしくは、<code>Surv(観察開始時点, 観察終了時点, 事象の発生の有無)</code>として推定できる。推定の結果は以下のとおりである。</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="Chapterx.html#cb91-1" aria-hidden="true" tabindex="-1"></a>est_km <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb91-2"><a href="Chapterx.html#cb91-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">type =</span> <span class="st">&quot;kaplan-meier&quot;</span>, <span class="at">data =</span> rank)</span>
+<span id="cb91-3"><a href="Chapterx.html#cb91-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-4"><a href="Chapterx.html#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(est_km)</span></code></pre></div>
+<pre><code>## Call: survfit(formula = Surv(dur, promo) ~ 1, data = rank, type = &quot;kaplan-meier&quot;)
+## 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     1    301       1    0.997 0.00332        0.990        1.000
+##     2    299       1    0.993 0.00469        0.984        1.000
+##     3    292      17    0.936 0.01431        0.908        0.964
+##     4    263      42    0.786 0.02431        0.740        0.835
+##     5    211      53    0.589 0.02970        0.533        0.650
+##     6    149      46    0.407 0.03030        0.352        0.471
+##     7     96      31    0.276 0.02825        0.225        0.337
+##     8     59      15    0.205 0.02622        0.160        0.264
+##     9     42       7    0.171 0.02484        0.129        0.228
+##    10     29       4    0.148 0.02406        0.107        0.203</code></pre>
+<p>結果の図示は<code>survminer</code>パッケージの<code>ggsurvplot()</code>関数で行うことができる(図<a href="Chapterx.html#fig:fig-surv-km">4.9</a>)。</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="Chapterx.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_km,</span>
+<span id="cb93-2"><a href="Chapterx.html#cb93-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
+<span id="cb93-3"><a href="Chapterx.html#cb93-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb93-4"><a href="Chapterx.html#cb93-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">palette =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb93-5"><a href="Chapterx.html#cb93-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>,</span>
+<span id="cb93-6"><a href="Chapterx.html#cb93-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
+<span id="cb93-7"><a href="Chapterx.html#cb93-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb93-8"><a href="Chapterx.html#cb93-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend.title =</span> <span class="st">&quot;&quot;</span>) <span class="ot">-&gt;</span> p_km</span>
+<span id="cb93-9"><a href="Chapterx.html#cb93-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb93-10"><a href="Chapterx.html#cb93-10" aria-hidden="true" tabindex="-1"></a>p_km<span class="sc">$</span>plot <span class="sc">+</span></span>
+<span id="cb93-11"><a href="Chapterx.html#cb93-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
+<span id="cb93-12"><a href="Chapterx.html#cb93-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb93-13"><a href="Chapterx.html#cb93-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb93-14"><a href="Chapterx.html#cb93-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb93-15"><a href="Chapterx.html#cb93-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-surv-km"></span>
+<img src="SurvivalAnalysis_Using_R_files/figure-html/fig-surv-km-1.png" alt="Kaplan-Meier法で推定した生存曲線" width="432" />
+<p class="caption">
+図4.9: Kaplan-Meier法で推定した生存曲線
+</p>
+</div>
+<p>説明変数を含めて、独立変数の値ごとに推定することもできる。</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="Chapterx.html#cb94-1" aria-hidden="true" tabindex="-1"></a>est_km2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
+<span id="cb94-2"><a href="Chapterx.html#cb94-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> rank,</span>
+<span id="cb94-3"><a href="Chapterx.html#cb94-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">type =</span> <span class="st">&quot;kaplan-meier&quot;</span>)</span>
+<span id="cb94-4"><a href="Chapterx.html#cb94-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-5"><a href="Chapterx.html#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(est_km2)</span></code></pre></div>
+<pre><code>## Call: survfit(formula = Surv(dur, promo) ~ phdmed, data = rank, type = &quot;kaplan-meier&quot;)
+## 
+##                 phdmed=0 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     3    107       6    0.944  0.0222       0.9013        0.989
+##     4     96      19    0.757  0.0423       0.6785        0.845
+##     5     73      17    0.581  0.0496       0.4913        0.687
+##     6     54      19    0.376  0.0496       0.2908        0.487
+##     7     31      11    0.243  0.0455       0.1682        0.351
+##     8     17       4    0.186  0.0428       0.1182        0.292
+##     9     13       3    0.143  0.0395       0.0831        0.245
+##    10      8       1    0.125  0.0383       0.0685        0.228
+## 
+##                 phdmed=1 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     1    189       1    0.995 0.00528        0.984        1.000
+##     2    188       1    0.989 0.00744        0.975        1.000
+##     3    185      11    0.931 0.01857        0.895        0.968
+##     4    167      23    0.802 0.02953        0.747        0.862
+##     5    138      36    0.593 0.03710        0.525        0.670
+##     6     95      27    0.425 0.03819        0.356        0.506
+##     7     65      20    0.294 0.03591        0.231        0.373
+##     8     42      11    0.217 0.03317        0.161        0.293
+##     9     29       4    0.187 0.03179        0.134        0.261
+##    10     21       3    0.160 0.03076        0.110        0.233</code></pre>
+<p>また、2つ以上の集団で生存関数が有意に異なるかを、<strong>ログランク検定</strong>や<strong>一般化ウィルコクソン検定</strong>で調べることもできる。Rでは<code>survdiff()</code>関数で以下のように実行することができる。今回は、医学博士を持っているか否か(<code>phdmed</code>)によって生存関数が有意に異なるわけではないことが分かった。コックス回帰などとは異なり、<strong>他の変数の影響を統制できない</strong>点は注意が必要である。</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="Chapterx.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ログランク検定</span></span>
+<span id="cb96-2"><a href="Chapterx.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
+<span id="cb96-3"><a href="Chapterx.html#cb96-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> rank,</span>
+<span id="cb96-4"><a href="Chapterx.html#cb96-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">rho =</span> <span class="dv">0</span>) </span></code></pre></div>
+<pre><code>## Call:
+## survdiff(formula = Surv(dur, promo) ~ phdmed, data = rank, rho = 0)
+## 
+##            N Observed Expected (O-E)^2/E (O-E)^2/V
+## phdmed=0 112       80     74.9     0.345     0.685
+## phdmed=1 189      137    142.1     0.182     0.685
+## 
+##  Chisq= 0.7  on 1 degrees of freedom, p= 0.4</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="Chapterx.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 一般化ウィルコクソン検定 </span></span>
+<span id="cb98-2"><a href="Chapterx.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
+<span id="cb98-3"><a href="Chapterx.html#cb98-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> rank,</span>
+<span id="cb98-4"><a href="Chapterx.html#cb98-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">rho =</span> <span class="dv">1</span>) </span></code></pre></div>
+<pre><code>## Call:
+## survdiff(formula = Surv(dur, promo) ~ phdmed, data = rank, rho = 1)
+## 
+##            N Observed Expected (O-E)^2/E (O-E)^2/V
+## phdmed=0 112     54.6     51.4     0.206     0.516
+## phdmed=1 189     91.1     94.4     0.112     0.516
+## 
+##  Chisq= 0.5  on 1 degrees of freedom, p= 0.5</code></pre>
+<p>検定の結果を反映させた図を作成することもできる(図<a href="Chapterx.html#fig:fig-surv-km2">4.10</a>)。</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="Chapterx.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_km2,</span>
+<span id="cb100-2"><a href="Chapterx.html#cb100-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
+<span id="cb100-3"><a href="Chapterx.html#cb100-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb100-4"><a href="Chapterx.html#cb100-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb100-5"><a href="Chapterx.html#cb100-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&quot;blue3&quot;</span>,<span class="st">&quot;red2&quot;</span>),</span>
+<span id="cb100-6"><a href="Chapterx.html#cb100-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>,</span>
+<span id="cb100-7"><a href="Chapterx.html#cb100-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
+<span id="cb100-8"><a href="Chapterx.html#cb100-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend.title =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb100-9"><a href="Chapterx.html#cb100-9" aria-hidden="true" tabindex="-1"></a>           <span class="do">## p値を表示</span></span>
+<span id="cb100-10"><a href="Chapterx.html#cb100-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">pval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb100-11"><a href="Chapterx.html#cb100-11" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 一般化ウィルコクソン検定の場合は&quot;S1&quot;</span></span>
+<span id="cb100-12"><a href="Chapterx.html#cb100-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">log.rank.weights =</span> <span class="st">&quot;1&quot;</span>) <span class="ot">-&gt;</span> p_km2</span>
+<span id="cb100-13"><a href="Chapterx.html#cb100-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-14"><a href="Chapterx.html#cb100-14" aria-hidden="true" tabindex="-1"></a>p_km2<span class="sc">$</span>plot <span class="sc">+</span></span>
+<span id="cb100-15"><a href="Chapterx.html#cb100-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
+<span id="cb100-16"><a href="Chapterx.html#cb100-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb100-17"><a href="Chapterx.html#cb100-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb100-18"><a href="Chapterx.html#cb100-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb100-19"><a href="Chapterx.html#cb100-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-surv-km2"></span>
+<img src="SurvivalAnalysis_Using_R_files/figure-html/fig-surv-km2-1.png" alt="ロングランク検定の結果を示した生存曲線" width="432" />
+<p class="caption">
+図4.10: ロングランク検定の結果を示した生存曲線
+</p>
+</div>
+</div>
+<div id="nelson-aalen法" class="section level2 unnumbered hasAnchor">
+<h2>Nelson-Aalen法<a href="Chapterx.html#nelson-aalen法" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>もう一つよく用いられる方法が<strong>Nelson-Aalen法</strong>であり、<u>累積ハザード関数</u>(ある時点までのハザード率の総和)を推定するための推定量である。時点<span class="math inline">\(t_n\)</span>における累積ハザード率$ H_n<span class="math inline">\(の推定値は以下のように定義される。なお、時点\)</span>t_n<span class="math inline">\(でのリスク集合の大きさを\)</span>l_n<span class="math inline">\(、時点\)</span>t_n<span class="math inline">\(に発生した事象の数を\)</span>d_n$としている。</p>
+<p><span class="math display">\[
+\begin{aligned}
+H(t_n) &amp;= \biggl(\frac{d_1}{l_1}\biggl) + \biggl(\frac{d_2}{l_2}\biggl) + \cdots + \biggl(\frac{d_n}{l_n}\biggl) \\
+&amp;= \sum_{k=1}^n \biggl(\frac{d_k}{l_k}\biggl)
+\end{aligned}
+\]</span></p>
+<p>Nelson-Aalen推定量は0からスタートし、事象の発生が確認されるたびに値が大きくなる階段関数である。Rでは<code>coxph()</code>で説明変数のないモデルを推定したのち、<code>basehaz()</code>関数で求められる。</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="Chapterx.html#cb101-1" aria-hidden="true" tabindex="-1"></a>est_na <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb101-2"><a href="Chapterx.html#cb101-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> rank)</span>
+<span id="cb101-3"><a href="Chapterx.html#cb101-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-4"><a href="Chapterx.html#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="fu">basehaz</span>(est_na)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["hazard"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["time"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.003322259","2":"1"},{"1":"0.006666741","2":"2"},{"1":"0.066543717","2":"3"},{"1":"0.240174246","2":"4"},{"1":"0.528643924","2":"5"},{"1":"0.896366679","2":"6"},{"1":"1.283854308","2":"7"},{"1":"1.574332161","2":"8"},{"1":"1.754293548","2":"9"},{"1":"1.899989168","2":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>結果の図示は<code>survminer</code>パッケージの<code>ggsurvplot()</code>関数で、<code>fun = "cumhaz"</code>とすることで行うことができる(図<a href="Chapterx.html#fig:fig-cumhaz">4.11</a>)。</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="Chapterx.html#cb102-1" aria-hidden="true" tabindex="-1"></a>fit_na <span class="ot">&lt;-</span> <span class="fu">survfit</span>(est_na, </span>
+<span id="cb102-2"><a href="Chapterx.html#cb102-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> rank,</span>
+<span id="cb102-3"><a href="Chapterx.html#cb102-3" aria-hidden="true" tabindex="-1"></a>        <span class="do">## 信頼区間の範囲</span></span>
+<span id="cb102-4"><a href="Chapterx.html#cb102-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">conf.int =</span> <span class="fl">0.95</span>)</span>
+<span id="cb102-5"><a href="Chapterx.html#cb102-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-6"><a href="Chapterx.html#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(fit_na,</span>
+<span id="cb102-7"><a href="Chapterx.html#cb102-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">fun =</span> <span class="st">&quot;cumhaz&quot;</span>,</span>
+<span id="cb102-8"><a href="Chapterx.html#cb102-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
+<span id="cb102-9"><a href="Chapterx.html#cb102-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb102-10"><a href="Chapterx.html#cb102-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>) <span class="ot">-&gt;</span> p_na</span>
+<span id="cb102-11"><a href="Chapterx.html#cb102-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-12"><a href="Chapterx.html#cb102-12" aria-hidden="true" tabindex="-1"></a>p_na<span class="sc">$</span>plot <span class="sc">+</span></span>
+<span id="cb102-13"><a href="Chapterx.html#cb102-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
+<span id="cb102-14"><a href="Chapterx.html#cb102-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb102-15"><a href="Chapterx.html#cb102-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb102-16"><a href="Chapterx.html#cb102-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-cumhaz"></span>
+<img src="SurvivalAnalysis_Using_R_files/figure-html/fig-cumhaz-1.png" alt="Nelson-Aalen法で推定した累積ハザード関数" width="432" />
+<p class="caption">
+図4.11: Nelson-Aalen法で推定した累積ハザード関数
+</p>
+</div>
+<p>生存関数<span class="math inline">\(S_n\)</span>と累積ハザード関数<span class="math inline">\(H(t_n)\)</span>の関係は以下のように記述できる。よって、<strong>Nelson-Aalen法で推定した累積ハザード関数から生存関数を推定することもできる</strong>。</p>
+<p><span class="math display">\[
+S(t_n) = exp[-H(t_n)]
+\]</span></p>
+<p>Nelson-Aalen法によって推定された生存関数は以下のように図示できる。</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="Chapterx.html#cb103-1" aria-hidden="true" tabindex="-1"></a>est_na2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb103-2"><a href="Chapterx.html#cb103-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> rank,</span>
+<span id="cb103-3"><a href="Chapterx.html#cb103-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">type =</span> <span class="st">&quot;fh&quot;</span>)</span>
+<span id="cb103-4"><a href="Chapterx.html#cb103-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-5"><a href="Chapterx.html#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_na2,</span>
+<span id="cb103-6"><a href="Chapterx.html#cb103-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
+<span id="cb103-7"><a href="Chapterx.html#cb103-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb103-8"><a href="Chapterx.html#cb103-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb103-9"><a href="Chapterx.html#cb103-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">palette =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb103-10"><a href="Chapterx.html#cb103-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
+<span id="cb103-11"><a href="Chapterx.html#cb103-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>) <span class="ot">-&gt;</span> p_na2</span>
+<span id="cb103-12"><a href="Chapterx.html#cb103-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-13"><a href="Chapterx.html#cb103-13" aria-hidden="true" tabindex="-1"></a>p_na2<span class="sc">$</span>plot <span class="sc">+</span></span>
+<span id="cb103-14"><a href="Chapterx.html#cb103-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
+<span id="cb103-15"><a href="Chapterx.html#cb103-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb103-16"><a href="Chapterx.html#cb103-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb103-17"><a href="Chapterx.html#cb103-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb103-18"><a href="Chapterx.html#cb103-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-surv-na"></span>
+<img src="SurvivalAnalysis_Using_R_files/figure-html/fig-surv-na-1.png" alt="Nelson-Aalen法で推定した生存曲線" width="432" />
+<p class="caption">
+図4.12: Nelson-Aalen法で推定した生存曲線
+</p>
+</div>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Allison2014" class="csl-entry">
+Allison, P. D. (2014). <em>Event history and survival analysis: Regression for longitudinal event data</em>. SAGE Publications.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Chapter4.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sessioninfo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

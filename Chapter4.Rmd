@@ -45,6 +45,12 @@ mod_cox <- coxph(Surv(week, arrest) ~ fin + age + race + wexp + mar
 mod_cox
 ```
 
+`survminer`パッケージの`ggforest()`関数で結果を図示することもできる(図\@ref(fig:fig-res-cox))。推定されたハザード比と95%信頼区間、検定結果が示されている。    
+```{r fig-res-cox, fig.dim = c(9,5), fig.cap = "mod_coxで推定されたハザード比"}
+ggforest(mod_cox)
+```
+
+
 ## 時間に依存する独立変数  
 コックス回帰モデルは時間依存的な独立変数を含むモデルに拡張できる(式\@ref(eq:eq-cox3))。  
 
@@ -91,6 +97,11 @@ mod_cox_ti <- coxph(Surv(start, stop, arrest) ~ fin + age + race + wexp + mar
 mod_cox_ti
 ```
 
+`ggforest()`関数によって図示した結果が図\@ref(fig:fig-res-coxti)である。  
+```{r fig-res-coxti, fig.dim = c(9,5), fig.cap = "mod_coxで推定されたハザード比"}
+ggforest(mod_cox_ti)
+```
+
 続いて、式\@ref(eq:eq-cox4)のモデルを推定する。`work`の代わりに`worklag`を説明変数に入れる。  
 ```{r}
 mod_cox_tlag <- coxph(Surv(start, stop, arrest) ~ fin + age + race + wexp + mar 
@@ -101,6 +112,12 @@ mod_cox_tlag <- coxph(Surv(start, stop, arrest) ~ fin + age + race + wexp + mar
 ```{r}
 mod_cox_tlag
 ```
+
+`ggforest()`関数によって図示した結果が図\@ref(fig:fig-res-coxtlag)である。  
+```{r fig-res-coxtlag, fig.dim = c(9,5), fig.cap = "mod_coxで推定されたハザード比"}
+ggforest(mod_cox_tlag)
+```
+
 
 推定した3つのモデルの推定値をまとめたものが表\@ref(tab:tab-coxmodelcomp)である。推定結果自体は非常によく似ているが、先ほどの検定結果を見ると経済的支援の効果は時間依存変数を含まない基本モデルのみで有意になっている。また、時間依存変数の就業状態(`work`または`worklag`)が他の変数よりも大きな影響を与えていたことも分かった。、2つ目のモデルのハザード比(`Exp(Coef) = 0.265`)をみると就業している元服役囚の再犯率が就業していない服役囚の26.5%であると推定された。  
 
@@ -265,34 +282,141 @@ tibble(Covariate = rownames(mod_cox_int$coefficients %>% data.frame()),
 ## コックス・モデルによる予測    
 第\@ref(c3)章で見たように、予測という観点で見るとパラメトリックなモデルが最も優れており、予測が非常に簡単である。一方で、コックス回帰モデルでも限定的であるが予測を行うことはできる。  
 
-コックス回帰を用いて主に予測できるのは生存関数(= 時間の経過とともに事象が生じていない確率がどのように変化するかを表す関数)の推測値であり、実際に観察された時間の範囲について行える。生存関数には独立変数の値を指定することができ、これは実際に観測された値でなくても問題ない。例えば、1つ目のモデル(`mod_cox`)で、経済的支援を受けており、出所時の年齢21歳、黒人で未婚、仮釈放として出所し、就業経験があり、過去に有罪判決を4回受けている人について予測される生存確率は以下のようになる。    
+コックス回帰を用いて主に予測できるのは生存関数(= 時間の経過とともに事象が生じていない確率がどのように変化するかを表す関数)の推測値であり、実際に観察された時間の範囲について行える。詳しい推定方法は @Sugimoto2021 を参照。生存関数には独立変数の値を指定することができ、これは実際に観測された値でなくても問題ない。例えば、1つ目のモデル(`mod_cox`)で、経済的支援を受けており、出所時の年齢21歳、黒人で未婚、仮釈放として出所し、就業経験があり、過去に有罪判決を4回受けている人について予測される生存確率は以下のようになる。    
 
 ```{r}
 survfit(mod_cox, 
         newdata = tibble(fin = 1, age = 21, race = 1, wexp = 1, mar = 0, paro = 1, prio = 4),
         ## 信頼区間の範囲
         conf.int = 0.95) %>% 
-  summary(., times = c(seq(0,50,5),52)) 
+  summary(times = c(seq(0,50,5),52)) 
 ```
 
-作図には`surveminer`パッケージの`ggsurvplot()`関数が有用である。結果をggplotオブジェクトとして出力してくれるので、グラフの修飾が容易である。上記と同じ条件で予測した生存関数を図示したものが図\@ref(fig:fig-survfit)である。     
-```{r fig-survfit, fig.dim = c(4.5,4.5), fig.cap = "モデルから推定された生存曲線"}
+作図には`surveminer`[パッケージ](http://rpkgs.datanovia.com/survminer/reference/ggsurvplot.html)の`ggsurvplot()`関数と`ggsurvfit`[パッケージ](http://www.danieldsjoberg.com/ggsurvfit/index.html)の`ggsurvfit()`関数が有用である。結果をggplotオブジェクトとして出力してくれるので、グラフの修飾が容易である。作り方の詳細はパッケージのウェブページを参考にされたし。上記と同じ条件で予測した生存関数を図示したものが図\@ref(fig:fig-survfit)である。なお、塗りつぶし部分は95%信頼区間である。  
+
+```{r fig-survfit, fig.dim = c(9,5), fig.cap = "モデルから推定された生存曲線"}
 predict_cox <- survfit(mod_cox, 
         newdata = tibble(fin = 1, age = 21, race = 1, wexp = 1, mar = 0, paro = 1, prio = 4),
         ## 信頼区間の範囲
         conf.int = 0.95)
 
+## ggsurvplot
+ggsurvplot(predict_cox,
+           data = tibble(fin = 1, age = 21, race = 1, wexp = 1, mar = 0, paro = 1, prio = 4),
+           ## 色
+           palette = "black",
+           ## 塗りつぶしの濃さ
+           conf.int.alpha = 0.15,
+           size = 0.5,
+           ## TRUEなら打ち切りデータの場所が明示される
+           censor = FALSE, 
+           ggtheme = theme_bw()) -> p1
+
+p1$plot + 
+ labs(x = "week", y = "survival probability")+
+  ggtitle("ggsurvplot()")+
+  theme_bw(base_size = 16)+
+  theme(legend.position = "none")+
+  coord_cartesian(ylim = c(0.64556,1))+
+  scale_y_continuous(breaks = seq(0.65,1,0.05)) -> p1
+
+## ggsurvfit
 ggsurvfit(predict_cox)+
+  add_confidence_interval()+
+  labs(x = "week", y = "survival probability")+
+  ggtitle("ggsurfit()")+
+  theme_bw(base_size = 16)+
+  scale_y_continuous(breaks = seq(0,1,0.05))　-> p2
+
+p1 + p2
+```
+
+なお、何も指定しない場合、`survfit()`関数は連続変数は平均値で、二値変数は0で中心化した値を当てはめて予測を行う(図\@ref(fig:fig-survfit2))。  
+```{r}
+mod_cox$means
+```
+
+```{r fig-survfit2, fig.dim = c(4.5,4.5), fig.cap = "独立変数を指定しないときにモデルから推定された生存曲線"}
+predict_cox2 <- survfit(mod_cox, 
+        ## 信頼区間の範囲
+        conf.int = 0.95)
+
+## ggsurvplot
+ggsurvplot(predict_cox2,
+           data = recid,
+           ## 色
+           palette = "black",
+           ## 塗りつぶしの濃さ
+           conf.int.alpha = 0.15,
+           size = 0.5,
+           ## TRUEなら打ち切りデータの場所が明示される
+           censor = FALSE, 
+           ggtheme = theme_bw()) -> p3
+
+p3$plot + 
+ labs(x = "week", y = "survival probability")+
+  theme_bw(base_size = 16)+
+  theme(legend.position = "none")+
+  coord_cartesian(ylim = c(0.64556,1))+
+  scale_y_continuous(breaks = seq(0.65,1,0.05)) 
+```
+
+複数の値を当てはめて生存関数を予測することもできる(図\@ref(fig:fig-survfit3))。ここでは、前科の数`prio`が0,5,10回のときの予測を行う。  
+```{r fig-survfit3, fig.dim = c(4.5,4.5), fig.cap = "独立変数を指定しないときにモデルから推定された生存曲線"}
+predict_cox3 <- survfit(mod_cox, 
+                        newdata = tibble(fin = 1, age = 21, race = 1, wexp = 1, mar = 0, paro = 1, prio = c(0,5,10)),
+                        ## 信頼区間の範囲
+                        conf.int = 0.95)
+
+## ggsurvplot
+ggsurvplot(predict_cox3,
+           data = tibble(fin = 1, age = 21, race = 1, wexp = 1, mar = 0, paro = 1, prio = c(0,5,10)),
+           ## 塗りつぶしの濃さ
+           conf.int.alpha = 0.15,
+           size = 0.5,
+           ## TRUEなら打ち切りデータの場所が明示される
+           censor = FALSE, 
+           legend.title = "prio",
+           legend.labs = c("0","5","10"),
+           ggtheme = theme_bw()) -> p4
+
+p4$plot + 
+  scale_color_nejm()+
+  scale_fill_nejm()+
   labs(x = "week", y = "survival probability")+
   theme_bw(base_size = 16)+
-  scale_y_continuous(breaks = seq(0,1,0.05))
+  theme(legend.position = "top")+
+  coord_cartesian(ylim = c(0.4,1))+
+  scale_y_continuous(breaks = seq(0,1,0.2)) 
 ```
 
-```{r}
-ggsurvplot(mod_cox, data = recid)
+時間依存独立変数を持つ場合も同様に予測することができる(図\@ref(fig:fig-sirvfit4))。
+```{r fig-survfit4, fig.dim = c(4.5,4.5), fig.cap = "時間依存独立変数をもつモデルから推定された生存曲線"}
+predict_cox_ti <- survfit(mod_cox_ti,
+                        newdata = tibble(fin = 1, age = 21, race = 1, wexp = 1, mar = 0, paro = 1, prio = 4, work = c(0,1)),
+                        ## 信頼区間の範囲
+                        conf.int = 0.95)
+
+## ggsurvplot
+ggsurvplot(predict_cox_ti,
+           data = tibble(fin = 1, age = 21, race = 1, wexp = 1, mar = 0, paro = 1, prio = 4, work = c(0,1)),
+           ## 塗りつぶしの濃さ
+           conf.int.alpha = 0.15,
+           size = 0.5,
+           ## TRUEなら打ち切りデータの場所が明示される
+           censor = FALSE, 
+           legend.title = "work",
+           legend.labs = c(0,1),
+           ggtheme = theme_bw()) -> p5
+
+p5$plot + 
+  scale_color_nejm()+
+  scale_fill_nejm()+
+  labs(x = "week", y = "survival probability")+
+  theme_bw(base_size = 16)+
+  theme(legend.position = "top")+
+  coord_cartesian(ylim = c(0.5,1))+
+  scale_y_continuous(breaks = seq(0,1,0.05)) 
 ```
-
-
-
 
 

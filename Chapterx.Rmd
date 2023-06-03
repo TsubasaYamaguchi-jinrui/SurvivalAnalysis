@@ -1,0 +1,161 @@
+# 補遺 ノンパラメトリックな推定 {-}  
+@Allison2014 ではほとんど解説がなかったが、分布に何も仮定を置かない**ノンパラメトリック**な方法で分析を行うこともできる。以下では、2つの代表的な方法を紹介する。  
+
+## Kaplan-Meier法 {-}    
+**Kaplan-Maier**法は<u>生存関数</u>を推定するための推定量で、時点$t_n$における生存率$S_n$の推定値は以下のように定義される。なお、時点$t_n$でのリスク集合の大きさを$l_n$、時点$t_n$に発生した事象の数を$d_n$としている。推定量は最尤推定によって得られる。      
+
+$$
+\begin{aligned}
+S(t_n) &= \biggl(1-\frac{d_1}{l_1}\biggl) \times \biggl(1-\frac{d_2}{l_2}\biggl) \times \cdots \times \biggl(1-\frac{d_n}{l_n}\biggl) \\
+&= \prod_{k=1}^n \biggl(1-\frac{d_k}{l_k}\biggl)
+\end{aligned}
+$$
+
+Kaplan-Meier推定量は1からスタートし、事象の発生が確認されるたびに値が小さくなる階段関数である。Rでは`survival`パケージの`survfit()`関数で推定できる。ここでは、第\@ref(c2)章で使用した生化学者の准教授への昇進データ(`rank`)を使用する。  
+
+```{r}
+library(haven)
+rank <- read_dta("data/rank.dta")
+```
+
+第\@ref(c3)章と第\@ref(c4)章のモデルと同様に、従属変数を`Surv(観察期間, 事象の発生の有無)`もしくは、`Surv(観察開始時点, 観察終了時点, 事象の発生の有無)`として推定できる。推定の結果は以下のとおりである。    
+```{r}
+est_km <- survfit(Surv(dur, promo) ~ 1,
+                  type = "kaplan-meier", data = rank)
+
+summary(est_km)
+```
+
+結果の図示は`survminer`パッケージの`ggsurvplot()`関数で行うことができる(図\@ref(fig:fig-surv-km))。  
+```{r fig-surv-km, fig.dim = c(4.5,4.5), fig.cap = "Kaplan-Meier法で推定した生存曲線"}
+ggsurvplot(est_km,
+           data = rank,
+           censor = FALSE,
+           palette = "black",
+           size = 0.5,
+           conf.int.alpha = 0.15,
+           legend = "none",
+           legend.title = "") -> p_km
+  
+p_km$plot +
+  labs(x = "year")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        legend.position = "none")+
+  coord_cartesian(ylim = c(0.15,1))
+```
+
+説明変数を含めて、独立変数の値ごとに推定することもできる。  
+```{r}
+est_km2 <- survfit(Surv(dur, promo) ~ phdmed,
+                  data = rank,
+                  type = "kaplan-meier")
+
+summary(est_km2)
+```
+
+また、2つ以上の集団で生存関数が有意に異なるかを、**ログランク検定**や**一般化ウィルコクソン検定**で調べることもできる。Rでは`survdiff()`関数で以下のように実行することができる。今回は、医学博士を持っているか否か(`phdmed`)によって生存関数が有意に異なるわけではないことが分かった。コックス回帰などとは異なり、**他の変数の影響を統制できない**点は注意が必要である。    
+```{r}
+## ログランク検定
+survdiff(Surv(dur, promo) ~ phdmed,
+         data = rank,
+         rho = 0) 
+
+
+## 一般化ウィルコクソン検定 
+survdiff(Surv(dur, promo) ~ phdmed,
+         data = rank,
+         rho = 1) 
+```
+
+検定の結果を反映させた図を作成することもできる(図\@ref(fig:fig-surv-km2))。  
+```{r fig-surv-km2, fig.dim = c(4.5,4.5), fig.cap = "ロングランク検定の結果を示した生存曲線"}
+ggsurvplot(est_km2,
+           data = rank,
+           censor = FALSE,
+           conf.int = TRUE,
+           palette = c("blue3","red2"),
+           size = 0.5,
+           conf.int.alpha = 0.15,
+           legend.title = "",
+           ## p値を表示
+           pval = TRUE,
+           ## 一般化ウィルコクソン検定の場合は"S1"
+           log.rank.weights = "1") -> p_km2
+
+p_km2$plot +
+  labs(x = "year")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        legend.position = "top")+
+  coord_cartesian(ylim = c(0.15,1))
+```
+
+## Nelson-Aalen法 {-}    
+もう一つよく用いられる方法が**Nelson-Aalen法**であり、<u>累積ハザード関数</u>(ある時点までのハザード率の総和)を推定するための推定量である。時点$t_n$における累積ハザード率$ H_n$の推定値は以下のように定義される。なお、時点$t_n$でのリスク集合の大きさを$l_n$、時点$t_n$に発生した事象の数を$d_n$としている。    
+
+$$
+\begin{aligned}
+H(t_n) &= \biggl(\frac{d_1}{l_1}\biggl) + \biggl(\frac{d_2}{l_2}\biggl) + \cdots + \biggl(\frac{d_n}{l_n}\biggl) \\
+&= \sum_{k=1}^n \biggl(\frac{d_k}{l_k}\biggl)
+\end{aligned}
+$$
+
+Nelson-Aalen推定量は0からスタートし、事象の発生が確認されるたびに値が大きくなる階段関数である。Rでは`coxph()`で説明変数のないモデルを推定したのち、`basehaz()`関数で求められる。  
+
+```{r}
+est_na <- coxph(Surv(dur, promo) ~ 1,
+                data = rank)
+
+basehaz(est_na)
+```
+
+結果の図示は`survminer`パッケージの`ggsurvplot()`関数で、`fun = "cumhaz"`とすることで行うことができる(図\@ref(fig:fig-cumhaz))。  
+```{r fig-cumhaz, fig.dim = c(4.5,4.5), fig.cap = "Nelson-Aalen法で推定した累積ハザード関数"}
+fit_na <- survfit(est_na, 
+        data = rank,
+        ## 信頼区間の範囲
+        conf.int = 0.95)
+
+ggsurvplot(fit_na,
+           fun = "cumhaz",
+           data = rank,
+           censor = FALSE,
+           legend = "none") -> p_na
+
+p_na$plot +
+  labs(x = "year")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        legend.position = "none")
+```
+
+生存関数$S_n$と累積ハザード関数$H(t_n)$の関係は以下のように記述できる。よって、**Nelson-Aalen法で推定した累積ハザード関数から生存関数を推定することもできる**。     
+
+$$
+S(t_n) = exp[-H(t_n)]
+$$
+
+Nelson-Aalen法によって推定された生存関数は以下のように図示できる。  
+```{r fig-surv-na, fig.dim = c(4.5,4.5), fig.cap = "Nelson-Aalen法で推定した生存曲線"}
+est_na2 <- survfit(Surv(dur, promo) ~ 1,
+                data = rank,
+                type = "fh")
+
+ggsurvplot(est_na2,
+           data = rank,
+           censor = FALSE,
+           legend = "none",
+           palette = "black",
+           conf.int.alpha = 0.15,
+           size = 0.5) -> p_na2
+
+p_na2$plot +
+  labs(x = "year")+
+  theme_bw(base_size = 16)+
+  theme(aspect.ratio = 1,
+        legend.position = "none")+
+  coord_cartesian(ylim = c(0.15,1))
+```
+
+
