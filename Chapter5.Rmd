@@ -1,4 +1,4 @@
-# 複数事象のモデル {c5}  
+# 複数事象のモデル {#c5}  
 これまでの章では、分析対象の事象を全て同じように扱ってきた。例えば、第\@ref(c2)章では昇進の種類を区別していないし、第\@ref(c3)~\@ref(c4)章は再犯の際の犯罪の種類を区別していない。本章では、複数の事象がある場合に分析を行う方法を解説する。基本的には、一種類の事象の場合に解説した方法を応用できる。  
 
 ## 複数事象の分類  
@@ -7,30 +7,31 @@
 ### 条件付き過程  
 まず一つ目は**条件付き過程**であり、次のように定義される。  
 
-1. 事象の発生または非発生は<u>一連の因果プロセス</u>によって決定される。ある条件が与えられた後、因果メカニズムによってどの種類の事象が発生するかが決定される。  
+1. **事象の発生または非発生は<u>一連の因果プロセス</u>によって決定される。ある条件が与えられた後、因果メカニズムによってどの種類の事象が発生するかが決定される。**  
 
 例としては、携帯電話を購入することを決定した後、iPhoneとAndroidのどちらを購入するかを決定する場合などが挙げられる。こうしたタイプに対して適切な分析は、⓵まずイベント・ヒストリー分析を行って事象の区別をせずに事象の発生だけに着目した分析を行い、⓶どの種類の事象が発生するかを別のモデル(通常は二項ロジットモデルや多項ロジットモデル)で分析する。  
 
 ### 並行的過程  
+#### 4つのタイプ  
 次に考えられるのは**並行的過程**と呼ばれるタイプのものであり、次の条件を満たす。  
 
-2. それぞれの種類の事象の発生は異なる因果メカニズムによって決定される。  
+2. **それぞれの種類の事象の発生は異なる因果メカニズムによって決定される。**    
 
 異なる因果メカニズムとは、それぞれの種類の事象の発生が異なる独立変数によって影響されたり、同じ独立変数が事象の種類によって異なる偏回帰係数や線形関数を持っていたりすることを指す。この仮定は、以下の4つの下位タイプに分類できる。  
 
-- 2a. ある種類の事象を経験した個体はほかの種類の事象を経験する可能性がなくなる(= **競合リスク**)。  
+- <u>2a. ある種類の事象を経験した個体はほかの種類の事象を経験する可能性がなくなる(= **競合リスク**)。</u>    
 例としては、競合する原因による死亡などが挙げられる。心臓病とがんの両方が原因で死亡する可能性はないので、心臓病が原因で死亡した個体はもはやがんで死亡する可能性がない。  
 
-- 2b ある種類の事象を経験すると、その個体はほかの種類の事象の観察対象から外れる。  
+- <u>2b. ある種類の事象を経験すると、その個体はほかの種類の事象の観察対象から外れる。</u>    
 例えば国内移動と国外移動を考えるとき、もし個体が国外移動するとその個体を追跡することが困難になることが珍しくない。  
 
-- 2c ある一つの種類の事象を経験しても、他の種類の事象を経験する可能性や個体の観察の継続性に影響を与えない。  
+- <u>2c. ある一つの種類の事象を経験しても、他の種類の事象を経験する可能性や個体の観察の継続性に影響を与えない。</u>    
 二つの種類の事象が全く無関係であることはないが、分析する際にあたかも無関係のように扱うことが可能な場合はある。例えば、選挙で投票に行くことと結婚することはほとんど関係がないと仮定できるので、そのように扱える。  
 
-- 2d ある一つの事象が生じると、ほかの種類の事象を経験する可能性が増大/減少する  
+- <u>2d. ある一つの事象が生じると、ほかの種類の事象を経験する可能性が増大/減少する。</u>    
 例えば、妊娠すると結婚する可能性が高まる、といった場合がこれに該当する  
 
-## 並行的過程の分析  
+#### 並行的過程のタイプごとの分析  
 - **2c**  
 それぞれの種類の事象が独立すると仮定できるので、前章までの分析をそれぞれに適用すればよい。   
 
@@ -44,7 +45,8 @@
 このタイプに対する分析は2bと似ているが、さらに詳しい解説が必要である。次章以降では、こうしたタイプの事象を扱う「**競合リスク・モデル**」について解説する。  
 
 ## 競合リスク・モデル  
-競合リスク・モデルでは、まず**タイプ固有(type-specific)ハザード関数**と呼ばれるものを定義する。$m$種類の異なる事象があり、$j = 1,2,...,m$とする。$P_j(t,t+s)$を陸巣集合に入っている個体が種類$j$の事象を時点$t$から$t+s$の期間で経験する条件付き確率とする。ただし、個体が時点$t$より前に$m$個の事象のいずれかを経験していたらリスク集合には入っていないものとする。  
+### モデルの概要  
+競合リスクのある事象を分析する方法で最も一般的なものは、**タイプ固有(type-specific)ハザード関数**と呼ばれるものを定義する方法である。$m$種類の異なる事象があり、$j = 1,2,...,m$とする。$P_j(t,t+s)$を陸巣集合に入っている個体が種類$j$の事象を時点$t$から$t+s$の期間で経験する条件付き確率とする。ただし、個体が時点$t$より前に$m$個の事象のいずれかを経験していたらリスク集合には入っていないものとする。  
 
 タイプ固有ハザード関数は以下のように定義される。各種類の事象に独自のハザード関数が定義される。  
 $$
@@ -53,7 +55,7 @@ $$
 
 分析では、タイプ固有のハザード関数一つひとつについてモデルを作ることができる。前章までに説明したイベント・ヒストリーのモデルはどれも競合リスクの分析に用いることができる。次章の種類によって全く異なるモデルを当てはめることも可能である。いずれのモデルでも事象の種類ごとに別々に尤度関数を作り、最尤推定法または部分尤度推定法でパラメータを推定する。  
 
-## Rでの分析例  
+### Rでの実装  
 分析の例として、元服役囚の再犯についての研究を再度取り上げる。再犯で逮捕された犯罪を財産犯(強盗・窃盗など)とそれ以外に分ける。経済的支援は財産犯による再犯のリスクは減らす可能性があるが、それ以外の犯罪には大きく影響するとは考えられない。  
 
 ここでは、以下の式のコックス比例ハザードモデルで推定を行う(式\@ref(eq:eq-risk))。いずれの種類の事象にも同じ独立変数を考えるが、偏回帰係数は異なるとしている。  
@@ -62,7 +64,7 @@ $$
 log(h_j(t)) = a_j(t) + b_{j1}x_1 + b_{j2}x_2 + \cdots  (\#eq:eq-risk)
 $$
 
-変数は以下の通り。今回は時間依存変数は含めない。`type`     
+変数は以下の通り。今回は時間依存変数は含めない。      
 
 **従属変数に関わるもの**  
 - `arrest`: 再犯の有無  
@@ -72,7 +74,7 @@ $$
 **独立変数**  
 - `fin`: 経済的支援の有無  
 - `white`: 人種(白人か否か)  
-- `ed`: 教育レベル（学校教育を受けた年数)    
+- `edcomb`: 教育レベル（学校教育を受けた年数)    
 - `married`: 出所時の配偶状態(0/1)  
 - `age`: 出所時の年齢  
 - `male`: 性別(0/1)    
@@ -86,12 +88,265 @@ $$
 tarp <- read_dta("data/tarp.dta")
 
 datatable(tarp,
-          options = list(ScrollX = 60))
+          options = list(scrollX = 60))
+```
+<br/>  
+
+データを見ると、打ち切りになった個体(`type = 0`)が598人、非財産犯で逮捕された個体(`type = 1`)が137人、財産犯で逮捕された個体(`type = 2`)が197人いたことが分かる(表\@ref(tab:tab-tarp-count))。  
+```{r tab-tarp-count}
+tarp %>% 
+  group_by(type) %>% 
+  summarise(N = n()) %>% 
+  kable(caption = "財産犯/非財産犯で逮捕された個体数") %>% 
+  kable_styling(font_size = 15, full_width = FALSE)
 ```
 
-まず、再犯による逮捕の種類を区別しないモデルを以下のように推定する。  
+#### 事象の種類を区別しないで分析    
+まず、再犯による逮捕の種類を区別しないモデルを以下のように推定する。これは前章で解説した方法と全く一緒である。  
 ```{r}
-mod_rsk_all <- coxph(Surv(arrestday,arrest) ~ fin + age + white + male + married + paro + numprop + 
-                       crimprop)
+mod_rsk_all <- coxph(Surv(arrstday,arrest) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb, data = tarp)
 ```
+
+結果は以下の通り。`age`、`white`、`numprop`、`crimprop`、`numarrst`、`edcomb`の影響が5%水準で有意になっている。  
+```{r}
+mod_rsk_all
+```
+
+`ggforest()`関数によって図示した結果が図\@ref(fig:fig-res-rsk-all)である。  
+```{r fig-res-rsk-all, fig.dim = c(9,5), fig.cap = "mod_rsk_allで推定されたハザード比"}
+ggforest(mod_rsk_all)
+```
+
+#### 再犯の種類ごとに分析  
+それぞれの独立変数は再犯の種類ごとに異なる影響を与えている可能性があるため、財産犯とそうでない再犯に分けて比例ハザードモデルを推定する。財産犯について分析する際は、非財産犯で逮捕された個体は打ち切りとして扱い、非財産犯について分析する際はその逆である。  
+
+データフレームに財産犯で再犯を犯した場合は1、それ以外は0とする列を作成する(`prop`)。非財産犯についても同様の列を作成する(`non_prop`)。      
+```{r}
+tarp %>% 
+  mutate(prop = ifelse(type == "2", 1, 0)) %>% 
+  mutate(non_prop = ifelse(type == "1", 1, 0)) -> tarp
+```
+
+##### 財産犯についての分析  
+財産犯についてモデリングした結果は以下のとおりである。  
+```{r}
+mod_rsk_prop <- coxph(Surv(arrstday,prop) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb, data = tarp)
+
+mod_rsk_prop
+```
+
+`ggforest()`関数によって図示した結果が図\@ref(fig:fig-res-rsk-prop)である。事象を区別しなかった場合と異なり、教育レベル(`edcomb`)が5%水準で有意にならなかったが、それ以外は同じ独立変数が有意になり、効果の方向性も変わらなかった。    
+```{r fig-res-rsk-prop, fig.dim = c(9,5), fig.cap = "mod_rsk_propで推定されたハザード比"}
+ggforest(mod_rsk_prop)
+```
+
+##### 非財産犯についての分析  
+財産犯についてモデリングした結果は以下のとおりである。  
+```{r}
+mod_rsk_nonprop <- coxph(Surv(arrstday,non_prop) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb, data = tarp)
+
+mod_rsk_nonprop
+```
+
+`ggforest()`関数によって図示した結果が図\@ref(fig:fig-res-rsk-nonprop)である。`age`、`numprop`、`numarrst`、`edcomb`の4つのみが5%水準で有意に影響しているという結果になった。  
+```{r fig-res-rsk-nonprop, fig.dim = c(9,5), fig.cap = "mod_rsk_nonpropで推定されたハザード比"}
+ggforest(mod_rsk_nonprop)
+```
+
+##### 結果の比較  
+以上の3つのモデルで推定された偏回帰係数を比較したのが表\@ref(tab:tab-modcomp-rsk)である。経済的支援(`fin`)はいずれでも有意ではなかったが、財産犯で最も大きな影響を持っていた。しかし、偏回帰係数の符号は予想とは逆であり、経済的支援をした元服役囚の方が、していない服役囚よりも財産犯を犯すリスクが高い傾向にあった。年齢(`age`)、過去に犯した財産犯の有罪判決の数(`numprop`)、前科の数(`numarrst`)はいずれのモデルでも再犯に影響を与えていたが、人種(`white`)は非財産犯のみで有意な影響がみられなかった。また、最後の服役が財産犯であったか(`cromprop`)も非財産犯のみで有意でなかったが、教育レベル(`edcomb`)は逆に財産犯のみで有意でなかった。  
+
+```{r tab-modcomp-rsk}
+tibble(Covariate = rownames(mod_rsk_all$coefficients %>% data.frame()),
+       "Coef(all)" = c(sprintf("%.3f",coef(mod_rsk_all))[1:10]),
+       "Exp(Coef_all)" = c(sprintf("%.3f",exp(coef(mod_rsk_all)))[1:10]),
+       "Coef(prop)" = sprintf("%.3f",coef(mod_rsk_prop))[1:10],
+       "Exp(Coef_prop)" = sprintf("%.3f",exp(coef(mod_rsk_prop)))[1:10],
+       "Coef(nonprop)" = sprintf("%.3f",coef(mod_rsk_nonprop))[1:10],
+       "Exp(Coef_nonprop)" = sprintf("%.3f",exp(coef(mod_rsk_nonprop))[1:10])) %>% 
+  flextable() %>% 
+  add_header_row(colwidth = c(1,2,2,2),
+                 values = c("","全ての種類","財産犯", "非財産犯")) %>% 
+  flextable::align(align = "center", part = "all") %>% 
+  set_caption("各モデルの推定値の比較")
+```
+<br/>  
+
+では、財産犯についてのモデル(`mod_rsk_prop`)と非財産犯についてのモデル(`mod_rsk_nonprop`)で推定された偏回帰係数の差は統計的に有意だろうか。以下の統計量$z$は二つの偏回帰係数に差がないという帰無仮説の下では理論上標準正規分布に従う。つまり、**$z < -1.96$または$z > 1.96$であれば、二つの偏回帰係数は有意に異なるということになる**。なお、$se(b_1)$と$se(b_2)$はそれぞれ偏回帰係数$b_1$と$b_2$の標準誤差である。    
+
+$$
+z = \frac{b_1 - b_2}{\sqrt se(b_1)^2 + se(b_2)^2 }
+$$
+
+各独立変数について$z$を計算したのが表\@ref(tab:tab-coefcomp)である。最後の服役が財産犯であったか(`cromprop`)のみが5%水準で有意に偏回帰係数の推定値が異なっていた。  
+```{r tab-coefcomp}
+tibble(
+  Covariate = rownames(mod_rsk_all$coefficients %>% data.frame()),
+  b_prop = mod_rsk_prop$coefficients, 
+  se_b_prop = sqrt(diag(mod_rsk_prop$var)),
+  b_nonprop = mod_rsk_nonprop$coefficients, 
+  se_b_nonprop = sqrt(diag(mod_rsk_nonprop$var))) %>% 
+  mutate(z = (b_prop - b_nonprop)/sqrt(se_b_prop^2 + se_b_nonprop^2)) %>% 
+  mutate_if(.predicate = is.numeric, .funs = ~sprintf("%.3f",.)) %>% 
+  kable(caption = "各独立変数についてのz値") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+
+### 注意点  
+競合リスク・モデルでは、他の種類の事象が発生したことにより生じた打ち切りについてはモデル中に情報がないので、ランダムな打ち切りでなくてはならない(\@ref(s2-8)参照)。こうした無情報性の仮定が妥当かは検定することができない。ただし、**すべての種類の事象の発生に影響を与える独立変数がモデルに十分に含まれているのであれば、打ち切りが無情報になる可能性は高くなる**ので、その点に留意してモデリングすることはできる。  
+
+## 部分分布を用いた競合リスクの分析  
+### モデルの概要   
+競合事象を分析するもう一つの方法は、部分分布を用いる方法である。この方法は打ち切りが無情報である必要がない。一方で、**分析目的が予測のときには有益だが、因果関係の推論には適していないとされる**。  
+
+ここで、$j = 1,2,3,...,k$個の競合する事象があったとする。時点$t$において事象$j$が発生する確率を$f_j(t)$とすると、時点$t$までの事象$j$の累積発生率関数(= 時点$t$までに事象$j$が発生する確率)は以下のように定義され、**部分分布**(subdistribution)あるいは**累積発生率関数**(cumulative incidence function)と呼ばれる。  
+
+$$
+F_j(t) = \int_0^t f_j(u) du
+$$
+
+一方で、時点$t$までの全ての事象の累積発生率関数は  
+
+$$
+F(t) = \sum_{j=1}^k F_j(t)  
+$$
+
+で表され、生存関数は$S(t) = 1-F(t)$と書くことができる。このとき、事象$j$のハザード関数は以下のようになる。    
+
+$$
+h_j(t) = f_j(t)/S(t)
+$$
+
+独立変数を$x$、偏回帰係数を$\beta$とすると、部分分布のハザード関数に基づいた競合リスクの比例ハザードモデルは以下のように書ける。  
+$$
+h_j(t,x_i) = h_j(t) \times exp(\beta x_i)
+$$
+
+### Rでの実装  
+Rでは、`tidycmprsk`パッケージの`crr()`関数を用いて部分分布を使った分析を行える。  
+```{r}
+## 事象の種類を表す変数は因子型でなくてはならない。
+tarp <- mutate(tarp, type2 = as.factor(type))
+
+## 財産犯のモデル
+mod_subd_prop <- tidycmprsk::crr(Surv(arrstday,type2) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb,
+                       ## 着目する事象の種類。ここでは財産犯。
+                       failcode = 2,
+                       data = tarp)
+
+## 非財産犯のモデル
+mod_subd_nonprop <- tidycmprsk::crr(Surv(arrstday,type2) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb,
+                       ## 着目する事象の種類。ここでは非財産犯。
+                       failcode = 1,
+                       data = tarp)
+```
+
+財産犯に着目したモデルの結果は以下の通り。`HR`はハザード比(偏回帰係数を対数変換したもの)を表す。`age`、`white`、`married`、`numprop`、`crimprop`、`numarrst`の影響が5%水準で有意になっていた。
+```{r}
+mod_subd_prop 
+```
+
+非財産犯に着目したモデルの結果は以下の通り。`male`、`numprop`、`edcomb`の3つのみが5%水準で有意で、特に`male`の効果が大きいと推定された。  
+```{r}
+mod_subd_nonprop
+```
+
+二つのモデルで推定された偏回帰係数を比較するために作成したのが表\@ref(tab:tab-subd-comp)である。競合リスク・モデルの推定値(表\@ref(tab:tab-modcomp-rsk))と大きくは変わっていないが、$z$統計量の値が少し小さくなっている。一般に、因果推論を行うならば競合リスク・モデルの方がよいとされる。    
+
+```{r tab-subd-comp}
+tibble(Covariate = rownames(mod_subd_prop$coefs %>% data.frame()),
+       "Coef(prop)" = c(sprintf("%.3f",mod_subd_prop$coefs)[1:10]),
+       "Exp(Coef_prop)" = c(sprintf("%.3f",exp(mod_subd_prop$coefs))[1:10]),
+       "Coef(nonprop)" = sprintf("%.3f",mod_subd_nonprop$coefs)[1:10],
+       "Exp(Coef_nonprop)" = sprintf("%.3f",exp(mod_subd_nonprop$coefs))[1:10]) %>% 
+  flextable() %>% 
+  add_header_row(colwidth = c(1,2,2),
+                 values = c("","財産犯", "非財産犯")) %>% 
+  flextable::align(align = "center", part = "all") %>% 
+  set_caption("各モデルの推定値の比較")
+```
+
+### 累積発生率関数の予測値  
+一方で、部分分布を用いたモデルは予測を行う場合には優れているとされる。  
+
+時点$t$における事象$j$の累積発生率関数は以下のように定義される。  
+
+$$
+F_j(t) = \int_0^t f_j(u)du = \int_0^t h_j(u)S(u)du  
+$$
+
+累積発生率関数の図示は`tidycmprsk`パッケージの`cuminc()`関数と、`ggsurvfit`パッケージの`ggsuminc()`関数を利用して行える(図\@ref(fig:fig-cuminc))。  
+```{r fig-cuminc, fig.dim = c(6.5,5), fig.cap = "部分分布モデルから推定された累積発生率関数"}
+tidycmprsk::cuminc(Surv(arrstday,type2) ~ 1,
+                   rho = 0,
+                   data = tarp) -> pred_cuminc
+
+ggcuminc(pred_cuminc,
+         outcome = c("1","2"))+
+  add_confidence_interval()+
+  theme_bw(base_size = 16)+
+  scale_linetype_discrete(labels = c("nonprop","prop"))+
+  theme(aspect.ratio = 1.1)+
+  scale_x_continuous(breaks = seq(0,350,50))
+```
+<br/>  
+
+なお、コックス回帰モデルを使用した競合リスク・モデルも以下のようにすれば累積発生関数を図示できる(図\@ref(fig:fig-rsk))。しかし、競合リスク・モデルはそれぞれの種類を別々のモデルで推定しているため、両方の予測値を足すと1を超えてしまう場合がある点に注意が必要。    
+```{r fig-rsk, fig.dim = c(9,5), fig.cap = "競合リスク・モデルから推定された累積発生関数"}
+predict_rsk_prop <- survfit(mod_rsk_prop, 
+                        conf.int = 0.95)
+
+predict_rsk_nonprop <- survfit(mod_rsk_nonprop, 
+                        conf.int = 0.95)
+
+## 財産犯
+ggsurvplot(predict_rsk_prop,
+           data = tarp,
+           ## 塗りつぶしの濃さ
+           conf.int.alpha = 0.15,
+           size = 0.5,
+           ## TRUEなら打ち切りデータの場所が明示される
+           censor = FALSE, 
+           ggtheme = theme_bw(),
+           ## 累積ハザード関数を指定
+           fun = "cumhaz") -> p_rsk_prop
+           
+
+p_rsk_prop$plot +
+  theme_bw(base_size = 16)+
+  labs(x = "week", y = "cumulative hazard", title = "prop")+
+  theme(legend.position = "none")+
+  coord_cartesian(xlim = c(0,370), ylim = c(0,0.24))+
+  scale_x_continuous(breaks = seq(0,350,100))+
+  theme(aspect.ratio=1.1)-> p_rsk_prop2
+
+## 非財産犯
+ggsurvplot(predict_rsk_nonprop,
+           data = tarp,
+           ## 塗りつぶしの濃さ
+           conf.int.alpha = 0.15,
+           size = 0.5,
+           ## TRUEなら打ち切りデータの場所が明示される
+           censor = FALSE, 
+           ggtheme = theme_bw(),
+           ## 累積ハザード関数を指定
+           fun = "cumhaz") -> p_rsk_nonprop
+           
+p_rsk_nonprop$plot +
+  theme_bw(base_size = 16)+
+  labs(x = "week", y = "cumulative hazard", title = "nonprop")+
+  theme(legend.position = "none")+
+  coord_cartesian(xlim = c(0,370), ylim = c(0,0.24))+
+  scale_x_continuous(breaks = seq(0,350,100))+
+  theme(aspect.ratio=1.1)-> p_rsk_nonprop2
+
+p_rsk_prop2 + p_rsk_nonprop2
+```
+
+
 

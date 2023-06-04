@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-06-04" />
+<meta name="date" content="2023-06-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,7 +201,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.6" data-path="Chapter2.html"><a href="Chapter2.html#尤度比検定"><i class="fa fa-check"></i><b>2.6</b> 尤度比検定</a></li>
 <li class="chapter" data-level="2.7" data-path="Chapter2.html"><a href="Chapter2.html#離散時間ロジスティック回帰モデルの注意点"><i class="fa fa-check"></i><b>2.7</b> 離散時間ロジスティック回帰モデルの注意点</a></li>
-<li class="chapter" data-level="2.8" data-path="Chapter2.html"><a href="Chapter2.html#打ち切りデータの扱い"><i class="fa fa-check"></i><b>2.8</b> 打ち切りデータの扱い</a></li>
+<li class="chapter" data-level="2.8" data-path="Chapter2.html"><a href="Chapter2.html#s2-8"><i class="fa fa-check"></i><b>2.8</b> 打ち切りデータの扱い</a></li>
 <li class="chapter" data-level="2.9" data-path="Chapter2.html"><a href="Chapter2.html#離散時間モデルと連続時間モデル"><i class="fa fa-check"></i><b>2.9</b> 離散時間モデルと連続時間モデル</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="Chapter3.html"><a href="Chapter3.html"><i class="fa fa-check"></i><b>3</b> 連続時間を用いたパラメトリックな手法</a>
@@ -225,34 +225,90 @@ div.csl-indent {
 <li class="chapter" data-level="3.3" data-path="Chapter3.html"><a href="Chapter3.html#s3-3"><i class="fa fa-check"></i><b>3.3</b> 加速時間ハザードモデル</a>
 <ul>
 <li class="chapter" data-level="3.3.1" data-path="Chapter3.html"><a href="Chapter3.html#モデルの概要"><i class="fa fa-check"></i><b>3.3.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="3.3.2" data-path="Chapter3.html"><a href="Chapter3.html#rでの実装-2"><i class="fa fa-check"></i><b>3.3.2</b> Rでの実装</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="Chapter3.html"><a href="Chapter3.html#rでの実装-2"><i class="fa fa-check"></i><b>3.4</b> Rでの実装</a></li>
-<li class="chapter" data-level="3.5" data-path="Chapter3.html"><a href="Chapter3.html#適合度の評価"><i class="fa fa-check"></i><b>3.5</b> 適合度の評価</a></li>
-<li class="chapter" data-level="3.6" data-path="Chapter3.html"><a href="Chapter3.html#観察されない異質性の原因"><i class="fa fa-check"></i><b>3.6</b> 観察されない異質性の原因</a></li>
-<li class="chapter" data-level="3.7" data-path="Chapter3.html"><a href="Chapter3.html#なぜパラメトリックモデルを用いるのか"><i class="fa fa-check"></i><b>3.7</b> なぜパラメトリックモデルを用いるのか</a></li>
+<li class="chapter" data-level="3.4" data-path="Chapter3.html"><a href="Chapter3.html#適合度の評価"><i class="fa fa-check"></i><b>3.4</b> 適合度の評価</a></li>
+<li class="chapter" data-level="3.5" data-path="Chapter3.html"><a href="Chapter3.html#観察されない異質性の原因"><i class="fa fa-check"></i><b>3.5</b> 観察されない異質性の原因</a></li>
+<li class="chapter" data-level="3.6" data-path="Chapter3.html"><a href="Chapter3.html#なぜパラメトリックモデルを用いるのか"><i class="fa fa-check"></i><b>3.6</b> なぜパラメトリックモデルを用いるのか</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="Chapter4.html"><a href="Chapter4.html"><i class="fa fa-check"></i><b>4</b> コックス回帰モデル</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザードモデル"><i class="fa fa-check"></i><b>4.1</b> 比例ハザードモデル</a></li>
-<li class="chapter" data-level="4.2" data-path="Chapter4.html"><a href="Chapter4.html#部分尤度法"><i class="fa fa-check"></i><b>4.2</b> 部分尤度法</a></li>
-<li class="chapter" data-level="4.3" data-path="Chapter4.html"><a href="Chapter4.html#rによる実装"><i class="fa fa-check"></i><b>4.3</b> Rによる実装</a></li>
-<li class="chapter" data-level="4.4" data-path="Chapter4.html"><a href="Chapter4.html#時間に依存する独立変数"><i class="fa fa-check"></i><b>4.4</b> 時間に依存する独立変数</a></li>
-<li class="chapter" data-level="4.5" data-path="Chapter4.html"><a href="Chapter4.html#時間依存独立変数を含むモデル"><i class="fa fa-check"></i><b>4.5</b> 時間依存独立変数を含むモデル</a>
+<li class="chapter" data-level="4.1" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザードモデル"><i class="fa fa-check"></i><b>4.1</b> 比例ハザードモデル</a>
 <ul>
-<li class="chapter" data-level="4.5.1" data-path="Chapter4.html"><a href="Chapter4.html#プログラミングステートメント法programming-statements-method"><i class="fa fa-check"></i><b>4.5.1</b> プログラミング・ステートメント法(programming statements method)</a></li>
-<li class="chapter" data-level="4.5.2" data-path="Chapter4.html"><a href="Chapter4.html#エピソード分割法episode-splitting-method"><i class="fa fa-check"></i><b>4.5.2</b> エピソード分割法(episode splitting method)</a></li>
+<li class="chapter" data-level="4.1.1" data-path="Chapter4.html"><a href="Chapter4.html#モデルの概要-1"><i class="fa fa-check"></i><b>4.1.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="4.1.2" data-path="Chapter4.html"><a href="Chapter4.html#部分尤度法"><i class="fa fa-check"></i><b>4.1.2</b> 部分尤度法</a></li>
+<li class="chapter" data-level="4.1.3" data-path="Chapter4.html"><a href="Chapter4.html#rによる実装"><i class="fa fa-check"></i><b>4.1.3</b> Rによる実装</a></li>
 </ul></li>
-<li class="chapter" data-level="4.6" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.6</b> 比例ハザード性の仮定の検討と修正</a>
+<li class="chapter" data-level="4.2" data-path="Chapter4.html"><a href="Chapter4.html#時間に依存する独立変数を含むコックス回帰"><i class="fa fa-check"></i><b>4.2</b> 時間に依存する独立変数を含むコックス回帰</a>
 <ul>
-<li class="chapter" data-level="4.6.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.6.1</b> シェフィールド残差を用いた検討</a></li>
-<li class="chapter" data-level="4.6.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.6.2</b> 仮定が満たされないときの修正</a>
+<li class="chapter" data-level="4.2.1" data-path="Chapter4.html"><a href="Chapter4.html#モデルの概要-2"><i class="fa fa-check"></i><b>4.2.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="4.2.2" data-path="Chapter4.html"><a href="Chapter4.html#rでの実装-3"><i class="fa fa-check"></i><b>4.2.2</b> Rでの実装</a></li>
+<li class="chapter" data-level="4.2.3" data-path="Chapter4.html"><a href="Chapter4.html#モデルの比較"><i class="fa fa-check"></i><b>4.2.3</b> モデルの比較</a></li>
+<li class="chapter" data-level="4.2.4" data-path="Chapter4.html"><a href="Chapter4.html#データに欠損がある場合の補完と加工"><i class="fa fa-check"></i><b>4.2.4</b> データに欠損がある場合の補完と加工</a>
 <ul>
-<li class="chapter" data-level="4.6.2.1" data-path="Chapter4.html"><a href="Chapter4.html#時間との交互作用をモデルに加える"><i class="fa fa-check"></i><b>4.6.2.1</b> 時間との交互作用をモデルに加える</a></li>
-<li class="chapter" data-level="4.6.2.2" data-path="Chapter4.html"><a href="Chapter4.html#層化stratification"><i class="fa fa-check"></i><b>4.6.2.2</b> 層化(stratification)</a></li>
+<li class="chapter" data-level="4.2.4.1" data-path="Chapter4.html"><a href="Chapter4.html#プログラミングステートメント法programming-statements-method"><i class="fa fa-check"></i><b>4.2.4.1</b> プログラミング・ステートメント法(programming statements method)</a></li>
+<li class="chapter" data-level="4.2.4.2" data-path="Chapter4.html"><a href="Chapter4.html#エピソード分割法episode-splitting-method"><i class="fa fa-check"></i><b>4.2.4.2</b> エピソード分割法(episode splitting method)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4.7" data-path="Chapter4.html"><a href="Chapter4.html#観測期間の選択"><i class="fa fa-check"></i><b>4.7</b> 観測期間の選択</a></li>
-<li class="chapter" data-level="4.8" data-path="Chapter4.html"><a href="Chapter4.html#コックスモデルによる予測"><i class="fa fa-check"></i><b>4.8</b> コックス・モデルによる予測</a></li>
+<li class="chapter" data-level="4.3" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.3</b> 比例ハザード性の仮定の検討と修正</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.3.1</b> シェフィールド残差を用いた検討</a></li>
+<li class="chapter" data-level="4.3.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.3.2</b> 仮定が満たされないときの修正</a>
+<ul>
+<li class="chapter" data-level="4.3.2.1" data-path="Chapter4.html"><a href="Chapter4.html#時間との交互作用をモデルに加える"><i class="fa fa-check"></i><b>4.3.2.1</b> 時間との交互作用をモデルに加える</a></li>
+<li class="chapter" data-level="4.3.2.2" data-path="Chapter4.html"><a href="Chapter4.html#層化stratification"><i class="fa fa-check"></i><b>4.3.2.2</b> 層化(stratification)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="Chapter4.html"><a href="Chapter4.html#観測期間の選択"><i class="fa fa-check"></i><b>4.4</b> 観測期間の選択</a></li>
+<li class="chapter" data-level="4.5" data-path="Chapter4.html"><a href="Chapter4.html#コックスモデルによる予測"><i class="fa fa-check"></i><b>4.5</b> コックス・モデルによる予測</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="Chapter5.html"><a href="Chapter5.html"><i class="fa fa-check"></i><b>5</b> 複数事象のモデル</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="Chapter5.html"><a href="Chapter5.html#複数事象の分類"><i class="fa fa-check"></i><b>5.1</b> 複数事象の分類</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="Chapter5.html"><a href="Chapter5.html#条件付き過程"><i class="fa fa-check"></i><b>5.1.1</b> 条件付き過程</a></li>
+<li class="chapter" data-level="5.1.2" data-path="Chapter5.html"><a href="Chapter5.html#並行的過程"><i class="fa fa-check"></i><b>5.1.2</b> 並行的過程</a>
+<ul>
+<li class="chapter" data-level="5.1.2.1" data-path="Chapter5.html"><a href="Chapter5.html#つのタイプ"><i class="fa fa-check"></i><b>5.1.2.1</b> 4つのタイプ</a></li>
+<li class="chapter" data-level="5.1.2.2" data-path="Chapter5.html"><a href="Chapter5.html#並行的過程のタイプごとの分析"><i class="fa fa-check"></i><b>5.1.2.2</b> 並行的過程のタイプごとの分析</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="Chapter5.html"><a href="Chapter5.html#競合リスクモデル"><i class="fa fa-check"></i><b>5.2</b> 競合リスク・モデル</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="Chapter5.html"><a href="Chapter5.html#モデルの概要-3"><i class="fa fa-check"></i><b>5.2.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="5.2.2" data-path="Chapter5.html"><a href="Chapter5.html#rでの実装-4"><i class="fa fa-check"></i><b>5.2.2</b> Rでの実装</a>
+<ul>
+<li class="chapter" data-level="5.2.2.1" data-path="Chapter5.html"><a href="Chapter5.html#事象の種類を区別しないで分析"><i class="fa fa-check"></i><b>5.2.2.1</b> 事象の種類を区別しないで分析</a></li>
+<li class="chapter" data-level="5.2.2.2" data-path="Chapter5.html"><a href="Chapter5.html#再犯の種類ごとに分析"><i class="fa fa-check"></i><b>5.2.2.2</b> 再犯の種類ごとに分析</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2.3" data-path="Chapter5.html"><a href="Chapter5.html#注意点-1"><i class="fa fa-check"></i><b>5.2.3</b> 注意点</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="Chapter5.html"><a href="Chapter5.html#部分分布を用いた競合リスクの分析"><i class="fa fa-check"></i><b>5.3</b> 部分分布を用いた競合リスクの分析</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="Chapter5.html"><a href="Chapter5.html#モデルの概要-4"><i class="fa fa-check"></i><b>5.3.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="5.3.2" data-path="Chapter5.html"><a href="Chapter5.html#rでの実装-5"><i class="fa fa-check"></i><b>5.3.2</b> Rでの実装</a></li>
+<li class="chapter" data-level="5.3.3" data-path="Chapter5.html"><a href="Chapter5.html#累積発生率関数の予測値"><i class="fa fa-check"></i><b>5.3.3</b> 累積発生率関数の予測値</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="Chapter6.html"><a href="Chapter6.html"><i class="fa fa-check"></i><b>6</b> 繰り返しのある事象モデル</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="Chapter6.html"><a href="Chapter6.html#繰り返しのある事象のカウントデータモデル"><i class="fa fa-check"></i><b>6.1</b> 繰り返しのある事象のカウントデータ・モデル</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="Chapter6.html"><a href="Chapter6.html#モデルの概要-5"><i class="fa fa-check"></i><b>6.1.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="6.1.2" data-path="Chapter6.html"><a href="Chapter6.html#rでの実装-6"><i class="fa fa-check"></i><b>6.1.2</b> Rでの実装</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="Chapter6.html"><a href="Chapter6.html#時間のギャップに基づく方法"><i class="fa fa-check"></i><b>6.2</b> 時間のギャップに基づく方法</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="Chapter6.html"><a href="Chapter6.html#モデルの概要-6"><i class="fa fa-check"></i><b>6.2.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="6.2.2" data-path="Chapter6.html"><a href="Chapter6.html#rでの実装-7"><i class="fa fa-check"></i><b>6.2.2</b> Rでの実装</a></li>
+<li class="chapter" data-level="6.2.3" data-path="Chapter6.html"><a href="Chapter6.html#データの非独立性の問題"><i class="fa fa-check"></i><b>6.2.3</b> データの非独立性の問題</a>
+<ul>
+<li class="chapter" data-level="6.2.3.1" data-path="Chapter6.html"><a href="Chapter6.html#頑強推定"><i class="fa fa-check"></i><b>6.2.3.1</b> 頑強推定</a></li>
+<li class="chapter" data-level="6.2.3.2" data-path="Chapter6.html"><a href="Chapter6.html#共用フレイルティモデル"><i class="fa fa-check"></i><b>6.2.3.2</b> 共用フレイルティ・モデル</a></li>
+<li class="chapter" data-level="6.2.3.3" data-path="Chapter6.html"><a href="Chapter6.html#モデルの比較-1"><i class="fa fa-check"></i><b>6.2.3.3</b> モデルの比較</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="Chapter6.html"><a href="Chapter6.html#観察開始からの時間に基づく方法"><i class="fa fa-check"></i><b>6.3</b> 観察開始からの時間に基づく方法</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapterx.html"><a href="Chapterx.html"><i class="fa fa-check"></i>補遺 ノンパラメトリックな推定</a>
 <ul>
@@ -279,7 +335,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="実行環境" class="section level1 unnumbered hasAnchor">
 <h1>実行環境<a href="sessioninfo.html#実行環境" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="sessioninfo.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="sessioninfo.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>## R version 4.2.2 (2022-10-31 ucrt)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
 ## Running under: Windows 10 x64 (build 22621)
@@ -295,72 +351,72 @@ div.csl-indent {
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] survminer_0.4.9    ggpubr_0.5.0       ggplotify_0.1.0    flextable_0.9.1   
-##  [5] flexsurv_2.2.2     eha_2.10.3         ggeffects_1.1.4    rstanarm_2.21.4   
-##  [9] brms_2.18.0        Rcpp_1.0.9         fontregisterer_0.3 systemfonts_1.0.4 
-## [13] extrafont_0.18     lemon_0.4.6        ggsci_2.9          stargazer_5.2.3   
-## [17] kableExtra_1.3.4   knitr_1.42         DT_0.27            patchwork_1.1.2   
-## [21] data.table_1.14.6  see_0.7.5.5        report_0.5.7.4     parameters_0.20.3 
-## [25] performance_0.10.3 modelbased_0.8.6.3 insight_0.19.1.4   effectsize_0.8.3.6
-## [29] datawizard_0.7.1.1 correlation_0.8.4  bayestestR_0.13.1  easystats_0.6.0.8 
-## [33] haven_2.5.1        forcats_0.5.2      stringr_1.5.0      dplyr_1.0.10      
-## [37] purrr_1.0.0        readr_2.1.3        tidyr_1.2.1        tibble_3.1.8      
-## [41] tidyverse_1.3.2    ggplot2_3.4.2      ggsurvfit_0.3.0    survival_3.5-5    
+##  [1] MASS_7.3-58.1      cmprsk_2.2-11      survminer_0.4.9    ggpubr_0.5.0      
+##  [5] ggplotify_0.1.0    flextable_0.9.1    flexsurv_2.2.2     eha_2.10.3        
+##  [9] ggeffects_1.1.4    rstanarm_2.21.4    brms_2.18.0        Rcpp_1.0.9        
+## [13] fontregisterer_0.3 systemfonts_1.0.4  extrafont_0.18     lemon_0.4.6       
+## [17] ggsci_2.9          stargazer_5.2.3    kableExtra_1.3.4   knitr_1.42        
+## [21] DT_0.27            patchwork_1.1.2    data.table_1.14.6  see_0.7.5.5       
+## [25] report_0.5.7.4     parameters_0.20.3  performance_0.10.3 modelbased_0.8.6.3
+## [29] insight_0.19.1.4   effectsize_0.8.3.6 datawizard_0.7.1.1 correlation_0.8.4 
+## [33] bayestestR_0.13.1  easystats_0.6.0.8  haven_2.5.1        forcats_1.0.0     
+## [37] stringr_1.5.0      dplyr_1.1.2        purrr_1.0.0        readr_2.1.3       
+## [41] tidyr_1.2.1        tibble_3.2.1       tidyverse_1.3.2    ggplot2_3.4.2     
+## [45] ggsurvfit_0.3.0    survival_3.5-5    
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] estimability_1.4.1      muhaz_1.2.6.4           coda_0.19-4            
-##   [4] ragg_1.2.4              dygraphs_1.1.1.6        inline_0.3.19          
-##   [7] generics_0.1.3          callr_3.7.3             cowplot_1.1.1          
-##  [10] tzdb_0.3.0              webshot_0.5.4           xml2_1.3.3             
-##  [13] lubridate_1.9.0         httpuv_1.6.7            StanHeaders_2.26.13    
-##  [16] assertthat_0.2.1        gargle_1.2.1            xfun_0.36              
-##  [19] hms_1.1.2               jquerylib_0.1.4         bayesplot_1.10.0       
-##  [22] evaluate_0.20           promises_1.2.0.1        fansi_1.0.3            
-##  [25] dbplyr_2.2.1            readxl_1.4.1            km.ci_0.5-6            
-##  [28] igraph_1.3.5            DBI_1.1.3               htmlwidgets_1.6.1      
-##  [31] tensorA_0.36.2          googledrive_2.0.0       stats4_4.2.2           
-##  [34] ellipsis_0.3.2          crosstalk_1.2.0         backports_1.4.1        
-##  [37] fontLiberation_0.1.0    V8_4.2.2                bookdown_0.31          
-##  [40] markdown_1.4            RcppParallel_5.1.6      fontBitstreamVera_0.1.1
-##  [43] vctrs_0.5.1             abind_1.4-5             cachem_1.0.6           
-##  [46] withr_2.5.0             checkmate_2.1.0         emmeans_1.8.3          
-##  [49] xts_0.12.2              prettyunits_1.1.1       svglite_2.1.1          
-##  [52] crayon_1.5.2            crul_1.3                pkgconfig_2.0.3        
-##  [55] labeling_0.4.2          nlme_3.1-160            rlang_1.1.1            
-##  [58] lifecycle_1.0.3         miniUI_0.1.1.1          colourpicker_1.2.0     
-##  [61] fontquiver_0.2.1        httpcode_0.3.0          extrafontdb_1.0        
-##  [64] modelr_0.1.10           cellranger_1.1.0        distributional_0.3.1   
-##  [67] matrixStats_0.63.0      Matrix_1.5-1            loo_2.5.1              
-##  [70] KMsurv_0.1-5            carData_3.0-5           boot_1.3-28            
-##  [73] zoo_1.8-11              reprex_2.0.2            base64enc_0.1-3        
-##  [76] processx_3.8.0          googlesheets4_1.0.1     viridisLite_0.4.1      
-##  [79] mstate_0.3.2            shinystan_2.6.0         rstatix_0.7.1          
-##  [82] gridGraphics_0.5-1      ggsignif_0.6.4          scales_1.2.1           
-##  [85] magrittr_2.0.3          plyr_1.8.8              threejs_0.3.3          
-##  [88] compiler_4.2.2          rstantools_2.2.0        lme4_1.1-31            
-##  [91] cli_3.6.0               ps_1.7.2                Brobdingnag_1.2-9      
-##  [94] MASS_7.3-58.1           tidyselect_1.2.0        stringi_1.7.8          
-##  [97] textshaping_0.3.6       highr_0.10              yaml_2.3.7             
-## [100] askpass_1.1             bridgesampling_1.1-2    survMisc_0.5.6         
-## [103] grid_4.2.2              sass_0.4.5              tools_4.2.2            
-## [106] timechange_0.1.1        parallel_4.2.2          rstudioapi_0.14        
-## [109] uuid_1.1-0              gridExtra_2.3           posterior_1.3.1        
-## [112] farver_2.1.1            digest_0.6.31           shiny_1.7.4            
-## [115] quadprog_1.5-8          gfonts_0.2.0            car_3.1-1              
-## [118] broom_1.0.2             later_1.3.0             httr_1.4.4             
-## [121] gdtools_0.3.3           colorspace_2.0-3        rvest_1.0.3            
-## [124] fs_1.5.2                splines_4.2.2           yulab.utils_0.0.6      
-## [127] statmod_1.5.0           shinythemes_1.2.0       xtable_1.8-4           
-## [130] jsonlite_1.8.4          nloptr_2.0.3            rstan_2.26.13          
-## [133] R6_2.5.1                pillar_1.9.0            htmltools_0.5.4        
-## [136] mime_0.12               glue_1.6.2              fastmap_1.1.0          
-## [139] minqa_1.2.5             deSolve_1.34            codetools_0.2-18       
-## [142] pkgbuild_1.4.0          mvtnorm_1.1-3           utf8_1.2.2             
-## [145] lattice_0.20-45         bslib_0.4.2             numDeriv_2016.8-1.1    
-## [148] curl_4.3.3              gtools_3.9.4            officer_0.6.2          
-## [151] zip_2.2.2               shinyjs_2.1.0           openssl_2.0.5          
-## [154] Rttf2pt1_1.3.8          rmarkdown_2.20          munsell_0.5.0          
-## [157] reshape2_1.4.4          gtable_0.3.3</code></pre>
+##   [1] utf8_1.2.2              tidyselect_1.2.0        lme4_1.1-31            
+##   [4] htmlwidgets_1.6.1       grid_4.2.2              munsell_0.5.0          
+##   [7] ragg_1.2.4              codetools_0.2-18        statmod_1.5.0          
+##  [10] miniUI_0.1.1.1          withr_2.5.0             Brobdingnag_1.2-9      
+##  [13] colorspace_2.0-3        muhaz_1.2.6.4           highr_0.10             
+##  [16] uuid_1.1-0              rstudioapi_0.14         stats4_4.2.2           
+##  [19] ggsignif_0.6.4          officer_0.6.2           Rttf2pt1_1.3.8         
+##  [22] fontLiberation_0.1.0    bayesplot_1.10.0        emmeans_1.8.3          
+##  [25] rstan_2.26.13           KMsurv_0.1-5            farver_2.1.1           
+##  [28] bridgesampling_1.1-2    coda_0.19-4             vctrs_0.6.2            
+##  [31] generics_0.1.3          xfun_0.36               timechange_0.1.1       
+##  [34] fontquiver_0.2.1        R6_2.5.1                markdown_1.7           
+##  [37] gridGraphics_0.5-1      cachem_1.0.6            assertthat_0.2.1       
+##  [40] promises_1.2.0.1        scales_1.2.1            googlesheets4_1.0.1    
+##  [43] gtable_0.3.3            processx_3.8.0          rlang_1.1.1            
+##  [46] splines_4.2.2           rstatix_0.7.1           extrafontdb_1.0        
+##  [49] gargle_1.2.1            broom_1.0.2             checkmate_2.1.0        
+##  [52] inline_0.3.19           yaml_2.3.7              reshape2_1.4.4         
+##  [55] abind_1.4-5             modelr_0.1.10           threejs_0.3.3          
+##  [58] crosstalk_1.2.0         backports_1.4.1         httpuv_1.6.7           
+##  [61] tensorA_0.36.2          tools_4.2.2             bookdown_0.31          
+##  [64] ellipsis_0.3.2          jquerylib_0.1.4         posterior_1.3.1        
+##  [67] plyr_1.8.8              base64enc_0.1-3         ps_1.7.2               
+##  [70] prettyunits_1.1.1       openssl_2.0.5           deSolve_1.34           
+##  [73] zoo_1.8-11              fs_1.5.2                crul_1.3               
+##  [76] magrittr_2.0.3          colourpicker_1.2.0      reprex_2.0.2           
+##  [79] googledrive_2.0.0       mvtnorm_1.1-3           matrixStats_0.63.0     
+##  [82] hms_1.1.2               shinyjs_2.1.0           mime_0.12              
+##  [85] evaluate_0.20           xtable_1.8-4            shinystan_2.6.0        
+##  [88] readxl_1.4.1            gridExtra_2.3           rstantools_2.2.0       
+##  [91] compiler_4.2.2          fontBitstreamVera_0.1.1 V8_4.2.2               
+##  [94] crayon_1.5.2            minqa_1.2.5             StanHeaders_2.26.13    
+##  [97] htmltools_0.5.4         later_1.3.0             tzdb_0.3.0             
+## [100] RcppParallel_5.1.6      lubridate_1.9.0         DBI_1.1.3              
+## [103] dbplyr_2.2.1            boot_1.3-28             car_3.1-1              
+## [106] Matrix_1.5-1            cli_3.6.0               quadprog_1.5-8         
+## [109] parallel_4.2.2          igraph_1.3.5            km.ci_0.5-6            
+## [112] pkgconfig_2.0.3         numDeriv_2016.8-1.1     xml2_1.3.3             
+## [115] dygraphs_1.1.1.6        svglite_2.1.1           bslib_0.4.2            
+## [118] webshot_0.5.4           estimability_1.4.1      rvest_1.0.3            
+## [121] yulab.utils_0.0.6       distributional_0.3.1    callr_3.7.3            
+## [124] digest_0.6.31           httpcode_0.3.0          rmarkdown_2.20         
+## [127] cellranger_1.1.0        survMisc_0.5.6          gdtools_0.3.3          
+## [130] curl_4.3.3              shiny_1.7.4             gtools_3.9.4           
+## [133] nloptr_2.0.3            lifecycle_1.0.3         nlme_3.1-160           
+## [136] jsonlite_1.8.4          mstate_0.3.2            carData_3.0-5          
+## [139] askpass_1.1             viridisLite_0.4.1       fansi_1.0.3            
+## [142] pillar_1.9.0            lattice_0.20-45         loo_2.5.1              
+## [145] fastmap_1.1.0           httr_1.4.4              pkgbuild_1.4.0         
+## [148] glue_1.6.2              xts_0.12.2              zip_2.2.2              
+## [151] shinythemes_1.2.0       stringi_1.7.8           sass_0.4.5             
+## [154] textshaping_0.3.6       gfonts_0.2.0</code></pre>
 <p><strong>References</strong></p>
 
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
@@ -401,6 +457,9 @@ Wickham, H., &amp; Grolemund, G. (2016). <em><span>R</span> for data science: Im
 久保拓弥. (2012). <em>データ解析のための統計モデリング入門</em>. 岩波書店.
 </div>
 <div class="csl-entry">
+大東健太郎. (2010). <span>線形モデルから一般化線形モデル（GLM）へ</span>. <em>雑草研究</em>, <em>55</em>(4), 268–274.
+</div>
+<div class="csl-entry">
 大橋靖雄., 浜田知久馬., &amp; 魚住龍史. (2021). <em>生存時間解析 第2版 SASによる生物統計</em>. 東京大学出版.
 </div>
 <div class="csl-entry">
@@ -414,6 +473,9 @@ Wickham, H., &amp; Grolemund, G. (2016). <em><span>R</span> for data science: Im
 </div>
 </div>
 </div>
+
+
+
 
 
 

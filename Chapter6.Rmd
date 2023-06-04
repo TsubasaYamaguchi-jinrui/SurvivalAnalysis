@@ -1,0 +1,150 @@
+# 繰り返しのある事象モデル {#c6}  
+研究で扱うほとんどの事象には繰り返しがある。例えば、一個体が繰り返し経験しうる転職・出産・離婚・逮捕などがこれに該当する。  
+
+第\@ref(c5)章で扱った元服役囚の再犯データにも実は繰り返し逮捕された元服役囚がいた。逮捕された回数(`arrstcount`)ごとに人数を見てみると、以下のようになる(表\@ref(tab:tab-arrstcount))。1年間の間に最大6回まで再犯を犯した個体がいる。再犯を犯した服役囚の内、2回以上逮捕された元服役囚は実に約39.5%にのぼる(132/334)。   
+```{r tab-arrstcount}
+tarp %>% 
+  group_by(arrstcount) %>% 
+  summarise(N = n()) %>% 
+  kable(caption = "逮捕回数ごとの人数") %>% 
+  kable_styling(font_size = 13, full_width = FALSE)
+```
+
+本章ではこうした繰り返しの事象を扱う方法を解説する。なお、話を簡単にするため、繰り返された逮捕は一種類の犯罪であると仮定する。  
+
+## 繰り返しのある事象のカウントデータ・モデル  
+### モデルの概要  
+もっとも簡単な方法は、事象が発生するタイミングを無視して国個体の事象発生数を従属変数にするものである。これは、以下の2つが仮定できる場合には最善の方法である。なぜならば、以下の条件を満たすのであれば。データに含まれている観察期間における事象の発生タイミングは有益な情報をほとんど持たないからである。    
+
+1. 時間依存独立変数がない  
+2. 独立変数が観測期間全てで同じ効果を持っている  
+
+カウントデータの分析で最も適切かつ容易に利用できるのは負の二項分布モデルである。ポアソン分布モデルも使えるが、しばしば過分散の問題が生じる[^foot12]。個体$i$に発生した事象の数を$Y_i$とし、$Y_i$が期待値$\lambda_i$の負の二項分布に従うと仮定するとき、回帰モデルは以下のように表現される(式\@ref(eq:eq-negbinom))。つまり、通常の一般化線形モデルと同様である。    
+
+$$
+\begin{aligned}
+Y_i &\sim NegBinomial(\lambda_i)\\
+log(\lambda_i) &= b_0 + b_1x_{i1} + b_1x_{i2} + \cdots + b_kx_{ik} 
+\end{aligned}
+(\#eq:eq-negbinom) 
+$$
+
+[^foot12]: 過分散については @Ohigashi2010 や @Kasuya2012 を参照。負の二項分布については、[こちら](https://hoxo-m.hatenablog.com/entry/20151012/p1)も参照。簡単に言えば負の二項分布はポワソン分布の期待値$\lambda$が毎回ガンマ分布から得られると仮定する混合分布である。よって、ポワソン分布は負の二項分布の特殊例といえる。      
+
+### Rでの実装  
+負の二項モデルは`MASS`パッケージの`glm.nb()`関数で以下のように実行できる。  
+
+```{r}
+mod_nb <- glm.nb(arrstcount ~  fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb, data = tarp)
+```
+
+結果は以下の通り(表\@ref(tab:tab-mod-nb))。  
+```{r tab-mod-nb}
+model_parameters(mod_nb) %>% 
+  data.frame() %>% 
+  mutate(`95%CI` = str_c("[",sprintf("%.2f",CI_low),", ",sprintf("%.2f",CI_high),"}")) %>% 
+  mutate(`Exp(Coef)` = exp(Coefficient)) %>% 
+  dplyr::select(-df_error, -CI_low, -CI_high, -CI) %>% 
+  dplyr::select(Parameter, Coefficient, `95%CI`, `Exp(Coef)`, everything()) %>% 
+  mutate_if(.predicate = is.numeric,.funs = ~sprintf("%.3f",.)) %>% 
+  kable(align = "c", caption = "mod1の結果") %>% 
+  kable_styling(font_size = 11, full_width = FALSE)
+```
+<br/>  
+
+負の二項分布モデルではオフセット項に観察期間を含めることで、観察期間の違う複数の個体がいるデータについても簡単に分析が可能である[^foot13]。  
+
+[^foot13]: オフセット項については @Kubo2012 を参照。  
+
+## 時間のギャップに基づく方法  
+### モデルの概要  
+時間依存変数や独立変数の影響が時間によって変化すると仮定される場合は、より複雑な方法が必要になる。この方法では、観察の開始から最初の事象までを一つの記録、また次の事象までを発生までを別の一つの記録、というように事象の発生ごとに観察期間を区切ったデータを作成する。  
+
+データはすでに作成されているので読み込む。`length`が事象間の時間のギャップを表している。    
+```{r}
+arrest <- read_dta("data/arrests.dta")
+
+datatable(arrest,
+          options = list(scrollX = 60))
+```
+<br/>  
+
+分析では、これらの観察期間の記録全てを異なった個体の観測値とみなし、「時間のギャップ」(= 観測の開始時点と終了時点の差)をコックス回帰で分析する。  
+
+### Rでの実装  
+第\@ref(c3)で解説したのと同様にコックス回帰を行う。データにはなぜか`length`が負になるものが含まれているので、それらは除く。  
+```{r}
+arrest <- filter(arrest, length > 0)
+
+mod_tg <- coxph(Surv(length,arrind) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb, data = arrest)
+```
+
+分析の結果は以下の通り。  
+```{r}
+mod_tg
+```
+
+### データの非独立性の問題  
+今回の分析では、同じ個体のデータが複数個入っていることがあるにもかかわらず、全てのデータが独立であると仮定されてしまっている。その結果、先ほどのモデル(mod_tg)の偏回帰係数の標準誤差は実際より小さく推定されてしまっており、結果的に$z$値は過大に評価されてしまっている。正しい統計的推論を行うためには、これを修正する必要がある。修正方法は主に二つある。  
+
+#### 頑強推定  
+これは、「サンドイッチ」推定法と呼ばれる方法を使って標準誤差を計算することである。Rでは以下のように`closter(id)`を式に加えることで実行できる。   
+
+```{r}
+mod_tg_rob <- coxph(Surv(length,arrind) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb + cluster(id), data = arrest)
+```
+
+結果は以下の通り。偏回帰係数の推定値自体は先ほどのモデルと全く同じである。一方で、頑強推定を行わない場合の標準誤差(`se(coef)`)よりも、頑強推定での標準誤差(`robust se`)の方が大きくなっており、先ほどより$z$値が小さくなっていることが分かる。  
+
+```{r}
+mod_tg_rob
+```
+
+#### 共用フレイルティ・モデル  
+一般的なコックス回帰の場合、通常は標準誤差を修正するだけでは理想的ではない。「**共用フレイルティ**」を回帰モデルの構成要素として含むモデルは、頑強モデルだけでは十分でない点も修正することができる。  
+
+基本的なモデルは、標準のコックス回帰モデルにランダム切片[^foot14]を加えたランダム効果モデル(混合モデル)である。式\@ref(eq:eq-frail)の$h_ij(t)$は個体$i$が$j$番目の事象を経験するハザード率であり、$t$は事象が最後に発生した時点からの経過時間である。$e_i$は「共用フレイルティ」で、全ての測定されていない個体ごとの異質性を表す。$e_i$は独立変数とは独立であると仮定され、平均0で分散$\theta$の正規分布かガンマ分布が仮定される。$\theta$が大きいほど、同じ個体のデータ同士の依存度が高くなる。  
+
+$$
+log(h_ij(t)) = a(t) + b_1x_{i1} + b_2x_{i2} + e_i　(\#eq:eq-frail) 
+$$
+
+[^foot14]: ランダム効果については、 @Kubo2012 や @Kasuya2012 を参照。  
+
+Rでは、以下のようにして簡単に実行できる。$e_i$の分布に正規分布を仮定するなら式に`frailty.gaussian(id)`をガンマ分布を仮定するなら`frailty.gamma(id)`を追加する。  
+```{r}
+mod_tg_frail <- coxph(Surv(length,arrind) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb + frailty.gaussian(id), data = arrest)
+```
+
+結果は以下の通り。$\theta$は0.49と推定された。偏回帰係数の標準誤差は頑強推定と似通っている。StataやSASとは異なり、統計検定量は$\chi^2$値で出力されるようだ。  
+```{r}
+mod_tg_frail
+```
+
+#### モデルの比較  
+「時間のギャップ」を用いた3つのモデルで推定された偏回帰係数とそれを指数変換したもの、$z$値をまとめたのが表\@ref(tab:tab-coxtgcomp)である。なお、頑強推定(`mod_tg_rob`)でも通常のコックス回帰(`mod_tg`)と偏回帰係数の推定値自体は変わらないので、それらは省略している。共用フレイルティのあるモデルでは、統計的に有意であるような変数の偏回帰係数の推定値(`Coef(frail)`)が通常のコックス回帰(`Coef`)よりも大きくなっている。$z$値(`Z(frail)`)は基本的には頑強推定のもの(`Z(robust)`)と似通っているが、有意な変数では頑強推定のものより高くなっている。しかし、どの変数も通常のコックス回帰の$z$値(`Z`)よりは小さくなっている。    
+
+```{r tab-coxtgcomp}
+tibble(Covariate = rownames(mod_tg$coefficients %>% data.frame()),
+       "Coef" = c(sprintf("%.3f",coef(mod_tg))[1:10]),
+       "Exp(Coef)" = c(sprintf("%.3f",exp(coef(mod_tg)))[1:10]),
+       "Z" = sprintf("%.3f",coef(mod_tg)/sqrt(diag(vcov(mod_tg))))[1:10],
+       "Z(robust)" = sprintf("%.3f",coef(mod_tg)/sqrt(diag(vcov(mod_tg_rob))))[1:10],
+       "Coef(frail)" = sprintf("%.3f",coef(mod_tg_frail))[1:10],
+       "Exp(Coef_frail)" = sprintf("%.3f",exp(coef(mod_tg_frail))[1:10]),
+       "Z(frail)" = sprintf("%.3f",coef(mod_tg_frail)/sqrt(diag(vcov(mod_tg_frail))))[1:10]) %>% 
+  flextable() %>% 
+  add_header_row(colwidth = c(1,4,3),
+                 values = c("","コックス回帰\n(通常＋頑強推定)", "コックス回帰\n(共用フレイルティ)")) %>% 
+  flextable::align(align = "center", part = "all") %>% 
+  set_caption("各モデルの推定値の比較")
+```
+<br/>  
+
+なお、ここで紹介したモデルは全てパラメトリックなモデル(例えばワイブル回帰モデル)に対しても同様に適用できる。  
+
+## 観察開始からの時間に基づく方法  

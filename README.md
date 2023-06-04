@@ -12,6 +12,7 @@
 - Kurz (2021) Applied longitudinal data analysis in brms and the tidyverse.  
 - [Survival Analysis in R](https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html)  
 - [疫学のためのRハンドブック](https://epirhandbook.com/jp/survival-analysis.html)  
+- [Prediction Modeling with the Cox model - all about the baseline hazard](https://missingdatasolutions.rbind.io/2022/12/cox-baseline-hazard/)   
 
 なお、本稿の作成に使用したファイルとRのコードは筆者のGithubですべて閲覧できる。  
 

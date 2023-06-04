@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-06-04" />
+<meta name="date" content="2023-06-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,7 +201,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.6" data-path="Chapter2.html"><a href="Chapter2.html#尤度比検定"><i class="fa fa-check"></i><b>2.6</b> 尤度比検定</a></li>
 <li class="chapter" data-level="2.7" data-path="Chapter2.html"><a href="Chapter2.html#離散時間ロジスティック回帰モデルの注意点"><i class="fa fa-check"></i><b>2.7</b> 離散時間ロジスティック回帰モデルの注意点</a></li>
-<li class="chapter" data-level="2.8" data-path="Chapter2.html"><a href="Chapter2.html#打ち切りデータの扱い"><i class="fa fa-check"></i><b>2.8</b> 打ち切りデータの扱い</a></li>
+<li class="chapter" data-level="2.8" data-path="Chapter2.html"><a href="Chapter2.html#s2-8"><i class="fa fa-check"></i><b>2.8</b> 打ち切りデータの扱い</a></li>
 <li class="chapter" data-level="2.9" data-path="Chapter2.html"><a href="Chapter2.html#離散時間モデルと連続時間モデル"><i class="fa fa-check"></i><b>2.9</b> 離散時間モデルと連続時間モデル</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="Chapter3.html"><a href="Chapter3.html"><i class="fa fa-check"></i><b>3</b> 連続時間を用いたパラメトリックな手法</a>
@@ -225,34 +225,90 @@ div.csl-indent {
 <li class="chapter" data-level="3.3" data-path="Chapter3.html"><a href="Chapter3.html#s3-3"><i class="fa fa-check"></i><b>3.3</b> 加速時間ハザードモデル</a>
 <ul>
 <li class="chapter" data-level="3.3.1" data-path="Chapter3.html"><a href="Chapter3.html#モデルの概要"><i class="fa fa-check"></i><b>3.3.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="3.3.2" data-path="Chapter3.html"><a href="Chapter3.html#rでの実装-2"><i class="fa fa-check"></i><b>3.3.2</b> Rでの実装</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="Chapter3.html"><a href="Chapter3.html#rでの実装-2"><i class="fa fa-check"></i><b>3.4</b> Rでの実装</a></li>
-<li class="chapter" data-level="3.5" data-path="Chapter3.html"><a href="Chapter3.html#適合度の評価"><i class="fa fa-check"></i><b>3.5</b> 適合度の評価</a></li>
-<li class="chapter" data-level="3.6" data-path="Chapter3.html"><a href="Chapter3.html#観察されない異質性の原因"><i class="fa fa-check"></i><b>3.6</b> 観察されない異質性の原因</a></li>
-<li class="chapter" data-level="3.7" data-path="Chapter3.html"><a href="Chapter3.html#なぜパラメトリックモデルを用いるのか"><i class="fa fa-check"></i><b>3.7</b> なぜパラメトリックモデルを用いるのか</a></li>
+<li class="chapter" data-level="3.4" data-path="Chapter3.html"><a href="Chapter3.html#適合度の評価"><i class="fa fa-check"></i><b>3.4</b> 適合度の評価</a></li>
+<li class="chapter" data-level="3.5" data-path="Chapter3.html"><a href="Chapter3.html#観察されない異質性の原因"><i class="fa fa-check"></i><b>3.5</b> 観察されない異質性の原因</a></li>
+<li class="chapter" data-level="3.6" data-path="Chapter3.html"><a href="Chapter3.html#なぜパラメトリックモデルを用いるのか"><i class="fa fa-check"></i><b>3.6</b> なぜパラメトリックモデルを用いるのか</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="Chapter4.html"><a href="Chapter4.html"><i class="fa fa-check"></i><b>4</b> コックス回帰モデル</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザードモデル"><i class="fa fa-check"></i><b>4.1</b> 比例ハザードモデル</a></li>
-<li class="chapter" data-level="4.2" data-path="Chapter4.html"><a href="Chapter4.html#部分尤度法"><i class="fa fa-check"></i><b>4.2</b> 部分尤度法</a></li>
-<li class="chapter" data-level="4.3" data-path="Chapter4.html"><a href="Chapter4.html#rによる実装"><i class="fa fa-check"></i><b>4.3</b> Rによる実装</a></li>
-<li class="chapter" data-level="4.4" data-path="Chapter4.html"><a href="Chapter4.html#時間に依存する独立変数"><i class="fa fa-check"></i><b>4.4</b> 時間に依存する独立変数</a></li>
-<li class="chapter" data-level="4.5" data-path="Chapter4.html"><a href="Chapter4.html#時間依存独立変数を含むモデル"><i class="fa fa-check"></i><b>4.5</b> 時間依存独立変数を含むモデル</a>
+<li class="chapter" data-level="4.1" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザードモデル"><i class="fa fa-check"></i><b>4.1</b> 比例ハザードモデル</a>
 <ul>
-<li class="chapter" data-level="4.5.1" data-path="Chapter4.html"><a href="Chapter4.html#プログラミングステートメント法programming-statements-method"><i class="fa fa-check"></i><b>4.5.1</b> プログラミング・ステートメント法(programming statements method)</a></li>
-<li class="chapter" data-level="4.5.2" data-path="Chapter4.html"><a href="Chapter4.html#エピソード分割法episode-splitting-method"><i class="fa fa-check"></i><b>4.5.2</b> エピソード分割法(episode splitting method)</a></li>
+<li class="chapter" data-level="4.1.1" data-path="Chapter4.html"><a href="Chapter4.html#モデルの概要-1"><i class="fa fa-check"></i><b>4.1.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="4.1.2" data-path="Chapter4.html"><a href="Chapter4.html#部分尤度法"><i class="fa fa-check"></i><b>4.1.2</b> 部分尤度法</a></li>
+<li class="chapter" data-level="4.1.3" data-path="Chapter4.html"><a href="Chapter4.html#rによる実装"><i class="fa fa-check"></i><b>4.1.3</b> Rによる実装</a></li>
 </ul></li>
-<li class="chapter" data-level="4.6" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.6</b> 比例ハザード性の仮定の検討と修正</a>
+<li class="chapter" data-level="4.2" data-path="Chapter4.html"><a href="Chapter4.html#時間に依存する独立変数を含むコックス回帰"><i class="fa fa-check"></i><b>4.2</b> 時間に依存する独立変数を含むコックス回帰</a>
 <ul>
-<li class="chapter" data-level="4.6.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.6.1</b> シェフィールド残差を用いた検討</a></li>
-<li class="chapter" data-level="4.6.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.6.2</b> 仮定が満たされないときの修正</a>
+<li class="chapter" data-level="4.2.1" data-path="Chapter4.html"><a href="Chapter4.html#モデルの概要-2"><i class="fa fa-check"></i><b>4.2.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="4.2.2" data-path="Chapter4.html"><a href="Chapter4.html#rでの実装-3"><i class="fa fa-check"></i><b>4.2.2</b> Rでの実装</a></li>
+<li class="chapter" data-level="4.2.3" data-path="Chapter4.html"><a href="Chapter4.html#モデルの比較"><i class="fa fa-check"></i><b>4.2.3</b> モデルの比較</a></li>
+<li class="chapter" data-level="4.2.4" data-path="Chapter4.html"><a href="Chapter4.html#データに欠損がある場合の補完と加工"><i class="fa fa-check"></i><b>4.2.4</b> データに欠損がある場合の補完と加工</a>
 <ul>
-<li class="chapter" data-level="4.6.2.1" data-path="Chapter4.html"><a href="Chapter4.html#時間との交互作用をモデルに加える"><i class="fa fa-check"></i><b>4.6.2.1</b> 時間との交互作用をモデルに加える</a></li>
-<li class="chapter" data-level="4.6.2.2" data-path="Chapter4.html"><a href="Chapter4.html#層化stratification"><i class="fa fa-check"></i><b>4.6.2.2</b> 層化(stratification)</a></li>
+<li class="chapter" data-level="4.2.4.1" data-path="Chapter4.html"><a href="Chapter4.html#プログラミングステートメント法programming-statements-method"><i class="fa fa-check"></i><b>4.2.4.1</b> プログラミング・ステートメント法(programming statements method)</a></li>
+<li class="chapter" data-level="4.2.4.2" data-path="Chapter4.html"><a href="Chapter4.html#エピソード分割法episode-splitting-method"><i class="fa fa-check"></i><b>4.2.4.2</b> エピソード分割法(episode splitting method)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4.7" data-path="Chapter4.html"><a href="Chapter4.html#観測期間の選択"><i class="fa fa-check"></i><b>4.7</b> 観測期間の選択</a></li>
-<li class="chapter" data-level="4.8" data-path="Chapter4.html"><a href="Chapter4.html#コックスモデルによる予測"><i class="fa fa-check"></i><b>4.8</b> コックス・モデルによる予測</a></li>
+<li class="chapter" data-level="4.3" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.3</b> 比例ハザード性の仮定の検討と修正</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.3.1</b> シェフィールド残差を用いた検討</a></li>
+<li class="chapter" data-level="4.3.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.3.2</b> 仮定が満たされないときの修正</a>
+<ul>
+<li class="chapter" data-level="4.3.2.1" data-path="Chapter4.html"><a href="Chapter4.html#時間との交互作用をモデルに加える"><i class="fa fa-check"></i><b>4.3.2.1</b> 時間との交互作用をモデルに加える</a></li>
+<li class="chapter" data-level="4.3.2.2" data-path="Chapter4.html"><a href="Chapter4.html#層化stratification"><i class="fa fa-check"></i><b>4.3.2.2</b> 層化(stratification)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="Chapter4.html"><a href="Chapter4.html#観測期間の選択"><i class="fa fa-check"></i><b>4.4</b> 観測期間の選択</a></li>
+<li class="chapter" data-level="4.5" data-path="Chapter4.html"><a href="Chapter4.html#コックスモデルによる予測"><i class="fa fa-check"></i><b>4.5</b> コックス・モデルによる予測</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="Chapter5.html"><a href="Chapter5.html"><i class="fa fa-check"></i><b>5</b> 複数事象のモデル</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="Chapter5.html"><a href="Chapter5.html#複数事象の分類"><i class="fa fa-check"></i><b>5.1</b> 複数事象の分類</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="Chapter5.html"><a href="Chapter5.html#条件付き過程"><i class="fa fa-check"></i><b>5.1.1</b> 条件付き過程</a></li>
+<li class="chapter" data-level="5.1.2" data-path="Chapter5.html"><a href="Chapter5.html#並行的過程"><i class="fa fa-check"></i><b>5.1.2</b> 並行的過程</a>
+<ul>
+<li class="chapter" data-level="5.1.2.1" data-path="Chapter5.html"><a href="Chapter5.html#つのタイプ"><i class="fa fa-check"></i><b>5.1.2.1</b> 4つのタイプ</a></li>
+<li class="chapter" data-level="5.1.2.2" data-path="Chapter5.html"><a href="Chapter5.html#並行的過程のタイプごとの分析"><i class="fa fa-check"></i><b>5.1.2.2</b> 並行的過程のタイプごとの分析</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="Chapter5.html"><a href="Chapter5.html#競合リスクモデル"><i class="fa fa-check"></i><b>5.2</b> 競合リスク・モデル</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="Chapter5.html"><a href="Chapter5.html#モデルの概要-3"><i class="fa fa-check"></i><b>5.2.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="5.2.2" data-path="Chapter5.html"><a href="Chapter5.html#rでの実装-4"><i class="fa fa-check"></i><b>5.2.2</b> Rでの実装</a>
+<ul>
+<li class="chapter" data-level="5.2.2.1" data-path="Chapter5.html"><a href="Chapter5.html#事象の種類を区別しないで分析"><i class="fa fa-check"></i><b>5.2.2.1</b> 事象の種類を区別しないで分析</a></li>
+<li class="chapter" data-level="5.2.2.2" data-path="Chapter5.html"><a href="Chapter5.html#再犯の種類ごとに分析"><i class="fa fa-check"></i><b>5.2.2.2</b> 再犯の種類ごとに分析</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2.3" data-path="Chapter5.html"><a href="Chapter5.html#注意点-1"><i class="fa fa-check"></i><b>5.2.3</b> 注意点</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="Chapter5.html"><a href="Chapter5.html#部分分布を用いた競合リスクの分析"><i class="fa fa-check"></i><b>5.3</b> 部分分布を用いた競合リスクの分析</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="Chapter5.html"><a href="Chapter5.html#モデルの概要-4"><i class="fa fa-check"></i><b>5.3.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="5.3.2" data-path="Chapter5.html"><a href="Chapter5.html#rでの実装-5"><i class="fa fa-check"></i><b>5.3.2</b> Rでの実装</a></li>
+<li class="chapter" data-level="5.3.3" data-path="Chapter5.html"><a href="Chapter5.html#累積発生率関数の予測値"><i class="fa fa-check"></i><b>5.3.3</b> 累積発生率関数の予測値</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="Chapter6.html"><a href="Chapter6.html"><i class="fa fa-check"></i><b>6</b> 繰り返しのある事象モデル</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="Chapter6.html"><a href="Chapter6.html#繰り返しのある事象のカウントデータモデル"><i class="fa fa-check"></i><b>6.1</b> 繰り返しのある事象のカウントデータ・モデル</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="Chapter6.html"><a href="Chapter6.html#モデルの概要-5"><i class="fa fa-check"></i><b>6.1.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="6.1.2" data-path="Chapter6.html"><a href="Chapter6.html#rでの実装-6"><i class="fa fa-check"></i><b>6.1.2</b> Rでの実装</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="Chapter6.html"><a href="Chapter6.html#時間のギャップに基づく方法"><i class="fa fa-check"></i><b>6.2</b> 時間のギャップに基づく方法</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="Chapter6.html"><a href="Chapter6.html#モデルの概要-6"><i class="fa fa-check"></i><b>6.2.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="6.2.2" data-path="Chapter6.html"><a href="Chapter6.html#rでの実装-7"><i class="fa fa-check"></i><b>6.2.2</b> Rでの実装</a></li>
+<li class="chapter" data-level="6.2.3" data-path="Chapter6.html"><a href="Chapter6.html#データの非独立性の問題"><i class="fa fa-check"></i><b>6.2.3</b> データの非独立性の問題</a>
+<ul>
+<li class="chapter" data-level="6.2.3.1" data-path="Chapter6.html"><a href="Chapter6.html#頑強推定"><i class="fa fa-check"></i><b>6.2.3.1</b> 頑強推定</a></li>
+<li class="chapter" data-level="6.2.3.2" data-path="Chapter6.html"><a href="Chapter6.html#共用フレイルティモデル"><i class="fa fa-check"></i><b>6.2.3.2</b> 共用フレイルティ・モデル</a></li>
+<li class="chapter" data-level="6.2.3.3" data-path="Chapter6.html"><a href="Chapter6.html#モデルの比較-1"><i class="fa fa-check"></i><b>6.2.3.3</b> モデルの比較</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="Chapter6.html"><a href="Chapter6.html#観察開始からの時間に基づく方法"><i class="fa fa-check"></i><b>6.3</b> 観察開始からの時間に基づく方法</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapterx.html"><a href="Chapterx.html"><i class="fa fa-check"></i>補遺 ノンパラメトリックな推定</a>
 <ul>
@@ -597,9 +653,8 @@ Tの分布
 <p><br/></p>
 <p>加速ハザードモデルでは従属変数を<span class="math inline">\(logT\)</span>ではなくハザード率になるように書き換えることもできるが、複雑な式になる傾向がある。比例ハザードモデルと異なり、対数ロジスティックモデルと対数正規モデルではハザード率は非単調関数(= 時間の経過とともに柔軟に増えたり減ったりする)である。パラメータの推定値は最尤法によって求められる。</p>
 </div>
-</div>
-<div id="rでの実装-2" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Rでの実装<a href="Chapter3.html#rでの実装-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="rでの実装-2" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Rでの実装<a href="Chapter3.html#rでの実装-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>ここでは、<span class="citation">Allison (<a href="#ref-Allison2014" role="doc-biblioref">2014</a>)</span> に倣って再犯データにガンマ分布モデルを当てはめる。分析には<code>flexsurv</code>パッケージの<code>flexsurvreg()</code>関数を用いる。このパッケージは比例ハザードモデルも含め様々なパラメトリックモデルに対応している。</p>
 <p>以下のようにモデリングできる。<code>method</code>で採用推定を行うアルゴリズムを指定でき、「Nelder-Mead法」「BFGS法」「L-BFGS法」などを選べる。今回はL-BFGS法を用いる</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="Chapter3.html#cb40-1" aria-hidden="true" tabindex="-1"></a>mod_gam <span class="ot">&lt;-</span> <span class="fu">flexsurvreg</span>(<span class="fu">Surv</span>(week, arrest) <span class="sc">~</span> fin <span class="sc">+</span> age <span class="sc">+</span> race <span class="sc">+</span> wexp <span class="sc">+</span> mar </span>
@@ -692,8 +747,9 @@ Tの分布
 </p>
 </div>
 </div>
-<div id="適合度の評価" class="section level2 hasAnchor" number="3.5">
-<h2><span class="header-section-number">3.5</span> 適合度の評価<a href="Chapter3.html#適合度の評価" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="適合度の評価" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> 適合度の評価<a href="Chapter3.html#適合度の評価" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>たくさんのモデルがあるが、どのモデルが最も妥当なモデルといえるだろうか?以下では、まったく同じデータを使用しているモデルに限ってその比較方法を見ていく。</p>
 <p>1つの目の方法としては、推定されたモデルの対数尤度(= 推定したモデルから観測データが得られる確率の対数)を比較することである。対数尤度は大まかにいえば、推定したモデルが観測データにどの程度当てはまっているかを表す。対数尤度は通常負の値をとるので-2をかけて比較することが多く、小さいほど当てはまりがよい。これはモデルの<strong>逸脱度</strong>と呼ばれる。</p>
 <p>表<a href="Chapter3.html#tab:tab-loglik">3.4</a>は各モデルの逸脱度(対数尤度の-2倍)を表したものである。表からわかるように、ワイブル回帰モデルが最も当てはまりが良いが、対数ロジスティックモデルやガンマ分布モデルとの差は大きくない。前述したように、アルモデルが別のモデルの特殊なケースであり、一方が他方の「入れ子構造」になっている場合は尤度比検定で適合度の検定を行うこともできる。</p>
@@ -902,10 +958,10 @@ BIC
 <span id="cb49-2"><a href="Chapter3.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.ggplot</span>(<span class="sc">~</span><span class="fu">plot</span>(mod_llog, <span class="at">fn =</span> <span class="st">&quot;haz&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;week&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;hazard rate&quot;</span>, <span class="at">main =</span> <span class="st">&quot;log logistic&quot;</span>, <span class="at">xaxs =</span> <span class="st">&quot;i&quot;</span>, <span class="at">yaxs =</span> <span class="st">&quot;i&quot;</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.03</span>)))</span></code></pre></div>
 <p><img src="SurvivalAnalysis_Using_R_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="観察されない異質性の原因" class="section level2 hasAnchor" number="3.6">
-<h2><span class="header-section-number">3.6</span> 観察されない異質性の原因<a href="Chapter3.html#観察されない異質性の原因" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="観察されない異質性の原因" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> 観察されない異質性の原因<a href="Chapter3.html#観察されない異質性の原因" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><u>個体のハザード率が期間を通して一定であっても</u>、独立変数では説明しきれない個体間の異質性によって、時間とともにハザード率が減少する傾向があることが知られている。これは、一般的にハザード率が高い個体は早い段階で事象を経験してリスク集合から抜けていくため、時間が経過するにつれてハザード率の低い個体がリスク集合に残りやすい傾向があるためである。このとき、ハザード率が時間の減少と共に本当に減少しているのか、それとも個体の異質性によってハザード率が低下しているのかを区別するのは難しい<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a>。このように、一般に時間がハザード率に与える影響を検討する際には十分な注意が必要である。</p>
-<p>個体の異質性に対処する最も良い方法は、個体の異質性をもたらす要因を独立変数としてモデルに明示的に入れることである。しかし、こうした要因をすべて測定することは現実的ではない。この問題を解決するため、<strong>異質性の原因を誤差項に含めるパラメトリックなモデル</strong>(= frailty model)が提案されている。例えば、ランダムな誤差項を持つワイブル回帰モデルは以下のようにs定式化できる(式<a href="Chapter3.html#eq:ht-randwei">(3.9)</a>)。理論的には、これによって時間がハザード率に与える影響と、個体の異質性による影響を区別することができる。</p>
+<p>個体の異質性に対処する最も良い方法は、個体の異質性をもたらす要因を独立変数としてモデルに明示的に入れることである。しかし、こうした要因をすべて測定することは現実的ではない。この問題を解決するため、<strong>異質性の原因を誤差項に含めるパラメトリックなモデル</strong>(= frailty model)が提案されている。例えば、ランダムな誤差項を持つワイブル回帰モデルは以下のように定式化できる(式<a href="Chapter3.html#eq:ht-randwei">(3.9)</a>)。理論的には、これによって時間がハザード率に与える影響と、個体の異質性による影響を区別することができる。</p>
 <p><span class="math display" id="eq:ht-randwei">\[
 log(h(t)) = b_0 + b_1x_1 + b_2x_2 + clog(t) + e \tag{3.9}
 \]</span></p>
@@ -916,8 +972,8 @@ log(h(t)) = b_0 + b_1x_1 + b_2x_2 + clog(t) + e \tag{3.9}
 <li>分析対象をいくつかの大きなグループに分けることができ、同じグループに属するすべての個体の<span class="math inline">\(e\)</span>が同じだと仮定できる場合。</li>
 </ol>
 </div>
-<div id="なぜパラメトリックモデルを用いるのか" class="section level2 hasAnchor" number="3.7">
-<h2><span class="header-section-number">3.7</span> なぜパラメトリックモデルを用いるのか<a href="Chapter3.html#なぜパラメトリックモデルを用いるのか" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="なぜパラメトリックモデルを用いるのか" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> なぜパラメトリックモデルを用いるのか<a href="Chapter3.html#なぜパラメトリックモデルを用いるのか" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>次章では最も一般的な手法であるコックス比例ハザードモデルを扱うが、パラメトリックモデルはコックス比例ハザードモデルよりも優れた特徴が二つある。ただし、多くのパッケージで時間依存の独立変数を扱うことができないという弱点もある。</p>
 <ol style="list-style-type: decimal">
 <li>「左側打ち切り」と「区間打ち切り」を扱うのが容易<br />
