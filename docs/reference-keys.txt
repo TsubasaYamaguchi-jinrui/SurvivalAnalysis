@@ -56,6 +56,8 @@ eq:eq-negbinom
 tab:tab-mod-nb
 eq:eq-frail
 tab:tab-coxtgcomp
+tab:tab-coxtscomp
+tab:tab-strob-int
 fig:fig-surv-km
 fig:fig-surv-km2
 fig:fig-cumhaz
@@ -113,7 +115,7 @@ rでの実装-3
 プログラミングステートメント法programming-statements-method
 エピソード分割法episode-splitting-method
 比例ハザード性の仮定の検討と修正
-シェフィールド残差を用いた検討
+シェーンフィールド残差を用いた検討
 仮定が満たされないときの修正
 時間との交互作用をモデルに加える
 層化stratification
@@ -150,3 +152,7 @@ rでの実装-7
 共用フレイルティモデル
 モデルの比較-1
 観察開始からの時間に基づく方法
+モデルの概要-7
+rでの実装-8
+観察開始時点からの時間を使う利点
+分析モデルの拡張

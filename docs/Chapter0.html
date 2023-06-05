@@ -252,7 +252,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="Chapter4.html"><a href="Chapter4.html#比例ハザード性の仮定の検討と修正"><i class="fa fa-check"></i><b>4.3</b> 比例ハザード性の仮定の検討と修正</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="Chapter4.html"><a href="Chapter4.html#シェフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.3.1</b> シェフィールド残差を用いた検討</a></li>
+<li class="chapter" data-level="4.3.1" data-path="Chapter4.html"><a href="Chapter4.html#シェーンフィールド残差を用いた検討"><i class="fa fa-check"></i><b>4.3.1</b> シェーンフィールド残差を用いた検討</a></li>
 <li class="chapter" data-level="4.3.2" data-path="Chapter4.html"><a href="Chapter4.html#仮定が満たされないときの修正"><i class="fa fa-check"></i><b>4.3.2</b> 仮定が満たされないときの修正</a>
 <ul>
 <li class="chapter" data-level="4.3.2.1" data-path="Chapter4.html"><a href="Chapter4.html#時間との交互作用をモデルに加える"><i class="fa fa-check"></i><b>4.3.2.1</b> 時間との交互作用をモデルに加える</a></li>
@@ -308,7 +308,13 @@ div.csl-indent {
 <li class="chapter" data-level="6.2.3.3" data-path="Chapter6.html"><a href="Chapter6.html#モデルの比較-1"><i class="fa fa-check"></i><b>6.2.3.3</b> モデルの比較</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6.3" data-path="Chapter6.html"><a href="Chapter6.html#観察開始からの時間に基づく方法"><i class="fa fa-check"></i><b>6.3</b> 観察開始からの時間に基づく方法</a></li>
+<li class="chapter" data-level="6.3" data-path="Chapter6.html"><a href="Chapter6.html#観察開始からの時間に基づく方法"><i class="fa fa-check"></i><b>6.3</b> 観察開始からの時間に基づく方法</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="Chapter6.html"><a href="Chapter6.html#モデルの概要-7"><i class="fa fa-check"></i><b>6.3.1</b> モデルの概要</a></li>
+<li class="chapter" data-level="6.3.2" data-path="Chapter6.html"><a href="Chapter6.html#rでの実装-8"><i class="fa fa-check"></i><b>6.3.2</b> Rでの実装</a></li>
+<li class="chapter" data-level="6.3.3" data-path="Chapter6.html"><a href="Chapter6.html#観察開始時点からの時間を使う利点"><i class="fa fa-check"></i><b>6.3.3</b> 観察開始時点からの時間を使う利点</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="Chapter6.html"><a href="Chapter6.html#分析モデルの拡張"><i class="fa fa-check"></i><b>6.4</b> 分析モデルの拡張</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapterx.html"><a href="Chapterx.html"><i class="fa fa-check"></i>補遺 ノンパラメトリックな推定</a>
 <ul>
@@ -353,7 +359,7 @@ div.csl-indent {
 </li>
 <li><code>tidycmprsk</code><a href="https://mskcc-epi-bio.github.io/tidycmprsk/">パッケージ</a><br />
 </li>
-<li><code>brms</code><a href="https://github.com/paul-buerkner/brms">パッケージ</a><br />
+<li><code>coxme</code><a href="https://cran.r-project.org/web/packages/coxme/index.html">パッケージ</a><br />
 </li>
 <li><code>rstanarm</code><a href="https://mc-stan.org/rstanarm/articles/jm.html">パッケージ</a></li>
 </ul>
@@ -361,9 +367,9 @@ div.csl-indent {
 <span id="cb1-2"><a href="Chapter0.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
 <span id="cb1-3"><a href="Chapter0.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(eha)</span>
 <span id="cb1-4"><a href="Chapter0.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flexsurv)</span>
-<span id="cb1-5"><a href="Chapter0.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb1-6"><a href="Chapter0.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstanarm)</span>
-<span id="cb1-7"><a href="Chapter0.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmprsk)</span>
+<span id="cb1-5"><a href="Chapter0.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb1-6"><a href="Chapter0.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmprsk)</span>
+<span id="cb1-7"><a href="Chapter0.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(coxme)</span>
 <span id="cb1-8"><a href="Chapter0.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
 <span id="cb1-9"><a href="Chapter0.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="Chapter0.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ggplotでの可視化</span></span>

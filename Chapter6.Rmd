@@ -19,7 +19,7 @@ tarp %>%
 1. 時間依存独立変数がない  
 2. 独立変数が観測期間全てで同じ効果を持っている  
 
-カウントデータの分析で最も適切かつ容易に利用できるのは負の二項分布モデルである。ポアソン分布モデルも使えるが、しばしば過分散の問題が生じる[^foot12]。個体$i$に発生した事象の数を$Y_i$とし、$Y_i$が期待値$\lambda_i$の負の二項分布に従うと仮定するとき、回帰モデルは以下のように表現される(式\@ref(eq:eq-negbinom))。つまり、通常の一般化線形モデルと同様である。    
+カウントデータの分析で最も適切かつ容易に利用できるのは負の二項分布モデルである。ポアソン分布モデルも使えるが、しばしば過分散の問題が生じる[^foot13]。個体$i$に発生した事象の数を$Y_i$とし、$Y_i$が期待値$\lambda_i$の負の二項分布に従うと仮定するとき、回帰モデルは以下のように表現される(式\@ref(eq:eq-negbinom))。つまり、通常の一般化線形モデルと同様である。    
 
 $$
 \begin{aligned}
@@ -29,7 +29,7 @@ log(\lambda_i) &= b_0 + b_1x_{i1} + b_1x_{i2} + \cdots + b_kx_{ik}
 (\#eq:eq-negbinom) 
 $$
 
-[^foot12]: 過分散については @Ohigashi2010 や @Kasuya2012 を参照。負の二項分布については、[こちら](https://hoxo-m.hatenablog.com/entry/20151012/p1)も参照。簡単に言えば負の二項分布はポワソン分布の期待値$\lambda$が毎回ガンマ分布から得られると仮定する混合分布である。よって、ポワソン分布は負の二項分布の特殊例といえる。      
+[^foot13]: 過分散については @Ohigashi2010 や @Kasuya2012 を参照。負の二項分布については、[こちら](https://hoxo-m.hatenablog.com/entry/20151012/p1)も参照。簡単に言えば負の二項分布はポワソン分布の期待値$\lambda$が毎回ガンマ分布から得られると仮定する混合分布である。よって、ポワソン分布は負の二項分布の特殊例といえる。      
 
 ### Rでの実装  
 負の二項モデルは`MASS`パッケージの`glm.nb()`関数で以下のように実行できる。  
@@ -53,9 +53,9 @@ model_parameters(mod_nb) %>%
 ```
 <br/>  
 
-負の二項分布モデルではオフセット項に観察期間を含めることで、観察期間の違う複数の個体がいるデータについても簡単に分析が可能である[^foot13]。  
+負の二項分布モデルではオフセット項に観察期間を含めることで、観察期間の違う複数の個体がいるデータについても簡単に分析が可能である[^foot14]。  
 
-[^foot13]: オフセット項については @Kubo2012 を参照。  
+[^foot14]: オフセット項については @Kubo2012 を参照。  
 
 ## 時間のギャップに基づく方法  
 ### モデルの概要  
@@ -106,13 +106,13 @@ mod_tg_rob
 #### 共用フレイルティ・モデル  
 一般的なコックス回帰の場合、通常は標準誤差を修正するだけでは理想的ではない。「**共用フレイルティ**」を回帰モデルの構成要素として含むモデルは、頑強モデルだけでは十分でない点も修正することができる。  
 
-基本的なモデルは、標準のコックス回帰モデルにランダム切片[^foot14]を加えたランダム効果モデル(混合モデル)である。式\@ref(eq:eq-frail)の$h_ij(t)$は個体$i$が$j$番目の事象を経験するハザード率であり、$t$は事象が最後に発生した時点からの経過時間である。$e_i$は「共用フレイルティ」で、全ての測定されていない個体ごとの異質性を表す。$e_i$は独立変数とは独立であると仮定され、平均0で分散$\theta$の正規分布かガンマ分布が仮定される。$\theta$が大きいほど、同じ個体のデータ同士の依存度が高くなる。  
+基本的なモデルは、標準のコックス回帰モデルにランダム切片[^foot15]を加えたランダム効果モデル(混合モデル)である。式\@ref(eq:eq-frail)の$h_ij(t)$は個体$i$が$j$番目の事象を経験するハザード率であり、$t$は事象が最後に発生した時点からの経過時間である。$e_i$は「共用フレイルティ」で、全ての測定されていない個体ごとの異質性を表す。$e_i$は独立変数とは独立であると仮定され、平均0で分散$\theta$の正規分布かガンマ分布が仮定される。$\theta$が大きいほど、同じ個体のデータ同士の依存度が高くなる。  
 
 $$
 log(h_ij(t)) = a(t) + b_1x_{i1} + b_2x_{i2} + e_i　(\#eq:eq-frail) 
 $$
 
-[^foot14]: ランダム効果については、 @Kubo2012 や @Kasuya2012 を参照。  
+[^foot15]: ランダム効果については、 @Kubo2012 や @Kasuya2012 を参照。  
 
 Rでは、以下のようにして簡単に実行できる。$e_i$の分布に正規分布を仮定するなら式に`frailty.gaussian(id)`をガンマ分布を仮定するなら`frailty.gamma(id)`を追加する。  
 ```{r}
@@ -122,7 +122,19 @@ mod_tg_frail <- coxph(Surv(length,arrind) ~ fin + age + white + male + married +
 
 結果は以下の通り。$\theta$は0.49と推定された。偏回帰係数の標準誤差は頑強推定と似通っている。StataやSASとは異なり、統計検定量は$\chi^2$値で出力されるようだ。  
 ```{r}
-mod_tg_frail
+summary(mod_tg_frail)
+```
+
+なお、`coxme`パッケージの`coxme()`関数を用いても共用フレイルティ・モデルの推定は行えるようである。ただし、こちらはランダム効果の分布に正規分布のみが仮定できる。  
+```{r}
+mod_tg_frail_b <- coxme(Surv(length,arrind) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb + (1|id), data = arrest)
+```
+
+結果は以下の通り。$\theta$は0.52と推定され、偏回帰係数の推定値も少し違うようだ。この違いが何によるものかは不明だが、おそらく推定方法の違いによるものと思われる。  
+
+```{r}
+summary(mod_tg_frail_b)
 ```
 
 #### モデルの比較  
@@ -148,3 +160,78 @@ tibble(Covariate = rownames(mod_tg$coefficients %>% data.frame()),
 なお、ここで紹介したモデルは全てパラメトリックなモデル(例えばワイブル回帰モデル)に対しても同様に適用できる。  
 
 ## 観察開始からの時間に基づく方法  
+### モデルの概要  
+ほとんどの場合では、時間のギャップを用いるのが最善であると考えられる。しかし、場合によってはハザード率を他の時間の長さに依存させた方が妥当かもしれない。例えば、再逮捕のハザード率は最後の逮捕からの時間ではなく、最初に刑務所を出所してからの時間に依存しているかもしれない。  
+
+この分析でも先ほどと同じデータを使用するが、一つ一つの観察期間を従属変数にするのではなく、時間依存変数があるときのように各行のデータの開始時点と終了時点を明示的に指定する形になる。データ`arrest`には、各行の観察開始時点を表す変数`begin`と終了を表す変数`end`が存在する。  
+
+### Rでの実装  
+Rでは、従属変数を`Surv(begin, end, arrind)`とすることでこのような推定ができる。今回も同じ個体のデータが複数あるので、頑強モデルと共用フレイルティモデルの両方を推定する。    
+
+```{r}
+mod_st_rob <- coxph(Surv(begin, end, arrind) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb + cluster(id), data = arrest)
+
+mod_st_frail <- coxph(Surv(begin, end, arrind) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb + frailty.gaussian(id), data = arrest)
+```
+
+両モデルで推定された偏回帰係数とそれを指数変換したもの、$z$値をまとめたのが表\@ref(tab:tab-coxtscomp)である。いずれも時間のギャップを用いたモデル(表\@ref(tab:tab-coxtscomp))と非常によく似ている。  
+```{r tab-coxtscomp}
+tibble(Covariate = rownames(mod_st_rob$coefficients %>% data.frame()),
+       "Coef(rob)" = c(sprintf("%.3f",coef(mod_st_rob))[1:10]),
+       "Exp(Coef_rob)" = c(sprintf("%.3f",exp(coef(mod_st_rob)))[1:10]),
+       "Z(rob)" = sprintf("%.3f",coef(mod_st_rob)/sqrt(diag(vcov(mod_st_rob))))[1:10],
+       "Coef(frail)" = sprintf("%.3f",coef(mod_st_frail))[1:10],
+       "Exp(Coef_frail)" = sprintf("%.3f",exp(coef(mod_st_frail))[1:10]),
+       "Z(frail)" = sprintf("%.3f",coef(mod_st_frail)/sqrt(diag(vcov(mod_st_frail))))[1:10]) %>% 
+  flextable() %>% 
+  add_header_row(colwidth = c(1,3,3),
+                 values = c("","コックス回帰\n(頑強推定)", "コックス回帰\n(共用フレイルティ)")) %>% 
+  flextable::align(align = "center", part = "all") %>% 
+  set_caption("各モデルの推定値の比較")
+```
+<br/>  
+
+### 観察開始時点からの時間を使う利点  
+この方法の魅力の一つは、独立変数の影響が観察期間全体で変化するかを調べることができる点である。これは、独立変数と開始時点からの時間($t$)の交互作用項を含めることでモデリングできる。  
+
+$$
+log(h_ij(t)) = a(t) + b_1x_{i1} + b_2x_{i2} + b_3x_{i2}t
+$$
+
+実際に、先ほどの頑強推定モデル(`mod_st_rob`)で比例ハザード性が満たされているか、シェーンフィールド残差を用いて調べたところ、人種(`white`)、前科の数(`numarst`)、教育レベル(`edcomb`)は満たされていないことが示唆された。
+```{r}
+cox.zph(mod_st_rob)
+```
+
+そこで、これらと時間の交互作用を含むモデルを考える。  
+```{r}
+mod_st_rob_int <- coxph(Surv(begin, end, arrind) ~ fin + age + white + male + married + paro + numprop + 
+                       crimprop + numarst + edcomb + white:end + numarst:end + edcomb:end + cluster(id), data = arrest)
+```
+
+結果が以下の通り。交互作用はいずれも5%水準で有意になっていることが分かる。    
+```{r}
+mod_st_rob_int
+```
+
+例えば前科の数と教育レベルに着目すると、それぞれの独立変数の偏回帰係数($b+ct$)は時間と共に減少していき、途中で負に転じることが分かる(表\@ref(tab:tab-strob-int))。
+
+```{r tab-strob-int}
+tibble(t = seq(0,365,50),
+       `偏回帰係数\n(b + ct)` = sprintf("%.3f",mod_st_rob_int$coefficients[[9]] + mod_st_rob_int$coefficients[[12]]*t),
+         `Exp(b+ct)` = sprintf("%.3f", exp(mod_st_rob_int$coefficients[[9]] + mod_st_rob_int$coefficients[[12]]*t)),
+       `偏回帰係数\n(b + ct) ` = sprintf("%.3f", mod_st_rob_int$coefficients[[10]] + mod_st_rob_int$coefficients[[13]]*t),
+         `Exp(b+ct) ` = sprintf("%.3f", exp(mod_st_rob_int$coefficients[[10]] + mod_st_rob_int$coefficients[[13]]*t))) %>% 
+  rename(`出所して\nからの日数(t)` = t) %>% 
+  flextable() %>% 
+  width(width = 2/2) %>% 
+  add_header_row(colwidth = c(1,2,2),
+                 values = c("","前科の数","教育レベル")) %>% 
+  flextable::align(align = "center", part = "all") %>% 
+  set_caption("モデルから推定された交互作用項を含む偏回帰係数")
+```
+
+## 分析モデルの拡張  
+繰り返し発生する事象について、これまで検討した方法はさまざまに拡張できる。例えば競合リスク・モデルや離散時間モデルについても同様の方法が適用できる。一つの個体が複数の観察記録を持つ問題については、本章で解説したように頑強推定を用いたり、ランダム効果モデルを用いることで対処できる。  

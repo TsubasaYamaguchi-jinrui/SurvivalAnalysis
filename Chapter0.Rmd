@@ -9,7 +9,7 @@
 - `ggsurvfit`[パッケージ](http://www.danieldsjoberg.com/ggsurvfit/)  
 - `survminer`[パッケージ](https://cran.r-project.org/web/packages/survminer/readme/README.html)  
 - `tidycmprsk`[パッケージ](https://mskcc-epi-bio.github.io/tidycmprsk/)  
-- `brms`[パッケージ](https://github.com/paul-buerkner/brms)  
+- `coxme`[パッケージ](https://cran.r-project.org/web/packages/coxme/index.html)  
 - `rstanarm`[パッケージ](https://mc-stan.org/rstanarm/articles/jm.html)  
 
 ```{r}
@@ -17,9 +17,9 @@
 library(survival)
 library(eha)
 library(flexsurv)
-library(brms)
 library(rstanarm)
 library(cmprsk)
+library(coxme)
 library(MASS)
 
 ## ggplotでの可視化
