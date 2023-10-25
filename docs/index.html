@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Event History and Survival Analysis Using R</title>
   <meta name="description" content="Event History and Survival Analysis Using R" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Event History and Survival Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-06-05" />
+<meta name="date" content="2023-10-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,6 +133,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -342,19 +346,19 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Event History and Survival Analysis Using R</h1>
 <p class="author"><em>Tsubasa Yamaguchi</em></p>
-<p class="date"><em>2023-06-05</em></p>
+<p class="date"><em>2023-10-25</em></p>
 </div>
 <div id="本稿の目的" class="section level1 unnumbered hasAnchor">
 <h1>本稿の目的<a href="index.html#本稿の目的" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>本稿は<strong>イベント・ヒストリー分析</strong>(event history analysis)または<strong>生存時間分析（Survival Analysis）</strong>と呼ばれる手法の概要をまとめたものである。また、Rでこうした分析を実行する方法についても解説している。新たに個人的に勉強した内容があれば、随時追加していく。</p>
-<p>本稿が主に参考にしたのは参考にしたのは <span class="citation">Allison (<a href="#ref-Allison2014" role="doc-biblioref">2014</a>)</span> の”Event History and Survival Analysis, Second Edition”である。<br />
+<p>本稿が主に参考にしたのは参考にしたのは <span class="citation">Allison (<a href="#ref-Allison2014">2014</a>)</span> の”Event History and Survival Analysis, Second Edition”を日本語訳した <span class="citation">アリソン (<a href="#ref-Fukuda2021">2021</a>)</span> である。<br />
 また以下の書籍やサイトも参考にした。</p>
 <ul>
-<li><span class="citation">杉本 (<a href="#ref-Sugimoto2021" role="doc-biblioref">2021</a>)</span> 生存時間解析. 朝倉書店<br />
+<li><span class="citation">杉本 (<a href="#ref-Sugimoto2021">2021</a>)</span> 生存時間解析. 朝倉書店<br />
 </li>
-<li><span class="citation">大橋 et al. (<a href="#ref-Ohashi2021" role="doc-biblioref">2021</a>)</span> 生存時間解析 第2版 SASによる生物統計. 東京大学出版<br />
+<li><span class="citation">大橋 et al. (<a href="#ref-Ohashi2021">2021</a>)</span> 生存時間解析 第2版 SASによる生物統計. 東京大学出版<br />
 </li>
-<li><span class="citation">Broström (<a href="#ref-Brostrom2021" role="doc-biblioref">2021</a>)</span> <a href="https://ehar.se/r/ehar2/">Event History Analysis with R, Second Edition</a><br />
+<li><span class="citation">Broström (<a href="#ref-Brostrom2021">2021</a>)</span> <a href="https://ehar.se/r/ehar2/">Event History Analysis with R, Second Edition</a><br />
 </li>
 <li><a href="https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html">Survival Analysis in R</a><br />
 </li>
@@ -372,6 +376,9 @@ Allison, P. D. (2014). <em>Event history and survival analysis: Regression for l
 </div>
 <div id="ref-Brostrom2021" class="csl-entry">
 Broström, G. (2021). <em>Event history analysis with <span>R</span></em>. CRC Press.
+</div>
+<div id="ref-Fukuda2021" class="csl-entry">
+アリソンポール=デイビット. (2021). <em>イベント・ヒストリー分析</em> (福田亘孝., Trans.). 共立出版.
 </div>
 <div id="ref-Ohashi2021" class="csl-entry">
 大橋靖雄., 浜田知久馬., &amp; 魚住龍史. (2021). <em>生存時間解析 第2版 SASによる生物統計</em>. 東京大学出版.

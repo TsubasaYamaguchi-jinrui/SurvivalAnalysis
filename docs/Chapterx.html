@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>補遺 ノンパラメトリックな推定 | Event History and Survival Analysis Using R</title>
   <meta name="description" content="補遺 ノンパラメトリックな推定 | Event History and Survival Analysis Using R" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="補遺 ノンパラメトリックな推定 | Event History and Survival Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-06-05" />
+<meta name="date" content="2023-10-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,6 +133,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -341,7 +345,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="補遺-ノンパラメトリックな推定" class="section level1 unnumbered hasAnchor">
 <h1>補遺 ノンパラメトリックな推定<a href="Chapterx.html#補遺-ノンパラメトリックな推定" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><span class="citation">Allison (<a href="#ref-Allison2014" role="doc-biblioref">2014</a>)</span> ではほとんど解説がなかったが、分布に何も仮定を置かない<strong>ノンパラメトリック</strong>な方法で分析を行うこともできる。以下では、2つの代表的な方法を紹介する。</p>
+<p><span class="citation">Allison (<a href="#ref-Allison2014">2014</a>)</span> ではほとんど解説がなかったが、分布に何も仮定を置かない<strong>ノンパラメトリック</strong>な方法で分析を行うこともできる。以下では、2つの代表的な方法を紹介する。</p>
 <div id="kaplan-meier法" class="section level2 unnumbered hasAnchor">
 <h2>Kaplan-Meier法<a href="Chapterx.html#kaplan-meier法" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>Kaplan-Maier</strong>法は<u>生存関数</u>を推定するための推定量で、時点<span class="math inline">\(t_n\)</span>における生存率<span class="math inline">\(S_n\)</span>の推定値は以下のように定義される。なお、時点<span class="math inline">\(t_n\)</span>でのリスク集合の大きさを<span class="math inline">\(l_n\)</span>、時点<span class="math inline">\(t_n\)</span>に発生した事象の数を<span class="math inline">\(d_n\)</span>としている。推定量は最尤推定によって得られる。</p>
@@ -352,13 +356,13 @@ S(t_n) &amp;= \biggl(1-\frac{d_1}{l_1}\biggl) \times \biggl(1-\frac{d_2}{l_2}\bi
 \end{aligned}
 \]</span></p>
 <p>Kaplan-Meier推定量は1からスタートし、事象の発生が確認されるたびに値が小さくなる階段関数である。Rでは<code>survival</code>パケージの<code>survfit()</code>関数で推定できる。ここでは、第<a href="Chapter2.html#c2">2</a>章で使用した生化学者の准教授への昇進データ(<code>rank</code>)を使用する。</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="Chapterx.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb138-2"><a href="Chapterx.html#cb138-2" aria-hidden="true" tabindex="-1"></a>rank <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;data/rank.dta&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="Chapterx.html#cb138-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb138-2"><a href="Chapterx.html#cb138-2" tabindex="-1"></a>rank <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;data/rank.dta&quot;</span>)</span></code></pre></div>
 <p>第<a href="Chapter3.html#c3">3</a>章と第<a href="Chapter4.html#c4">4</a>章のモデルと同様に、従属変数を<code>Surv(観察期間, 事象の発生の有無)</code>もしくは、<code>Surv(観察開始時点, 観察終了時点, 事象の発生の有無)</code>として推定できる。推定の結果は以下のとおりである。</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="Chapterx.html#cb139-1" aria-hidden="true" tabindex="-1"></a>est_km <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb139-2"><a href="Chapterx.html#cb139-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">type =</span> <span class="st">&quot;kaplan-meier&quot;</span>, <span class="at">data =</span> rank)</span>
-<span id="cb139-3"><a href="Chapterx.html#cb139-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb139-4"><a href="Chapterx.html#cb139-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(est_km)</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="Chapterx.html#cb139-1" tabindex="-1"></a>est_km <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb139-2"><a href="Chapterx.html#cb139-2" tabindex="-1"></a>                  <span class="at">type =</span> <span class="st">&quot;kaplan-meier&quot;</span>, <span class="at">data =</span> rank)</span>
+<span id="cb139-3"><a href="Chapterx.html#cb139-3" tabindex="-1"></a></span>
+<span id="cb139-4"><a href="Chapterx.html#cb139-4" tabindex="-1"></a><span class="fu">summary</span>(est_km)</span></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(dur, promo) ~ 1, data = rank, type = &quot;kaplan-meier&quot;)
 ## 
 ##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
@@ -373,21 +377,21 @@ S(t_n) &amp;= \biggl(1-\frac{d_1}{l_1}\biggl) \times \biggl(1-\frac{d_2}{l_2}\bi
 ##     9     42       7    0.171 0.02484        0.129        0.228
 ##    10     29       4    0.148 0.02406        0.107        0.203</code></pre>
 <p>結果の図示は<code>survminer</code>パッケージの<code>ggsurvplot()</code>関数で行うことができる(図<a href="Chapterx.html#fig:fig-surv-km">6.1</a>)。</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="Chapterx.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_km,</span>
-<span id="cb141-2"><a href="Chapterx.html#cb141-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
-<span id="cb141-3"><a href="Chapterx.html#cb141-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb141-4"><a href="Chapterx.html#cb141-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">palette =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb141-5"><a href="Chapterx.html#cb141-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>,</span>
-<span id="cb141-6"><a href="Chapterx.html#cb141-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
-<span id="cb141-7"><a href="Chapterx.html#cb141-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>,</span>
-<span id="cb141-8"><a href="Chapterx.html#cb141-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend.title =</span> <span class="st">&quot;&quot;</span>) <span class="ot">-&gt;</span> p_km</span>
-<span id="cb141-9"><a href="Chapterx.html#cb141-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb141-10"><a href="Chapterx.html#cb141-10" aria-hidden="true" tabindex="-1"></a>p_km<span class="sc">$</span>plot <span class="sc">+</span></span>
-<span id="cb141-11"><a href="Chapterx.html#cb141-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
-<span id="cb141-12"><a href="Chapterx.html#cb141-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
-<span id="cb141-13"><a href="Chapterx.html#cb141-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
-<span id="cb141-14"><a href="Chapterx.html#cb141-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
-<span id="cb141-15"><a href="Chapterx.html#cb141-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="Chapterx.html#cb141-1" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_km,</span>
+<span id="cb141-2"><a href="Chapterx.html#cb141-2" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
+<span id="cb141-3"><a href="Chapterx.html#cb141-3" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb141-4"><a href="Chapterx.html#cb141-4" tabindex="-1"></a>           <span class="at">palette =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb141-5"><a href="Chapterx.html#cb141-5" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>,</span>
+<span id="cb141-6"><a href="Chapterx.html#cb141-6" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
+<span id="cb141-7"><a href="Chapterx.html#cb141-7" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb141-8"><a href="Chapterx.html#cb141-8" tabindex="-1"></a>           <span class="at">legend.title =</span> <span class="st">&quot;&quot;</span>) <span class="ot">-&gt;</span> p_km</span>
+<span id="cb141-9"><a href="Chapterx.html#cb141-9" tabindex="-1"></a>  </span>
+<span id="cb141-10"><a href="Chapterx.html#cb141-10" tabindex="-1"></a>p_km<span class="sc">$</span>plot <span class="sc">+</span></span>
+<span id="cb141-11"><a href="Chapterx.html#cb141-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
+<span id="cb141-12"><a href="Chapterx.html#cb141-12" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb141-13"><a href="Chapterx.html#cb141-13" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb141-14"><a href="Chapterx.html#cb141-14" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb141-15"><a href="Chapterx.html#cb141-15" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-surv-km"></span>
 <img src="SurvivalAnalysis_Using_R_files/figure-html/fig-surv-km-1.png" alt="Kaplan-Meier法で推定した生存曲線" width="432" />
 <p class="caption">
@@ -395,11 +399,11 @@ S(t_n) &amp;= \biggl(1-\frac{d_1}{l_1}\biggl) \times \biggl(1-\frac{d_2}{l_2}\bi
 </p>
 </div>
 <p>説明変数を含めて、独立変数の値ごとに推定することもできる。</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="Chapterx.html#cb142-1" aria-hidden="true" tabindex="-1"></a>est_km2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
-<span id="cb142-2"><a href="Chapterx.html#cb142-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> rank,</span>
-<span id="cb142-3"><a href="Chapterx.html#cb142-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">type =</span> <span class="st">&quot;kaplan-meier&quot;</span>)</span>
-<span id="cb142-4"><a href="Chapterx.html#cb142-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb142-5"><a href="Chapterx.html#cb142-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(est_km2)</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="Chapterx.html#cb142-1" tabindex="-1"></a>est_km2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
+<span id="cb142-2"><a href="Chapterx.html#cb142-2" tabindex="-1"></a>                  <span class="at">data =</span> rank,</span>
+<span id="cb142-3"><a href="Chapterx.html#cb142-3" tabindex="-1"></a>                  <span class="at">type =</span> <span class="st">&quot;kaplan-meier&quot;</span>)</span>
+<span id="cb142-4"><a href="Chapterx.html#cb142-4" tabindex="-1"></a></span>
+<span id="cb142-5"><a href="Chapterx.html#cb142-5" tabindex="-1"></a><span class="fu">summary</span>(est_km2)</span></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(dur, promo) ~ phdmed, data = rank, type = &quot;kaplan-meier&quot;)
 ## 
 ##                 phdmed=0 
@@ -426,10 +430,10 @@ S(t_n) &amp;= \biggl(1-\frac{d_1}{l_1}\biggl) \times \biggl(1-\frac{d_2}{l_2}\bi
 ##     9     29       4    0.187 0.03179        0.134        0.261
 ##    10     21       3    0.160 0.03076        0.110        0.233</code></pre>
 <p>また、2つ以上の集団で生存関数が有意に異なるかを、<strong>ログランク検定</strong>や<strong>一般化ウィルコクソン検定</strong>で調べることもできる。Rでは<code>survdiff()</code>関数で以下のように実行することができる。今回は、医学博士を持っているか否か(<code>phdmed</code>)によって生存関数が有意に異なるわけではないことが分かった。コックス回帰などとは異なり、<strong>他の変数の影響を統制できない</strong>点は注意が必要である。</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="Chapterx.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ログランク検定</span></span>
-<span id="cb144-2"><a href="Chapterx.html#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
-<span id="cb144-3"><a href="Chapterx.html#cb144-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> rank,</span>
-<span id="cb144-4"><a href="Chapterx.html#cb144-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">rho =</span> <span class="dv">0</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="Chapterx.html#cb144-1" tabindex="-1"></a><span class="do">## ログランク検定</span></span>
+<span id="cb144-2"><a href="Chapterx.html#cb144-2" tabindex="-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
+<span id="cb144-3"><a href="Chapterx.html#cb144-3" tabindex="-1"></a>         <span class="at">data =</span> rank,</span>
+<span id="cb144-4"><a href="Chapterx.html#cb144-4" tabindex="-1"></a>         <span class="at">rho =</span> <span class="dv">0</span>) </span></code></pre></div>
 <pre><code>## Call:
 ## survdiff(formula = Surv(dur, promo) ~ phdmed, data = rank, rho = 0)
 ## 
@@ -438,10 +442,10 @@ S(t_n) &amp;= \biggl(1-\frac{d_1}{l_1}\biggl) \times \biggl(1-\frac{d_2}{l_2}\bi
 ## phdmed=1 189      137    142.1     0.182     0.685
 ## 
 ##  Chisq= 0.7  on 1 degrees of freedom, p= 0.4</code></pre>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="Chapterx.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 一般化ウィルコクソン検定 </span></span>
-<span id="cb146-2"><a href="Chapterx.html#cb146-2" aria-hidden="true" tabindex="-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
-<span id="cb146-3"><a href="Chapterx.html#cb146-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> rank,</span>
-<span id="cb146-4"><a href="Chapterx.html#cb146-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">rho =</span> <span class="dv">1</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="Chapterx.html#cb146-1" tabindex="-1"></a><span class="do">## 一般化ウィルコクソン検定 </span></span>
+<span id="cb146-2"><a href="Chapterx.html#cb146-2" tabindex="-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> phdmed,</span>
+<span id="cb146-3"><a href="Chapterx.html#cb146-3" tabindex="-1"></a>         <span class="at">data =</span> rank,</span>
+<span id="cb146-4"><a href="Chapterx.html#cb146-4" tabindex="-1"></a>         <span class="at">rho =</span> <span class="dv">1</span>) </span></code></pre></div>
 <pre><code>## Call:
 ## survdiff(formula = Surv(dur, promo) ~ phdmed, data = rank, rho = 1)
 ## 
@@ -451,25 +455,25 @@ S(t_n) &amp;= \biggl(1-\frac{d_1}{l_1}\biggl) \times \biggl(1-\frac{d_2}{l_2}\bi
 ## 
 ##  Chisq= 0.5  on 1 degrees of freedom, p= 0.5</code></pre>
 <p>検定の結果を反映させた図を作成することもできる(図<a href="Chapterx.html#fig:fig-surv-km2">6.2</a>)。</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="Chapterx.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_km2,</span>
-<span id="cb148-2"><a href="Chapterx.html#cb148-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
-<span id="cb148-3"><a href="Chapterx.html#cb148-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb148-4"><a href="Chapterx.html#cb148-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb148-5"><a href="Chapterx.html#cb148-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&quot;blue3&quot;</span>,<span class="st">&quot;red2&quot;</span>),</span>
-<span id="cb148-6"><a href="Chapterx.html#cb148-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>,</span>
-<span id="cb148-7"><a href="Chapterx.html#cb148-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
-<span id="cb148-8"><a href="Chapterx.html#cb148-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend.title =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb148-9"><a href="Chapterx.html#cb148-9" aria-hidden="true" tabindex="-1"></a>           <span class="do">## p値を表示</span></span>
-<span id="cb148-10"><a href="Chapterx.html#cb148-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">pval =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb148-11"><a href="Chapterx.html#cb148-11" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 一般化ウィルコクソン検定の場合は&quot;S1&quot;</span></span>
-<span id="cb148-12"><a href="Chapterx.html#cb148-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">log.rank.weights =</span> <span class="st">&quot;1&quot;</span>) <span class="ot">-&gt;</span> p_km2</span>
-<span id="cb148-13"><a href="Chapterx.html#cb148-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb148-14"><a href="Chapterx.html#cb148-14" aria-hidden="true" tabindex="-1"></a>p_km2<span class="sc">$</span>plot <span class="sc">+</span></span>
-<span id="cb148-15"><a href="Chapterx.html#cb148-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
-<span id="cb148-16"><a href="Chapterx.html#cb148-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
-<span id="cb148-17"><a href="Chapterx.html#cb148-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
-<span id="cb148-18"><a href="Chapterx.html#cb148-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
-<span id="cb148-19"><a href="Chapterx.html#cb148-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="Chapterx.html#cb148-1" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_km2,</span>
+<span id="cb148-2"><a href="Chapterx.html#cb148-2" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
+<span id="cb148-3"><a href="Chapterx.html#cb148-3" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb148-4"><a href="Chapterx.html#cb148-4" tabindex="-1"></a>           <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb148-5"><a href="Chapterx.html#cb148-5" tabindex="-1"></a>           <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&quot;blue3&quot;</span>,<span class="st">&quot;red2&quot;</span>),</span>
+<span id="cb148-6"><a href="Chapterx.html#cb148-6" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>,</span>
+<span id="cb148-7"><a href="Chapterx.html#cb148-7" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
+<span id="cb148-8"><a href="Chapterx.html#cb148-8" tabindex="-1"></a>           <span class="at">legend.title =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb148-9"><a href="Chapterx.html#cb148-9" tabindex="-1"></a>           <span class="do">## p値を表示</span></span>
+<span id="cb148-10"><a href="Chapterx.html#cb148-10" tabindex="-1"></a>           <span class="at">pval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb148-11"><a href="Chapterx.html#cb148-11" tabindex="-1"></a>           <span class="do">## 一般化ウィルコクソン検定の場合は&quot;S1&quot;</span></span>
+<span id="cb148-12"><a href="Chapterx.html#cb148-12" tabindex="-1"></a>           <span class="at">log.rank.weights =</span> <span class="st">&quot;1&quot;</span>) <span class="ot">-&gt;</span> p_km2</span>
+<span id="cb148-13"><a href="Chapterx.html#cb148-13" tabindex="-1"></a></span>
+<span id="cb148-14"><a href="Chapterx.html#cb148-14" tabindex="-1"></a>p_km2<span class="sc">$</span>plot <span class="sc">+</span></span>
+<span id="cb148-15"><a href="Chapterx.html#cb148-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
+<span id="cb148-16"><a href="Chapterx.html#cb148-16" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb148-17"><a href="Chapterx.html#cb148-17" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb148-18"><a href="Chapterx.html#cb148-18" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb148-19"><a href="Chapterx.html#cb148-19" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-surv-km2"></span>
 <img src="SurvivalAnalysis_Using_R_files/figure-html/fig-surv-km2-1.png" alt="ロングランク検定の結果を示した生存曲線" width="432" />
 <p class="caption">
@@ -487,32 +491,32 @@ H(t_n) &amp;= \biggl(\frac{d_1}{l_1}\biggl) + \biggl(\frac{d_2}{l_2}\biggl) + \c
 \end{aligned}
 \]</span></p>
 <p>Nelson-Aalen推定量は0からスタートし、事象の発生が確認されるたびに値が大きくなる階段関数である。Rでは<code>coxph()</code>で説明変数のないモデルを推定したのち、<code>basehaz()</code>関数で求められる。</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="Chapterx.html#cb149-1" aria-hidden="true" tabindex="-1"></a>est_na <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb149-2"><a href="Chapterx.html#cb149-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> rank)</span>
-<span id="cb149-3"><a href="Chapterx.html#cb149-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb149-4"><a href="Chapterx.html#cb149-4" aria-hidden="true" tabindex="-1"></a><span class="fu">basehaz</span>(est_na)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="Chapterx.html#cb149-1" tabindex="-1"></a>est_na <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb149-2"><a href="Chapterx.html#cb149-2" tabindex="-1"></a>                <span class="at">data =</span> rank)</span>
+<span id="cb149-3"><a href="Chapterx.html#cb149-3" tabindex="-1"></a></span>
+<span id="cb149-4"><a href="Chapterx.html#cb149-4" tabindex="-1"></a><span class="fu">basehaz</span>(est_na)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["hazard"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["time"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.003322259","2":"1"},{"1":"0.006666741","2":"2"},{"1":"0.066543717","2":"3"},{"1":"0.240174246","2":"4"},{"1":"0.528643924","2":"5"},{"1":"0.896366679","2":"6"},{"1":"1.283854308","2":"7"},{"1":"1.574332161","2":"8"},{"1":"1.754293548","2":"9"},{"1":"1.899989168","2":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>結果の図示は<code>survminer</code>パッケージの<code>ggsurvplot()</code>関数で、<code>fun = "cumhaz"</code>とすることで行うことができる(図<a href="Chapterx.html#fig:fig-cumhaz">6.3</a>)。</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="Chapterx.html#cb150-1" aria-hidden="true" tabindex="-1"></a>fit_na <span class="ot">&lt;-</span> <span class="fu">survfit</span>(est_na, </span>
-<span id="cb150-2"><a href="Chapterx.html#cb150-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> rank,</span>
-<span id="cb150-3"><a href="Chapterx.html#cb150-3" aria-hidden="true" tabindex="-1"></a>        <span class="do">## 信頼区間の範囲</span></span>
-<span id="cb150-4"><a href="Chapterx.html#cb150-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">conf.int =</span> <span class="fl">0.95</span>)</span>
-<span id="cb150-5"><a href="Chapterx.html#cb150-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb150-6"><a href="Chapterx.html#cb150-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(fit_na,</span>
-<span id="cb150-7"><a href="Chapterx.html#cb150-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">fun =</span> <span class="st">&quot;cumhaz&quot;</span>,</span>
-<span id="cb150-8"><a href="Chapterx.html#cb150-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
-<span id="cb150-9"><a href="Chapterx.html#cb150-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb150-10"><a href="Chapterx.html#cb150-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>) <span class="ot">-&gt;</span> p_na</span>
-<span id="cb150-11"><a href="Chapterx.html#cb150-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb150-12"><a href="Chapterx.html#cb150-12" aria-hidden="true" tabindex="-1"></a>p_na<span class="sc">$</span>plot <span class="sc">+</span></span>
-<span id="cb150-13"><a href="Chapterx.html#cb150-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
-<span id="cb150-14"><a href="Chapterx.html#cb150-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
-<span id="cb150-15"><a href="Chapterx.html#cb150-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
-<span id="cb150-16"><a href="Chapterx.html#cb150-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="Chapterx.html#cb150-1" tabindex="-1"></a>fit_na <span class="ot">&lt;-</span> <span class="fu">survfit</span>(est_na, </span>
+<span id="cb150-2"><a href="Chapterx.html#cb150-2" tabindex="-1"></a>        <span class="at">data =</span> rank,</span>
+<span id="cb150-3"><a href="Chapterx.html#cb150-3" tabindex="-1"></a>        <span class="do">## 信頼区間の範囲</span></span>
+<span id="cb150-4"><a href="Chapterx.html#cb150-4" tabindex="-1"></a>        <span class="at">conf.int =</span> <span class="fl">0.95</span>)</span>
+<span id="cb150-5"><a href="Chapterx.html#cb150-5" tabindex="-1"></a></span>
+<span id="cb150-6"><a href="Chapterx.html#cb150-6" tabindex="-1"></a><span class="fu">ggsurvplot</span>(fit_na,</span>
+<span id="cb150-7"><a href="Chapterx.html#cb150-7" tabindex="-1"></a>           <span class="at">fun =</span> <span class="st">&quot;cumhaz&quot;</span>,</span>
+<span id="cb150-8"><a href="Chapterx.html#cb150-8" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
+<span id="cb150-9"><a href="Chapterx.html#cb150-9" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb150-10"><a href="Chapterx.html#cb150-10" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>) <span class="ot">-&gt;</span> p_na</span>
+<span id="cb150-11"><a href="Chapterx.html#cb150-11" tabindex="-1"></a></span>
+<span id="cb150-12"><a href="Chapterx.html#cb150-12" tabindex="-1"></a>p_na<span class="sc">$</span>plot <span class="sc">+</span></span>
+<span id="cb150-13"><a href="Chapterx.html#cb150-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
+<span id="cb150-14"><a href="Chapterx.html#cb150-14" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb150-15"><a href="Chapterx.html#cb150-15" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb150-16"><a href="Chapterx.html#cb150-16" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-cumhaz"></span>
 <img src="SurvivalAnalysis_Using_R_files/figure-html/fig-cumhaz-1.png" alt="Nelson-Aalen法で推定した累積ハザード関数" width="432" />
 <p class="caption">
@@ -524,24 +528,24 @@ H(t_n) &amp;= \biggl(\frac{d_1}{l_1}\biggl) + \biggl(\frac{d_2}{l_2}\biggl) + \c
 S(t_n) = exp[-H(t_n)]
 \]</span></p>
 <p>Nelson-Aalen法によって推定された生存関数は以下のように図示できる。</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="Chapterx.html#cb151-1" aria-hidden="true" tabindex="-1"></a>est_na2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb151-2"><a href="Chapterx.html#cb151-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> rank,</span>
-<span id="cb151-3"><a href="Chapterx.html#cb151-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">type =</span> <span class="st">&quot;fh&quot;</span>)</span>
-<span id="cb151-4"><a href="Chapterx.html#cb151-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb151-5"><a href="Chapterx.html#cb151-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_na2,</span>
-<span id="cb151-6"><a href="Chapterx.html#cb151-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
-<span id="cb151-7"><a href="Chapterx.html#cb151-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb151-8"><a href="Chapterx.html#cb151-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>,</span>
-<span id="cb151-9"><a href="Chapterx.html#cb151-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">palette =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb151-10"><a href="Chapterx.html#cb151-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
-<span id="cb151-11"><a href="Chapterx.html#cb151-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>) <span class="ot">-&gt;</span> p_na2</span>
-<span id="cb151-12"><a href="Chapterx.html#cb151-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb151-13"><a href="Chapterx.html#cb151-13" aria-hidden="true" tabindex="-1"></a>p_na2<span class="sc">$</span>plot <span class="sc">+</span></span>
-<span id="cb151-14"><a href="Chapterx.html#cb151-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
-<span id="cb151-15"><a href="Chapterx.html#cb151-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
-<span id="cb151-16"><a href="Chapterx.html#cb151-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
-<span id="cb151-17"><a href="Chapterx.html#cb151-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
-<span id="cb151-18"><a href="Chapterx.html#cb151-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="Chapterx.html#cb151-1" tabindex="-1"></a>est_na2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(dur, promo) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb151-2"><a href="Chapterx.html#cb151-2" tabindex="-1"></a>                <span class="at">data =</span> rank,</span>
+<span id="cb151-3"><a href="Chapterx.html#cb151-3" tabindex="-1"></a>                <span class="at">type =</span> <span class="st">&quot;fh&quot;</span>)</span>
+<span id="cb151-4"><a href="Chapterx.html#cb151-4" tabindex="-1"></a></span>
+<span id="cb151-5"><a href="Chapterx.html#cb151-5" tabindex="-1"></a><span class="fu">ggsurvplot</span>(est_na2,</span>
+<span id="cb151-6"><a href="Chapterx.html#cb151-6" tabindex="-1"></a>           <span class="at">data =</span> rank,</span>
+<span id="cb151-7"><a href="Chapterx.html#cb151-7" tabindex="-1"></a>           <span class="at">censor =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb151-8"><a href="Chapterx.html#cb151-8" tabindex="-1"></a>           <span class="at">legend =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb151-9"><a href="Chapterx.html#cb151-9" tabindex="-1"></a>           <span class="at">palette =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb151-10"><a href="Chapterx.html#cb151-10" tabindex="-1"></a>           <span class="at">conf.int.alpha =</span> <span class="fl">0.15</span>,</span>
+<span id="cb151-11"><a href="Chapterx.html#cb151-11" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.5</span>) <span class="ot">-&gt;</span> p_na2</span>
+<span id="cb151-12"><a href="Chapterx.html#cb151-12" tabindex="-1"></a></span>
+<span id="cb151-13"><a href="Chapterx.html#cb151-13" tabindex="-1"></a>p_na2<span class="sc">$</span>plot <span class="sc">+</span></span>
+<span id="cb151-14"><a href="Chapterx.html#cb151-14" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;year&quot;</span>)<span class="sc">+</span></span>
+<span id="cb151-15"><a href="Chapterx.html#cb151-15" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb151-16"><a href="Chapterx.html#cb151-16" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb151-17"><a href="Chapterx.html#cb151-17" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb151-18"><a href="Chapterx.html#cb151-18" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.15</span>,<span class="dv">1</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-surv-na"></span>
 <img src="SurvivalAnalysis_Using_R_files/figure-html/fig-surv-na-1.png" alt="Nelson-Aalen法で推定した生存曲線" width="432" />
 <p class="caption">
